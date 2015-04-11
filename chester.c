@@ -10,10 +10,6 @@
 #include "common.h"
 #include "model.h"
 
-//TODO:
-// bit instead of byte
-// maps
-
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - W R I T E   W O R D - - - - - - - - - - - -
 void RWord(FILE *F, uint8_t *b, int32_t i, uint32_t ctx){
@@ -28,56 +24,57 @@ void RWord(FILE *F, uint8_t *b, int32_t i, uint32_t ctx){
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - - J O I N - - - - - - - - - - - - - - - -
 void JoinStreams(Param *P){
-  uint32_t ref, tar, i;
+  uint32_t ref, tar, k, n;
   FILE *OUT = NULL;
   char **nameout = (char **) Calloc(P->tar->nFiles, sizeof(char *));
   uint64_t size, step = 0;
 
-  for(tar = 0 ; tar < P->tar->nFiles ; ++tar)
-    {
+  for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     nameout[tar]  = (char *) Calloc(4096, sizeof(char));
-    sprintf(nameout[tar], "%s-t%u-k%u.oxch", P->tar->names[tar], tar+1, P->context);
+    sprintf(nameout[tar], "%s-k%u.oxch", P->tar->names[tar], P->context);
     OUT           = Fopen(nameout[tar], "w");
     FILE **Bins   = (FILE **)    Calloc(P->ref->nFiles, sizeof(FILE *));
     char **name   = (char **)    Calloc(P->ref->nFiles, sizeof(char *));
     char **name2  = (char **)    Calloc(P->ref->nFiles, sizeof(char *));
     uint8_t **buf = (uint8_t **) Calloc(P->ref->nFiles, sizeof(uint8_t));
-    uint8_t **res = (uint8_t **) Calloc(P->ref->nFiles, sizeof(uint8_t));
-    for(ref = 0 ; ref < P->ref->nFiles ; ++ref)
-      {
+    uint8_t *res  = (uint8_t *)  Calloc(WINDOW_SIZE,    sizeof(uint8_t));
+    for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
       name[ref]  = (char *) Calloc(4096, sizeof(char));
       sprintf(name[ref], "-r%u-k%u.xch", ref+1, P->context);
       name2[ref] = concatenate(P->tar->names[tar], name[ref]);
       Bins[ref]  = Fopen(name2[ref], "r");
       buf[ref]   = (uint8_t *) Calloc(WINDOW_SIZE, sizeof(uint8_t));
-      res[ref]   = (uint8_t *) Calloc(WINDOW_SIZE, sizeof(uint8_t));
+      res        = (uint8_t *) Calloc(WINDOW_SIZE, sizeof(uint8_t));
       }
     size = NBytesInFile(Bins[0]); 
 
-printf("size: %"PRIu64"\n", size);
-
-    step += WINDOW_SIZE;
-    do
-      {
+    step = WINDOW_SIZE;
+    do{
       for(ref = 0 ; ref < P->ref->nFiles ; ++ref)
-        {
-      
-        printf("%s\n", name2[ref]);
+        k = fread(buf[ref], 1, WINDOW_SIZE, Bins[ref]);
+      for(n = 0 ; n < k ; ++n){
+        res[n] = '0';
+        for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
+          if(buf[ref][n] != 0){
+            res[n] = '1';
+            break;
+            }
+          }
         }
-
+      fwrite(res, 1, k, OUT);
+      step += WINDOW_SIZE;
+      for(ref = 0 ; ref < P->ref->nFiles ; ++ref)
+        fseeko(Bins[ref], step, SEEK_SET);
       }
-    while(step < size);
+    while(step < size && k > 0);
 
-
-    for(ref = 0 ; ref < P->ref->nFiles ; ++ref)
-      {
+    for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
       fclose(Bins[ref]);
       Free(name2 [ref]);
       Free(name  [ref]);
       Free(buf   [ref]);
-      Free(res   [ref]);
       } 
-
+ 
     fclose(OUT);
     Free(name2);
     Free(name);
