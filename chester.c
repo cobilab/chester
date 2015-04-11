@@ -43,9 +43,9 @@ void JoinStreams(Param *P){
       sprintf(name[ref], "-r%u-k%u.xch", ref+1, P->context);
       name2[ref] = concatenate(P->tar->names[tar], name[ref]);
       Bins[ref]  = Fopen(name2[ref], "r");
-      buf[ref]   = (uint8_t *) Calloc(WINDOW_SIZE, sizeof(uint8_t));
-      res        = (uint8_t *) Calloc(WINDOW_SIZE, sizeof(uint8_t));
+      buf[ref]   = (uint8_t *) Calloc(WINDOW_SIZE,   sizeof(uint8_t));
       }
+    res  = (uint8_t *) Calloc(WINDOW_SIZE+1, sizeof(uint8_t));
     size = NBytesInFile(Bins[0]); 
 
     step = WINDOW_SIZE;
@@ -55,7 +55,7 @@ void JoinStreams(Param *P){
       for(n = 0 ; n < k ; ++n){
         res[n] = '0';
         for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
-          if(buf[ref][n] != 0){
+          if(buf[ref][n] == '1'){
             res[n] = '1';
             break;
             }
@@ -63,8 +63,6 @@ void JoinStreams(Param *P){
         }
       fwrite(res, 1, k, OUT);
       step += WINDOW_SIZE;
-      for(ref = 0 ; ref < P->ref->nFiles ; ++ref)
-        fseeko(Bins[ref], step, SEEK_SET);
       }
     while(step < size && k > 0);
 
