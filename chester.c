@@ -72,7 +72,6 @@ void JoinStreams(Param *P){
       Free(name  [ref]);
       Free(buf   [ref]);
       } 
- 
     fclose(OUT);
     Free(name2);
     Free(name);
@@ -304,44 +303,18 @@ int32_t main(int argc, char *argv[]){
       fprintf(stderr, "==========================================\n");
     }
 
-  if(P->verbose)
-    fprintf(stderr, "Building maps ...\n");
+  if(P->verbose) fprintf(stderr, "Joinning ...\n");
 
   JoinStreams(P);
  
-
-/*
-  char stop = 0;
-  char states[P->ref->nFiles];
-  for(;;){
-    for(n = 0 ; n < P->ref->nFiles ; ++n){
-      states[n] = fgetc(BINS[n]);
-      if(states[n] == EOF){
-        stop = 1;
-        break;
-        }
-      }
-    if(stop == 1) break;
-    if(states[n] == '1'){
-      fprintf(OUT, "1");
-      continue;
-      }
-    fprintf(OUT, "0");
+  if(P->verbose){
+    fprintf(stderr, "Done!                  \n");
+    fprintf(stderr, "==========================================\n");
     }
 
-  for(n = 0 ; n < P->ref->nFiles ; ++n){
-    fclose(BINS[n]);
-    Free(names2[n]);
-    Free(names[n]);
-    Free(BINS[n]);
-    }
-  Free(names2);
-  Free(names);
-  Free(BINS);
-  fclose(OUT);
-  */   
-  if(P->verbose)
-    fprintf(stderr, "Done!\n");
+  // TODO: FILTERING
+  // TODO: SEGMENTING
+  // TODO: PAINTING
 
   return EXIT_SUCCESS;
   }
