@@ -24,6 +24,8 @@ typedef struct{
   uint32_t context;
   uint32_t inverse;
   uint64_t **size;
+  int64_t  subsamp;
+  int64_t  window;
   uint64_t bSize;
   uint32_t bHashes;
   Model    *M;
@@ -47,6 +49,11 @@ Param;
 #define DEFAULT_CTX            12
 #define DEF_MIN_CTX            12
 #define DEF_MAX_CTX            13
+#define WINDOW_RATIO           1300
+#define SUBSAMPLE_RATIO        5
+#define DEFAULT_WINDOW         -1
+#define DEFAULT_SUBSAMPLE      50000
+#define DEFAULT_SAMPLE_RATIO   10000
 #define MIN_CTX                1
 #define MAX_CTX                30
 #define BGUARD                 32

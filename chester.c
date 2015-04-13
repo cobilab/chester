@@ -22,6 +22,19 @@ void RWord(FILE *F, uint8_t *b, int32_t i, uint32_t ctx){
   }
 
 //////////////////////////////////////////////////////////////////////////////
+// - - - - - - - - - - - - - - - - - F I L T E R - - - - - - - - - - - - - - -
+void FilterStreams(Param *P){
+
+//  P->window = P->subsamp == 1 ? 0 : P->subsamp * 5;
+
+
+  //FilterSequence(char *fName, Parameters *P, float *w);
+
+  }
+
+
+
+//////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - - J O I N - - - - - - - - - - - - - - - -
 void JoinStreams(Param *P){
   uint32_t ref, tar, k, n;
@@ -237,6 +250,7 @@ void LoadReference(Param *P, uint32_t ref){
 int32_t main(int argc, char *argv[]){
   char     **p = *&argv;
   uint32_t n, k, min, max, kmer;
+  float    *w;
   Param    *P;
 
   if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || argc < 3 ||
@@ -245,15 +259,17 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
-    fprintf(stderr, "  -n                       bloom hashes number,      \n");
-    fprintf(stderr, "  -s                       bloom size,               \n");
+    fprintf(stderr, "  -w <value>               window size,              \n");
+    fprintf(stderr, "  -u <value>               sub-sampling,             \n");
+    fprintf(stderr, "  -n <value>               bloom hashes number,      \n");
+    fprintf(stderr, "  -s <value>               bloom size,               \n");
     fprintf(stderr, "  -i                       use inversions,           \n");
-    fprintf(stderr, "  -k <k-mer>               k-mer size,               \n");
+    fprintf(stderr, "  -k <value>               k-mer size,               \n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  [rFile1]:<rFile2>:<...>  reference file(s) (db),   \n");
     fprintf(stderr, "  [tFile1]:<tFile2>:<...>  target file(s).           \n");
     fprintf(stderr, "                                                     \n");
-    fprintf(stderr, "CHESTER is a fast tool to compute completeness maps. \n");
+    fprintf(stderr, "CHESTER is a fast tool to compute uniqueness maps.   \n");
     fprintf(stderr, "The input files should be FASTA (.fa) or SEQ [ACGTN].\n");
     return EXIT_SUCCESS;
     }
@@ -275,6 +291,8 @@ int32_t main(int argc, char *argv[]){
   P->tar      = ReadFNames(P, argv[argc-1]);  // TAR
   P->id       = n;
   P->context  = kmer;
+  P->subsamp  = ArgsNum   (DEFAULT_SAMPLE_RATIO, p, argc, "-u", 1,   999999);
+  P->window   = ArgsNum   (DEFAULT_WINDOW,  p, argc, "-w", 1,   999999);
   P->bSize    = ArgsNum64 (DEFAULT_BSIZE,   p, argc, "-s", 100, 9999999999);
   P->bHashes  = ArgsNum   (DEFAULT_BHASHES, p, argc, "-n", 1,   999999);
   P->verbose  = ArgsState (DEFAULT_VERBOSE, p, argc, "-v");
@@ -304,15 +322,19 @@ int32_t main(int argc, char *argv[]){
     }
 
   if(P->verbose) fprintf(stderr, "Joinning ...\n");
-
   JoinStreams(P);
- 
   if(P->verbose){
-    fprintf(stderr, "Done!                  \n");
+    fprintf(stderr, "Done!                                     \n");
     fprintf(stderr, "==========================================\n");
     }
 
-  // TODO: FILTERING
+  if(P->verbose) fprintf(stderr, "Filtering ...\n");
+  FilterStreams(P);
+  if(P->verbose){
+    fprintf(stderr, "Done!                                     \n");
+    fprintf(stderr, "==========================================\n");
+    }
+
   // TODO: SEGMENTING
   // TODO: PAINTING
 
