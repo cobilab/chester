@@ -23,6 +23,8 @@ char        *CloneString     (char *   );
 char        *RepString       (const char *, const char *, const char *);
 uint32_t    ArgsNum          (uint32_t , char *[], uint32_t, char *, uint32_t, 
                              uint32_t);
+int64_t     ArgsNumI64       (int64_t, char *[], uint32_t, char *, int64_t,
+                             int64_t);
 uint64_t    ArgsNum64        (uint64_t , char *[], uint32_t, char *, uint64_t,
                              uint64_t);
 double      ArgsDouble       (double, char *[], uint32_t, char *);

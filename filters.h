@@ -3,6 +3,11 @@
 
 #include "defs.h"
 
+#define W_HAMMING     0
+#define W_HANN        1
+#define W_BLACKMAN    2
+#define W_RECTANGULAR 3
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void     WindowSizeAndDrop  (Param *, uint64_t);

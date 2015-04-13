@@ -159,6 +159,30 @@ common.c.s:
 	$(MAKE) -f CMakeFiles/CHESTER.dir/build.make CMakeFiles/CHESTER.dir/common.c.s
 .PHONY : common.c.s
 
+filters.o: filters.c.o
+.PHONY : filters.o
+
+# target to build an object file
+filters.c.o:
+	$(MAKE) -f CMakeFiles/CHESTER.dir/build.make CMakeFiles/CHESTER.dir/filters.c.o
+.PHONY : filters.c.o
+
+filters.i: filters.c.i
+.PHONY : filters.i
+
+# target to preprocess a source file
+filters.c.i:
+	$(MAKE) -f CMakeFiles/CHESTER.dir/build.make CMakeFiles/CHESTER.dir/filters.c.i
+.PHONY : filters.c.i
+
+filters.s: filters.c.s
+.PHONY : filters.s
+
+# target to generate assembly for a file
+filters.c.s:
+	$(MAKE) -f CMakeFiles/CHESTER.dir/build.make CMakeFiles/CHESTER.dir/filters.c.s
+.PHONY : filters.c.s
+
 mem.o: mem.c.o
 .PHONY : mem.o
 
@@ -222,6 +246,9 @@ help:
 	@echo "... common.o"
 	@echo "... common.i"
 	@echo "... common.s"
+	@echo "... filters.o"
+	@echo "... filters.i"
+	@echo "... filters.s"
 	@echo "... mem.o"
 	@echo "... mem.i"
 	@echo "... mem.s"

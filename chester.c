@@ -9,6 +9,7 @@
 #include "defs.h"
 #include "common.h"
 #include "model.h"
+#include "filters.h"
 
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - W R I T E   W O R D - - - - - - - - - - - -
@@ -24,15 +25,21 @@ void RWord(FILE *F, uint8_t *b, int32_t i, uint32_t ctx){
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - F I L T E R - - - - - - - - - - - - - - -
 void FilterStreams(Param *P){
+  float *winWeights;
+  uint32_t tar;
 
-//  P->window = P->subsamp == 1 ? 0 : P->subsamp * 5;
+  WindowSizeAndDrop(P, P->max);
+  winWeights = InitWinWeights(P->window, W_HAMMING);
 
+  for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
+    char *name = (char *) Calloc(4096, sizeof(char));
+    sprintf(name, "%s-k%u.oxch", P->tar->names[tar], P->context);
+    FilterSequence(name, P, winWeights);
+    Free(name);
+    }
 
-  //FilterSequence(char *fName, Parameters *P, float *w);
-
+  EndWinWeights(winWeights);
   }
-
-
 
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - - J O I N - - - - - - - - - - - - - - - -
@@ -40,7 +47,7 @@ void JoinStreams(Param *P){
   uint32_t ref, tar, k, n;
   FILE *OUT = NULL;
   char **nameout = (char **) Calloc(P->tar->nFiles, sizeof(char *));
-  uint64_t size, step = 0;
+  uint64_t size[P->tar->nFiles], step = 0;
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     nameout[tar]  = (char *) Calloc(4096, sizeof(char));
@@ -56,10 +63,10 @@ void JoinStreams(Param *P){
       sprintf(name[ref], "-r%u-k%u.xch", ref+1, P->context);
       name2[ref] = concatenate(P->tar->names[tar], name[ref]);
       Bins[ref]  = Fopen(name2[ref], "r");
-      buf[ref]   = (uint8_t *) Calloc(WINDOW_SIZE,   sizeof(uint8_t));
+      buf[ref]   = (uint8_t *) Calloc(WINDOW_SIZE, sizeof(uint8_t));
       }
     res  = (uint8_t *) Calloc(WINDOW_SIZE+1, sizeof(uint8_t));
-    size = NBytesInFile(Bins[0]); 
+    size[tar] = NBytesInFile(Bins[0]); 
 
     step = WINDOW_SIZE;
     do{
@@ -77,7 +84,7 @@ void JoinStreams(Param *P){
       fwrite(res, 1, k, OUT);
       step += WINDOW_SIZE;
       }
-    while(step < size && k > 0);
+    while(step < size[tar] && k > 0);
 
     for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
       fclose(Bins[ref]);
@@ -91,6 +98,11 @@ void JoinStreams(Param *P){
     Free(buf);
     Free(res);
     }
+
+  P->max = size[0];
+  for(tar = 1 ; tar < P->tar->nFiles ; ++tar)
+    if(P->max < size[tar])
+      P->max = size[tar];
   }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -259,6 +271,7 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
+    fprintf(stderr, "  -t <value>               threshold [0;1],          \n");
     fprintf(stderr, "  -w <value>               window size,              \n");
     fprintf(stderr, "  -u <value>               sub-sampling,             \n");
     fprintf(stderr, "  -n <value>               bloom hashes number,      \n");
@@ -289,14 +302,13 @@ int32_t main(int argc, char *argv[]){
   P = (Param *) Calloc(1 , sizeof(Param));
   P->ref      = ReadFNames(P, argv[argc-2]);  // REF
   P->tar      = ReadFNames(P, argv[argc-1]);  // TAR
-  P->id       = n;
   P->context  = kmer;
-  P->subsamp  = ArgsNum   (DEFAULT_SAMPLE_RATIO, p, argc, "-u", 1,   999999);
-  P->window   = ArgsNum   (DEFAULT_WINDOW,  p, argc, "-w", 1,   999999);
-  P->bSize    = ArgsNum64 (DEFAULT_BSIZE,   p, argc, "-s", 100, 9999999999);
-  P->bHashes  = ArgsNum   (DEFAULT_BHASHES, p, argc, "-n", 1,   999999);
-  P->verbose  = ArgsState (DEFAULT_VERBOSE, p, argc, "-v");
-  P->inverse  = ArgsState (DEFAULT_IR,      p, argc, "-i");
+  P->subsamp  = ArgsNum    (DEFAULT_SAMPLE_RATIO, p, argc, "-u", 1, 999999);
+  P->window   = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
+  P->bSize    = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 100, 9999999999);
+  P->bHashes  = ArgsNum    (DEFAULT_BHASHES, p, argc, "-n", 1,   999999);
+  P->verbose  = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
+  P->inverse  = ArgsState  (DEFAULT_IR,      p, argc, "-i");
 
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n", 
@@ -330,6 +342,13 @@ int32_t main(int argc, char *argv[]){
 
   if(P->verbose) fprintf(stderr, "Filtering ...\n");
   FilterStreams(P);
+  if(P->verbose){
+    fprintf(stderr, "Done!                                     \n");
+    fprintf(stderr, "==========================================\n");
+    }
+
+  if(P->verbose) fprintf(stderr, "Segmenting ...\n");
+  SegmentStreams(P);
   if(P->verbose){
     fprintf(stderr, "Done!                                     \n");
     fprintf(stderr, "==========================================\n");

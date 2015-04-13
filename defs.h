@@ -19,8 +19,6 @@ typedef struct{
   char     *output;
   SFILES   *ref;
   SFILES   *tar;
-  uint8_t  id;
-  uint32_t nThreads;
   uint32_t context;
   uint32_t inverse;
   uint64_t **size;
@@ -28,6 +26,8 @@ typedef struct{
   int64_t  window;
   uint64_t bSize;
   uint32_t bHashes;
+  uint64_t max;
+  double   threshold;
   Model    *M;
   }
 Param;

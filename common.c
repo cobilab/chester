@@ -222,6 +222,23 @@ uint32_t u){
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// READ NUMBER FROM ARGS & CHECK BOUNDS
+//
+int64_t ArgsNumI64(int64_t d, char *a[], uint32_t n, char *s, int64_t l,
+int64_t u){
+  int64_t x;
+  for( ; --n ; ) if(!strcmp(s, a[n])){
+    if((x = atol(a[n+1])) < l || x > u){
+      fprintf(stderr, "[x] Invalid number! Interval: [%"PRIi64";%"PRIi64"].\n", 
+      l, u);
+      exit(EXIT_FAILURE);
+      }
+    return x;
+    }
+  return d;
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // READ NUMBER FROM ARGS & CHECK BOUNDS 64BITES
 //
 uint64_t ArgsNum64(uint64_t d, char *a[], uint32_t n, char *s, uint64_t l,
@@ -349,7 +366,11 @@ void PrintArgs(Param *P){
     P[n].bSize);
     fprintf(stderr, "  [+] Bloom hashes number .......... %u\n", P[n].bHashes);
     }
-
+  fprintf(stderr, "Sub-sampling ....................... %"PRIi64"\n", P->subsamp);
+  if(P->window == -1)
+    fprintf(stderr, "Window size ........................ Automatic\n");
+  else 
+    fprintf(stderr, "Window size ........................ %"PRIi64"\n", P->window);
   fprintf(stdout, "Reference files (%u):\n", P[0].ref->nFiles);
   for(n = 0 ; n < P[0].ref->nFiles ; ++n)
     fprintf(stderr, "  [+] Filename %-2u .................. %s\n", n+1,
