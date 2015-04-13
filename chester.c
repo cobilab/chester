@@ -61,6 +61,7 @@ void SegmentStreams(Param *P){
 void PaintStreams(Param *P){
   FILE *Plot = Fopen("plot.svg", "w");
   char backColor[] = "#ffffff";
+  uint64_t init, end;
   Painter *Paint;
   uint32_t tar;
 
@@ -75,15 +76,17 @@ void PaintStreams(Param *P){
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     char *name = (char *) Calloc(4096, sizeof(char));
     sprintf(name, "%s-k%u.seg", P->tar->names[tar], P->context);
-/*
-    while(){
-      Rect(Plot, Paint->width, GetPoint(1+P->pt), Paint->cx,
-      Paint->cy + GetPoint(i+1), GetRgbColor(LEVEL_HUE));
-      }
-*/
+    FILE *Reader = Fopen(name, "r");
 
-    Chromosome(Plot, Paint->width, GetPoint(P->chrSize[tar]), Paint->cx, Paint->cy);
+    while(fscanf(Reader, "%"PRIu64"\t%"PRIu64"", &init, &end) == 2){
+      Rect(Plot, Paint->width, GetPoint(end-init+1), Paint->cx,
+      Paint->cy + GetPoint(init), GetRgbColor(LEVEL_HUE));
+      }
+
+    Chromosome(Plot, Paint->width, GetPoint(P->chrSize[tar]), Paint->cx, 
+    Paint->cy);
     if(P->tar->nFiles > 0) Paint->cx += DEFAULT_WIDTH + DEFAULT_SPACE;
+    fclose(Reader);
     Free(name);
     }
 
@@ -315,14 +318,15 @@ int32_t main(int argc, char *argv[]){
   uint32_t n, k, min, max, kmer;
   float    *w;
   Param    *P;
+  clock_t  start = clock();
 
-  if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || argc < 3 ||
+  if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || argc < 2 ||
     ArgsState(DEFAULT_HELP, p, argc, "?") == 1){
     fprintf(stderr, "Usage: CHESTER <OPTIONS>... [FILE]:<...> [FILE]:<...>\n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
-    fprintf(stderr, "  -t <value>               threshold [0;1],          \n");
+    fprintf(stderr, "  -t <value>               threshold [0.0;1.0],      \n");
     fprintf(stderr, "  -w <value>               window size,              \n");
     fprintf(stderr, "  -u <value>               sub-sampling,             \n");
     fprintf(stderr, "  -n <value>               bloom hashes number,      \n");
@@ -340,11 +344,12 @@ int32_t main(int argc, char *argv[]){
 
   if(ArgsState(0, p, argc, "-a") || ArgsState(0, p, argc, "-V")){
     fprintf(stderr, "CHESTER %u.%u\n"
-    "Copyright (C) 2015 University of Aveiro.\nThis is Free software. \nYou "
-    "may redistribute copies of it under the terms of the GNU General \n"
-    "Public License v2 <http://www.gnu.org/licenses/gpl.html>.\nThere is NO "
-    "WARRANTY, to the extent permitted by law.\nCode written by Diogo Pratas"
-    " (pratas@ua.pt) and Armando J. Pinho (ap@ua.pt).\n", RELEASE, VERSION);
+    "Copyright (C) 2015 University of Aveiro.\nThis is Free software.\nYou "
+    "may redistribute copies of it under the terms of the GNU \nGeneral "
+    "Public License v2 <http://www.gnu.org/licenses/gpl.html>. \nThere is NO "
+    "WARRANTY, to the extent permitted by law.\nCode by Diogo Pratas,"
+    " Armando J. Pinho and Paulo J. S. G Ferreira\n{pratas,ap,pjf}@ua.pt.\n", 
+    RELEASE, VERSION);
     return EXIT_SUCCESS;
     }
 
@@ -412,6 +417,10 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "Done!                                     \n");
     fprintf(stderr, "==========================================\n");
     }
+
+  if(P->verbose)
+    fprintf(stderr, "All jobs done in %.3g sec.\n", ((double)(clock()-start))/
+    CLOCKS_PER_SEC);
 
   return EXIT_SUCCESS;
   }
