@@ -59,14 +59,36 @@ void SegmentStreams(Param *P){
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - P A I N T - - - - - - - - - - - - - - - -
 void PaintStreams(Param *P){
+  FILE *Plot = Fopen("plot.svg", "w");
+  char backColor[] = "#ffffff";
+  Painter *Paint;
   uint32_t tar;
+
+  SetScale(P->max);
+
+  Paint = CreatePainter(GetPoint(P->max), backColor);
+
+  PrintHead(Plot, (2 * DEFAULT_CX) + (((Paint->width + DEFAULT_SPACE) * 
+  P->tar->nFiles) - DEFAULT_SPACE), Paint->size + EXTRA);
+  Rect(Plot, (2 * DEFAULT_CX) + (((Paint->width + DEFAULT_SPACE) *
+  P->tar->nFiles) - DEFAULT_SPACE), Paint->size + EXTRA, 0, 0, backColor);
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     char *name = (char *) Calloc(4096, sizeof(char));
     sprintf(name, "%s-k%u.seg", P->tar->names[tar], P->context);
-    //PaintSequence(name, P);
+/*
+    while(){
+      Rect(Plot, Paint->width, GetPoint(1+P->pt), Paint->cx,
+      Paint->cy + GetPoint(i+1), GetRgbColor(LEVEL_HUE));
+      }
+*/
+
+    Chromosome(Plot, Paint->width, GetPoint(P->chrSize[tar]), Paint->cx, Paint->cy);
+    if(tar > 0) Paint->cx += DEFAULT_WIDTH + DEFAULT_SPACE;
     Free(name);
     }
+
+  PrintFinal(Plot);
   }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -74,8 +96,9 @@ void PaintStreams(Param *P){
 void JoinStreams(Param *P){
   uint32_t ref, tar, k, n;
   FILE *OUT = NULL;
+  uint64_t step = 0;
   char **nameout = (char **) Calloc(P->tar->nFiles, sizeof(char *));
-  uint64_t size[P->tar->nFiles], step = 0;
+  P->chrSize  = (uint64_t *) Calloc(P->tar->nFiles, sizeof(uint64_t));
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     nameout[tar]  = (char *) Calloc(4096, sizeof(char));
@@ -94,7 +117,7 @@ void JoinStreams(Param *P){
       buf[ref]   = (uint8_t *) Calloc(WINDOW_SIZE, sizeof(uint8_t));
       }
     res  = (uint8_t *) Calloc(WINDOW_SIZE+1, sizeof(uint8_t));
-    size[tar] = NBytesInFile(Bins[0]); 
+    P->chrSize[tar] = NBytesInFile(Bins[0]); 
 
     step = WINDOW_SIZE;
     do{
@@ -112,7 +135,7 @@ void JoinStreams(Param *P){
       fwrite(res, 1, k, OUT);
       step += WINDOW_SIZE;
       }
-    while(step < size[tar] && k > 0);
+    while(step < P->chrSize[tar] && k > 0);
 
     for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
       fclose(Bins[ref]);
@@ -127,10 +150,10 @@ void JoinStreams(Param *P){
     Free(res);
     }
 
-  P->max = size[0];
+  P->max = P->chrSize[0];
   for(tar = 1 ; tar < P->tar->nFiles ; ++tar)
-    if(P->max < size[tar])
-      P->max = size[tar];
+    if(P->max < P->chrSize[tar])
+      P->max = P->chrSize[tar];
   }
 
 //////////////////////////////////////////////////////////////////////////////

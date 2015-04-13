@@ -22,8 +22,10 @@ typedef struct{
   uint32_t context;
   uint32_t inverse;
   uint64_t **size;
+  uint64_t *chrSize;
   int64_t  subsamp;
   int64_t  window;
+  int64_t  ratio;
   uint64_t bSize;
   uint32_t bHashes;
   uint64_t max;
