@@ -65,7 +65,6 @@ void PaintStreams(Param *P){
   uint32_t tar;
 
   SetScale(P->max);
-
   Paint = CreatePainter(GetPoint(P->max), backColor);
 
   PrintHead(Plot, (2 * DEFAULT_CX) + (((Paint->width + DEFAULT_SPACE) * 
@@ -84,7 +83,7 @@ void PaintStreams(Param *P){
 */
 
     Chromosome(Plot, Paint->width, GetPoint(P->chrSize[tar]), Paint->cx, Paint->cy);
-    if(tar > 0) Paint->cx += DEFAULT_WIDTH + DEFAULT_SPACE;
+    if(P->tar->nFiles > 0) Paint->cx += DEFAULT_WIDTH + DEFAULT_SPACE;
     Free(name);
     }
 
@@ -116,7 +115,8 @@ void JoinStreams(Param *P){
       Bins[ref]  = Fopen(name2[ref], "r");
       buf[ref]   = (uint8_t *) Calloc(WINDOW_SIZE, sizeof(uint8_t));
       }
-    res  = (uint8_t *) Calloc(WINDOW_SIZE+1, sizeof(uint8_t));
+    res = (uint8_t *) Calloc(WINDOW_SIZE+1, sizeof(uint8_t));
+
     P->chrSize[tar] = NBytesInFile(Bins[0]); 
 
     step = WINDOW_SIZE;
