@@ -13,6 +13,3 @@ SET(CMAKE_BUILD_TYPE Release)
 
 add_executable (CHESTER chester.c mem.c model.c filters.c segment.c paint.c common.c defs.h) 
 
-TARGET_LINK_LIBRARIES(CHESTER
-pthread
-)

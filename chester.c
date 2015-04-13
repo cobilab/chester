@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 #include <float.h>
 #include <ctype.h>
-#include <pthread.h>
 #include "mem.h"
 #include "defs.h"
 #include "common.h"
