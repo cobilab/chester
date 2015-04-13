@@ -206,6 +206,24 @@ char *RepString(const char *str, const char *old, const char *new)
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// REPLACE STRING
+//
+char *ReplaceSubStr(char *str, char *a, char *b){
+  char *buf = (char *) Calloc(MAX_STR, sizeof(char));
+  char *p;
+  if(strlen(str) > MAX_STR){
+    fprintf(stderr, "[x] Error: string too long!\n");
+    exit(1);
+    }
+  if(!(p = strstr(str, a)))
+    return str;
+  strncpy(buf, str, p-str);
+  buf[p-str] = '\0';
+  sprintf(buf+(p-str), "%s%s", b, p+strlen(a));
+  return buf;
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // READ NUMBER FROM ARGS & CHECK BOUNDS
 //
 uint32_t ArgsNum(uint32_t d, char *a[], uint32_t n, char *s, uint32_t l,
@@ -366,11 +384,14 @@ void PrintArgs(Param *P){
     P[n].bSize);
     fprintf(stderr, "  [+] Bloom hashes number .......... %u\n", P[n].bHashes);
     }
-  fprintf(stderr, "Sub-sampling ....................... %"PRIi64"\n", P->subsamp);
+  fprintf(stderr, "Threshold .......................... %.4g\n", P->threshold);
+  fprintf(stderr, "Sub-sampling ....................... %"PRIi64"\n", 
+  P->subsamp);
   if(P->window == -1)
     fprintf(stderr, "Window size ........................ Automatic\n");
   else 
-    fprintf(stderr, "Window size ........................ %"PRIi64"\n", P->window);
+    fprintf(stderr, "Window size ........................ %"PRIi64"\n", 
+    P->window);
   fprintf(stdout, "Reference files (%u):\n", P[0].ref->nFiles);
   for(n = 0 ; n < P[0].ref->nFiles ; ++n)
     fprintf(stderr, "  [+] Filename %-2u .................. %s\n", n+1,

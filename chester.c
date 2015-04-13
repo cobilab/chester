@@ -10,6 +10,8 @@
 #include "common.h"
 #include "model.h"
 #include "filters.h"
+#include "segment.h"
+#include "paint.h"
 
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - W R I T E   W O R D - - - - - - - - - - - -
@@ -39,6 +41,32 @@ void FilterStreams(Param *P){
     }
 
   EndWinWeights(winWeights);
+  }
+
+//////////////////////////////////////////////////////////////////////////////
+// - - - - - - - - - - - - - - - - S E G M E N T - - - - - - - - - - - - - - -
+void SegmentStreams(Param *P){
+  uint32_t tar;
+
+  for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
+    char *name = (char *) Calloc(4096, sizeof(char));
+    sprintf(name, "%s-k%u.fil", P->tar->names[tar], P->context);
+    SegmentSequence(name, P);
+    Free(name);
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////////////
+// - - - - - - - - - - - - - - - - - P A I N T - - - - - - - - - - - - - - - -
+void PaintStreams(Param *P){
+  uint32_t tar;
+
+  for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
+    char *name = (char *) Calloc(4096, sizeof(char));
+    sprintf(name, "%s-k%u.seg", P->tar->names[tar], P->context);
+    //PaintSequence(name, P);
+    Free(name);
+    }
   }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -300,15 +328,16 @@ int32_t main(int argc, char *argv[]){
   kmer = ArgsNum (DEF_MIN_CTX, p, argc, "-k", MIN_CTX, MAX_CTX);
 
   P = (Param *) Calloc(1 , sizeof(Param));
-  P->ref      = ReadFNames(P, argv[argc-2]);  // REF
-  P->tar      = ReadFNames(P, argv[argc-1]);  // TAR
-  P->context  = kmer;
-  P->subsamp  = ArgsNum    (DEFAULT_SAMPLE_RATIO, p, argc, "-u", 1, 999999);
-  P->window   = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
-  P->bSize    = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 100, 9999999999);
-  P->bHashes  = ArgsNum    (DEFAULT_BHASHES, p, argc, "-n", 1,   999999);
-  P->verbose  = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
-  P->inverse  = ArgsState  (DEFAULT_IR,      p, argc, "-i");
+  P->ref       = ReadFNames(P, argv[argc-2]);  // REF
+  P->tar       = ReadFNames(P, argv[argc-1]);  // TAR
+  P->context   = kmer;
+  P->threshold = ArgsDouble (DEFAULT_THRESHOLD, p, argc, "-t");
+  P->subsamp   = ArgsNum    (DEFAULT_SAMPLE_RATIO, p, argc, "-u", 1, 999999);
+  P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
+  P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 100, 9999999999);
+  P->bHashes   = ArgsNum    (DEFAULT_BHASHES, p, argc, "-n", 1,   999999);
+  P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
+  P->inverse   = ArgsState  (DEFAULT_IR,      p, argc, "-i");
 
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n", 
@@ -354,8 +383,12 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "==========================================\n");
     }
 
-  // TODO: SEGMENTING
-  // TODO: PAINTING
+  if(P->verbose) fprintf(stderr, "Painting ...\n");
+  PaintStreams(P);
+  if(P->verbose){
+    fprintf(stderr, "Done!                                     \n");
+    fprintf(stderr, "==========================================\n");
+    }
 
   return EXIT_SUCCESS;
   }

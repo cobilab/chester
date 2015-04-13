@@ -85,7 +85,7 @@ void FilterSequence(char *fName, Param *P, float *w){
   if(P->verbose == 1)
     fprintf(stderr, "Got %"PRIu64" entries from file\n", nEntries);
 
-  fNameOut = concatenate(fName, ".fil");
+  fNameOut = ReplaceSubStr(fName, ".oxch", ".fil");
   Writter  = Fopen(fNameOut, "w");
 
   for(n = 0 ; n < nEntries ; ++n)

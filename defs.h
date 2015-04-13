@@ -51,6 +51,7 @@ Param;
 #define DEF_MAX_CTX            13
 #define WINDOW_RATIO           1300
 #define SUBSAMPLE_RATIO        5
+#define DEFAULT_THRESHOLD      0.5 
 #define DEFAULT_WINDOW         -1
 #define DEFAULT_SUBSAMPLE      50000
 #define DEFAULT_SAMPLE_RATIO   10000

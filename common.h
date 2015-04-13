@@ -6,6 +6,8 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+#define MAX_STR  4096
+
 FILE        *Fopen           (const char *, const char *);
 void        FillLogTable     (uint32_t, uint32_t, uint32_t);
 double      SearchLog        (uint32_t );
@@ -21,6 +23,7 @@ uint64_t    FopenBytesInFile (const char *);
 uint8_t     *ReverseStr      (uint8_t *, uint32_t);
 char        *CloneString     (char *   );
 char        *RepString       (const char *, const char *, const char *);
+char        *ReplaceSubStr   (char *, char *, char *);
 uint32_t    ArgsNum          (uint32_t , char *[], uint32_t, char *, uint32_t, 
                              uint32_t);
 int64_t     ArgsNumI64       (int64_t, char *[], uint32_t, char *, int64_t,
