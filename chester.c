@@ -70,7 +70,7 @@ void PaintStreams(Param *P){
 
   PrintHead(Plot, (2 * DEFAULT_CX) + (((Paint->width + DEFAULT_SPACE) * 
   P->tar->nFiles) - DEFAULT_SPACE), Paint->size + EXTRA);
-  Rect(Plot, (2 * DEFAULT_CX) + (((Paint->width + DEFAULT_SPACE) *
+  RectOval(Plot, (2 * DEFAULT_CX) + (((Paint->width + DEFAULT_SPACE) *
   P->tar->nFiles) - DEFAULT_SPACE), Paint->size + EXTRA, 0, 0, backColor);
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
