@@ -340,13 +340,24 @@ void LoadReference(Param *P, uint32_t ref){
 // - - - - - - - - - - - - - C H E S T E R   M A I N - - - - - - - - - - - - -
 int32_t main(int argc, char *argv[]){
   char     **p = *&argv;
-  uint32_t n, k, min, max, kmer;
+  uint32_t n, k;
   float    *w;
   Param    *P;
   clock_t  start = clock();
 
-  if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || argc < 2 ||
-    ArgsState(DEFAULT_HELP, p, argc, "?") == 1){
+  if(ArgsState(0, p, argc, "-a") || ArgsState(0, p, argc, "-V")){
+    fprintf(stderr, "CHESTER %u.%u\n"
+    "Copyright (C) 2015 University of Aveiro.\nThis is Free software.\nYou "
+    "may redistribute copies of it under the terms of the GNU \nGeneral "
+    "Public License v2 <http://www.gnu.org/licenses/gpl.html>. \nThere is NO "
+    "WARRANTY, to the extent permitted by law.\nCode by Diogo Pratas,"
+    " Armando J. Pinho and Paulo J. S. G Ferreira\n{pratas,ap,pjf}@ua.pt.\n",
+    RELEASE, VERSION);
+    return EXIT_SUCCESS;
+    }
+
+  if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || ArgsState(DEFAULT_HELP, p, 
+  argc, "?") == 1 || argc < 3){
     fprintf(stderr, "Usage: CHESTER <OPTIONS>... [FILE]:<...> [FILE]:<...>\n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  -v                       verbose mode,             \n");
@@ -367,23 +378,10 @@ int32_t main(int argc, char *argv[]){
     return EXIT_SUCCESS;
     }
 
-  if(ArgsState(0, p, argc, "-a") || ArgsState(0, p, argc, "-V")){
-    fprintf(stderr, "CHESTER %u.%u\n"
-    "Copyright (C) 2015 University of Aveiro.\nThis is Free software.\nYou "
-    "may redistribute copies of it under the terms of the GNU \nGeneral "
-    "Public License v2 <http://www.gnu.org/licenses/gpl.html>. \nThere is NO "
-    "WARRANTY, to the extent permitted by law.\nCode by Diogo Pratas,"
-    " Armando J. Pinho and Paulo J. S. G Ferreira\n{pratas,ap,pjf}@ua.pt.\n", 
-    RELEASE, VERSION);
-    return EXIT_SUCCESS;
-    }
-
-  kmer = ArgsNum (DEF_MIN_CTX, p, argc, "-k", MIN_CTX, MAX_CTX);
-
   P = (Param *) Calloc(1 , sizeof(Param));
-  P->ref       = ReadFNames(P, argv[argc-2]);  // REF
-  P->tar       = ReadFNames(P, argv[argc-1]);  // TAR
-  P->context   = kmer;
+  P->ref       = ReadFNames (P, argv[argc-2]);  // REF
+  P->tar       = ReadFNames (P, argv[argc-1]);  // TAR
+  P->context   = ArgsNum    (DEF_MIN_CTX,     p, argc, "-k", MIN_CTX, MAX_CTX);
   P->threshold = ArgsDouble (DEFAULT_THRESHOLD, p, argc, "-t");
   P->subsamp   = ArgsNum    (DEFAULT_SAMPLE_RATIO, p, argc, "-u", 1, 999999);
   P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
