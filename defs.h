@@ -58,7 +58,7 @@ Param;
 #define DEFAULT_SUBSAMPLE      50000
 #define DEFAULT_SAMPLE_RATIO   10000
 #define MIN_CTX                1
-#define MAX_CTX                30
+#define MAX_CTX                31
 #define BGUARD                 32
 #define ALPHABET_SIZE          4
 #define DEFAULT_BHASHES        7

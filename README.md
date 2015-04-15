@@ -1,7 +1,8 @@
 # CHESTER #
 <p align="center"><img src="/logo.png" 
-alt="CHESTER" width="350" height="260" border="0" /></p>
-Compress and analyze genomic sequences. As a compression tool, GeCo is able to provide additional compression gains over several top specific tools, while as an analysis tool, GeCo is able to determine absolute measures, namely for many distance computations, and local measures, such as the information content contained in each element, providing a way to quantify and locate specific genomic events. GeCo can afford individual compression and referential compression.
+alt="CHESTER" width="300" height="200" border="0" /></p>
+CHESTER is an alignment-free tool to compute and visualise uniqueness maps.
+The target sequences should be aligned (FASTA), while the references can be non-aligned, such as those outputed directly from NGS plataforms (FASTQ). CHESTER has probabilistic way to detect the presence of large k-mer sizes (up to 31), namely using bloom filters.
 
 ## INSTALLATION ##
 
