@@ -109,7 +109,7 @@ void JoinStreams(Param *P){
     FILE **Bins   = (FILE **)    Calloc(P->ref->nFiles, sizeof(FILE *));
     char **name   = (char **)    Calloc(P->ref->nFiles, sizeof(char *));
     char **name2  = (char **)    Calloc(P->ref->nFiles, sizeof(char *));
-    uint8_t **buf = (uint8_t **) Calloc(P->ref->nFiles, sizeof(uint8_t));
+    uint8_t **buf = (uint8_t **) Calloc(P->ref->nFiles, sizeof(uint8_t *));
     uint8_t *res  = (uint8_t *)  Calloc(WINDOW_SIZE,    sizeof(uint8_t));
     for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
       name[ref]  = (char *) Calloc(4096, sizeof(char));
@@ -258,7 +258,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
 // - - - - - - - - - - - - - - - - R E F E R E N C E - - - - - - - - - - - - -
 void LoadReference(Param *P, uint32_t ref){
   FILE     *Reader = Fopen(P->ref->names[ref], "r");
-  uint32_t k, idxPos, header = 0, type, line, dna, begin;
+  uint32_t k, idxPos, header = 0, type = 0, line = 0, dna = 0, begin = 0;
   int32_t  idx = 0;
   uint8_t  *rBuf, *sBuf, sym;
   uint64_t i = 0;
