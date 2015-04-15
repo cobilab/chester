@@ -2,7 +2,7 @@
 <p align="center"><img src="/logo.png" 
 alt="CHESTER" width="300" height="300" border="0" /></p>
 CHESTER is an alignment-free tool to compute and visualise uniqueness maps.
-The target sequences should be aligned (FASTA), while the references can be non-aligned, such as those outputed directly from NGS plataforms (FASTQ). CHESTER has probabilistic way to detect the presence of large k-mer sizes (up to 31), namely using bloom filters.
+The references can be non-aligned, such as those outputed directly from NGS plataforms (FASTQ), while the target sequences should be aligned (FASTA). CHESTER has a probabilistic way to detect the relative absense of large k-mer sizes (up to 31), namely using bloom filters.
 
 ## INSTALLATION ##
 
