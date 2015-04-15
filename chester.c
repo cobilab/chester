@@ -359,6 +359,7 @@ int32_t main(int argc, char *argv[]){
   if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || ArgsState(DEFAULT_HELP, p, 
   argc, "?") == 1 || argc < 3){
     fprintf(stderr, "Usage: CHESTER <OPTIONS>... [FILE]:<...> [FILE]:<...>\n");
+    fprintf(stderr, "CHESTER is a fast tool to compute uniqueness maps.   \n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
@@ -370,11 +371,12 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -i                       use inversions,           \n");
     fprintf(stderr, "  -k <value>               k-mer size,               \n");
     fprintf(stderr, "                                                     \n");
-    fprintf(stderr, "  [rFile1]:<rFile2>:<...>  reference file(s) (db),   \n");
+    fprintf(stderr, "  [rFile1]:<rFile2>:<...>  reference file(s),        \n");
     fprintf(stderr, "  [tFile1]:<tFile2>:<...>  target file(s).           \n");
     fprintf(stderr, "                                                     \n");
-    fprintf(stderr, "CHESTER is a fast tool to compute uniqueness maps.   \n");
-    fprintf(stderr, "The input files should be FASTA (.fa) or SEQ [ACGTN].\n");
+    fprintf(stderr, "The reference files may be FASTA, FASTQ or DNA SEQ,  \n");
+    fprintf(stderr, "while the target files may be FASTA OR DNA SEQ.      \n");
+    fprintf(stderr, "Report bugs to <{pratas,ap,pjf}@ua.pt>.              \n");
     return EXIT_SUCCESS;
     }
 
