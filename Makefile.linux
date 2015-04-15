@@ -1,0 +1,36 @@
+#============================================================================#
+#                 CHESTER 2015 IEETA/DETI, UNIVERSITY OF AVEIRO              #
+#============================================================================#
+BIN    = .
+CC     = gcc
+CPLP   =
+#-----------------------------------------------------------------------------
+CFLAGS = -O3 -Wall $(CPLP)
+#-----------------------------------------------------------------------------
+LIBS   = -lm
+DEPS   = defs.h
+PROGS  = $(BIN)/CHESTER
+OBJS   = mem.o model.o common.o filters.o segment.o paint.o 
+#-----------------------------------------------------------------------------
+all:
+	$(MAKE) progs
+progs: $(PROGS)
+$(BIN)/CHESTER: chester.c $(DEPS) $(OBJS)
+	$(CC) $(CFLAGS) -o $(BIN)/CHESTER chester.c $(OBJS) $(LIBS)
+mem.o: mem.c mem.h $(DEPS)
+	$(CC) -c $(CFLAGS) mem.c
+model.o: model.c model.h $(DEPS)
+	$(CC) -c $(CFLAGS) model.c
+common.o: common.c common.h $(DEPS)
+	$(CC) -c $(CFLAGS) common.c
+filters.o: filters.c filters.h $(DEPS)
+	$(CC) -c $(CFLAGS) filters.c
+segment.o: segment.c segment.h $(DEPS)
+	$(CC) -c $(CFLAGS) segment.c
+paint.o: paint.c paint.h
+	$(CC) -c $(CFLAGS) paint.c
+clean:
+	/bin/rm -f *.o
+cleanall:
+	/bin/rm -f *.o $(PROGS)
+#-----------------------------------------------------------------------------
