@@ -105,8 +105,8 @@ CHESTER is a fast tool to compute uniqueness maps.
   [rFile1]:&#60rFile2&#62:&#60...&#62  reference file(s),   
   [tFile1]:&#60tFile2&#62:&#60...&#62  target file(s).           
 
-The reference files may be FASTA, FASTQ or DNA SEQ,
-while the target files may be FASTA OR DNA SEQ.
+The reference files may be FASTA, FASTQ or DNA-SEQ,
+while the target files may be FASTA or DNA-SEQ.
 Report bugs to &#60{pratas,ap,pjf}@ua.pt&#62. 
 </pre>
 
