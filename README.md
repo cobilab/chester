@@ -67,8 +67,6 @@ In windows use cygwin (https://www.cygwin.com/) and make sure that it is include
 
 ## EXECUTION
 
-### Run CHESTER
-
 Run CHESTER:
 
 <pre>
