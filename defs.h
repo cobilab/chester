@@ -16,6 +16,7 @@ SFILES;
 
 typedef struct{
   uint8_t  verbose;
+  uint8_t  disk;
   char     *output;
   SFILES   *ref;
   SFILES   *tar;
@@ -46,6 +47,7 @@ Param;
 #define WINDOW_SIZE            262144      
 #define PROGRESS_MIN           1000000
 #define DEFAULT_HELP           0
+#define DEFAULT_DISK           1
 #define DEFAULT_VERBOSE        0
 #define DEFAULT_IR             0
 #define DEFAULT_CTX            12

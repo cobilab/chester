@@ -98,6 +98,7 @@ CHESTER is a fast tool to compute uniqueness maps.
   -n &#60value&#62               bloom hashes number,      
   -s &#60value&#62               bloom size,               
   -i                       use inversions,           
+  -p                       show positions/words,
   -k &#60value&#62               k-mer size,               
                                                      
   [rFile1]:&#60rFile2&#62:&#60...&#62  reference file(s),   

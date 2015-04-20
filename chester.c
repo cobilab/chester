@@ -163,20 +163,23 @@ void JoinStreams(Param *P){
 // - - - - - - - - - - - - - - - - - T A R G E T - - - - - - - - - - - - - - -
 void Target(Param *P, uint8_t ref, uint32_t tar){
   FILE     *Reader = Fopen(P->tar->names[tar], "r");
-  char     *name1  = (char *) Calloc(4096, sizeof(char));
-  char     *namex  = (char *) Calloc(4096, sizeof(char));
+  char     *name1 = (char *) Calloc(4096, sizeof(char));
+  char     *namex = (char *) Calloc(4096, sizeof(char));
   sprintf(name1, "-r%u-k%u.ch",  ref+1, P->context);
   sprintf(namex, "-r%u-k%u.xch", ref+1, P->context);
-  char     *name2  = concatenate(P->tar->names[tar], name1);
+  char     *name2 = concatenate(P->tar->names[tar], name1);
   char     *namex2 = concatenate(P->tar->names[tar], namex);
-  FILE     *Pos    = Fopen(name2, "w"), *Bin = Fopen(namex2, "w");
+  FILE     *Pos = NULL, *Bin = Fopen(namex2, "w");
   uint64_t nSymbols = NDNASyminFile(Reader), i = 0, raw = 0, unknown = 0;
   uint32_t n, k, idxPos, hIndex, header = 0;
   int32_t  idx = 0;
   uint8_t  *wBuf, *rBuf, *sBuf, sym, found = 0;
-
+ 
   if(P->verbose)
     fprintf(stderr, "Searching target sequence %d ...\n", tar + 1);
+            
+  if(P->disk == 0)
+    Pos = Fopen(name2, "w");
 
   wBuf  = (uint8_t *) Calloc(BUFFER_SIZE,          sizeof(uint8_t));
   rBuf  = (uint8_t *) Calloc(BUFFER_SIZE,          sizeof(uint8_t));
@@ -203,9 +206,11 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
       if(i > P->M->ctx){  // SKIP INITIAL CONTEXT, ALL "AAA..."
         if(P->M->mode == 0){ // TABLE MODE
           if(!P->M->array.states[P->M->idx]){ // IF NO MATCH:
-            fprintf(Pos, "%"PRIu64"\t", i-P->M->ctx);
+            if(P->disk == 0){
+              fprintf(Pos, "%"PRIu64"\t", i-P->M->ctx);
+              RWord(Pos, sBuf, idx, P->M->ctx);
+              }
             fprintf(Bin, "0");
-            RWord(Pos, sBuf, idx, P->M->ctx);
             ++raw;
             }
           else{
@@ -214,9 +219,11 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
           }
         else{ // BLOOM TABLE
           if(SearchBloom(P->M->bloom, P->M->idx) == 0){ // IF NOT MATCH:
-            fprintf(Pos, "%"PRIu64"\t", i-P->M->ctx);
+            if(P->disk == 0){
+              fprintf(Pos, "%"PRIu64"\t", i-P->M->ctx);
+              RWord(Pos, sBuf, idx, P->M->ctx);
+              }
             fprintf(Bin, "0");
-            RWord(Pos, sBuf, idx, P->M->ctx);
             ++raw;
             }
           else{
@@ -232,7 +239,8 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
       }
     }
 
-  fclose(Pos);
+  if(P->disk == 0)
+    fclose(Pos);
   fclose(Bin);
   fclose(Reader);
   ResetIdx(P->M);
@@ -369,6 +377,7 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -n <value>               bloom hashes number,      \n");
     fprintf(stderr, "  -s <value>               bloom size,               \n");
     fprintf(stderr, "  -i                       use inversions,           \n");
+    fprintf(stderr, "  -p                       show positions/words,     \n");
     fprintf(stderr, "  -k <value>               k-mer size,               \n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  [rFile1]:<rFile2>:<...>  reference file(s),        \n");
@@ -391,6 +400,7 @@ int32_t main(int argc, char *argv[]){
   P->bHashes   = ArgsNum    (DEFAULT_BHASHES, p, argc, "-n", 1,   999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
   P->inverse   = ArgsState  (DEFAULT_IR,      p, argc, "-i");
+  P->disk      = ArgsState  (DEFAULT_DISK,    p, argc, "-p");
 
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n", 
