@@ -392,7 +392,7 @@ void PrintArgs(Param *P){
   else 
     fprintf(stderr, "Window size ........................ %"PRIi64"\n", 
     P->window);
-  fprintf(stdout, "Reference files (%u):\n", P[0].ref->nFiles);
+  fprintf(stderr, "Reference files (%u):\n", P[0].ref->nFiles);
   for(n = 0 ; n < P[0].ref->nFiles ; ++n)
     fprintf(stderr, "  [+] Filename %-2u .................. %s\n", n+1,
     P[0].ref->names[n]);
