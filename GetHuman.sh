@@ -9,10 +9,10 @@ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/Assembled_chromosomes/seq/h
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p2_chrY.fa.gz
 for((x=1; x<23; ++x)); 
   do 
-  zcat hs_ref_GRCh38.p2_chr$x.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HSC$x; 
+  zcat hs_ref_GRCh38.p2_chr$x.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HS$x; 
   done
-zcat hs_ref_GRCh38.p2_chrX.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HSC23 ;
-zcat hs_ref_GRCh38.p2_chrY.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HSC24 ;
+zcat hs_ref_GRCh38.p2_chrX.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HS23 ;
+zcat hs_ref_GRCh38.p2_chrY.fa.gz | grep -v ">" | tr -d -c "ACGTN" > HS24 ;
 rm -f *.fa.gz ;
 rm -f GRC*
 # =============================================================================
