@@ -17,7 +17,7 @@ Download, install and resolve conflicts.
 sudo apt-get install cmake
 wget https://github.com/pratas/chester/archive/master.zip
 unzip master.zip
-cd chester-master
+cd chester-master/src/
 cmake .
 make
 </pre>
@@ -27,7 +27,7 @@ Alternatively, you can install (without cmake and only for linux) using
 <pre>
 wget https://github.com/pratas/chester/archive/master.zip
 unzip master.zip
-cd chester-master
+cd chester-master/src/
 mv Makefile.linux Makefile
 make
 </pre>
@@ -44,7 +44,7 @@ brew install wget
 brew install gcc48
 wget https://github.com/pratas/chester/archive/master.zip
 unzip master.zip
-cd chester-master
+cd chester-master/src/
 cmake .
 make
 </pre>
