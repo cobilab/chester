@@ -63,5 +63,10 @@ downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pongo_abelii/Assemble
 zcat $INITALS-X$CHR | grep -v ">" | tr -d -c "ACGTN" > $INITALS$CHR;
 echo "$INITALS UNPLACED filtered";
 
+CHR=26;
+downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pongo_abelii/Assembled_chromosomes/seq/pab_ref_P_pygmaeus_2.0.2_chrMT.fa.gz" "$CHR" "$INITALS";
+zcat $INITALS-X$CHR | grep -v ">" | tr -d -c "ACGTN" > $INITALS$CHR;
+echo "$INITALS MITOCONDRIA filtered";
+
 rm -f *PA-* $INITALS-X2A $INITALS-X2B;
 echo "Done!"
