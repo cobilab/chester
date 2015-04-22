@@ -76,7 +76,11 @@ void FilterSequence(char *fName, Param *P, float *w){
 
   while((k = fread(buffer, sizeof(char), BUFFER_SIZE, Reader))){
     for(n = 0 ; n < k ; ++n)
-      entries[nEntries++] = buffer[n] == '1' ? 1.0 : 0.0;
+      switch(buffer[n]){
+        case '0': entries[nEntries++] = 0.0; break;
+        case '1': entries[nEntries++] = 1.0; break;
+        default:  entries[nEntries++] = 1.0; break; // UNKNOWN SYMBOLS
+        }
     entries = (float *) Realloc(entries, (nEntries+k) * sizeof(float), 
     sizeof(float) * k);
     }

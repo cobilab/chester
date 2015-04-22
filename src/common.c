@@ -13,7 +13,7 @@
 uint64_t NBytesInFile(FILE *F){
   uint64_t s = 0;
   fseek(F, 0, SEEK_END);
-  s = ftell(F);
+  s = ftello(F);
   rewind(F);
   return s;
   }

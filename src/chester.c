@@ -129,9 +129,11 @@ void JoinStreams(Param *P){
       for(n = 0 ; n < k ; ++n){
         res[n] = '0';
         for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
-          if(buf[ref][n] == '1'){
-            res[n] = '1';
-            break;
+          if(buf[ref][n] == '7'){
+            res[n] = '7'; break;
+            }
+          else if(buf[ref][n] == '1'){
+            res[n] = '1'; break;
             }
           }
         }
@@ -170,7 +172,8 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
   char     *name2 = concatenate(P->tar->names[tar], name1);
   char     *namex2 = concatenate(P->tar->names[tar], namex);
   FILE     *Pos = NULL, *Bin = Fopen(namex2, "w");
-  uint64_t nSymbols = NDNASyminFile(Reader), i = 0, raw = 0, unknown = 0;
+  uint64_t nSymbols = NBytesInFile(Reader), i = 0, raw = 0, unknown = 0, 
+           base = 0;
   uint32_t n, k, idxPos, hIndex, header = 0;
   int32_t  idx = 0;
   uint8_t  *wBuf, *rBuf, *sBuf, sym, found = 0;
@@ -197,8 +200,13 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
         case '\n': header = 0; continue;  
         default:   if(header==1) continue;
         }
+      // AFTER HEADER IS A BASE OR UNKNOWN BASE
+      ++base;
       if((sym = S2N(rBuf[idxPos])) == 4){
         ++unknown;
+        if(P->disk == 0)
+          fprintf(Pos, "%"PRIu64"\tN\n", base-P->M->ctx);
+        fprintf(Bin, "7"); // THIS IS A FALSE POSITIVE: "N"
         continue;
         }
       sBuf[idx] = sym;
@@ -207,7 +215,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
         if(P->M->mode == 0){ // TABLE MODE
           if(!P->M->array.states[P->M->idx]){ // IF NO MATCH:
             if(P->disk == 0){
-              fprintf(Pos, "%"PRIu64"\t", i-P->M->ctx);
+              fprintf(Pos, "%"PRIu64"\t", base-P->M->ctx);
               RWord(Pos, sBuf, idx, P->M->ctx);
               }
             fprintf(Bin, "0");
@@ -220,7 +228,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
         else{ // BLOOM TABLE
           if(SearchBloom(P->M->bloom, P->M->idx) == 0){ // IF NOT MATCH:
             if(P->disk == 0){
-              fprintf(Pos, "%"PRIu64"\t", i-P->M->ctx);
+              fprintf(Pos, "%"PRIu64"\t", base-P->M->ctx);
               RWord(Pos, sBuf, idx, P->M->ctx);
               }
             fprintf(Bin, "0");
