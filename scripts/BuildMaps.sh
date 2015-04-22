@@ -1,0 +1,2 @@
+#!/bin/bash
+. RunHumanChimp.sh
