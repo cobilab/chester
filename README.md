@@ -109,6 +109,23 @@ while the target files may be FASTA or DNA-SEQ.
 Report bugs to &#60{pratas,ap,pjf}@ua.pt&#62. 
 </pre>
 
+## EXAMPLE ##
+
+The following illustrate a Human-Chimp (large) example. For the purpose go to the base and run:
+<pre>
+cp scripts/RunHumanChimp.sh .
+cp scripts/GetHumanParse.sh .
+cp scripts/GetHumanParse.sh .
+. GetHumanParse.sh
+. GetChimpParse.sh
+. RunHumanChimp.sh &
+</pre>
+
+This will output the plot.svg with the following image:
+
+<p align="center"><img src="imgs/example.png" 
+alt="CHESTER" width="600" height="300" border="0" /></p>
+
 ## CITATION ##
 
 On using this software/method please cite:

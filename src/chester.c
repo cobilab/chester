@@ -120,7 +120,7 @@ void JoinStreams(Param *P){
       }
     res = (uint8_t *) Calloc(WINDOW_SIZE+1, sizeof(uint8_t));
 
-    P->chrSize[tar] = NBytesInFile(Bins[0]); 
+    P->chrSize[tar] = P->size[0][tar]; 
 
     step = WINDOW_SIZE;
     do{

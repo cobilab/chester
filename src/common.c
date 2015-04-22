@@ -20,23 +20,42 @@ uint64_t NBytesInFile(FILE *F){
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-uint64_t NDNASyminFile(FILE *file)
-  {
-  uint8_t  buffer[BUFFER_SIZE];
-  uint32_t k, idx;
+uint64_t NDNASyminFile(FILE *file){
+  uint8_t  buffer[BUFFER_SIZE], sym;
+  uint32_t k, idx, header = 0, type = 0, line = 0, dna = 0, begin = 0;
   uint64_t nSymbols = 0;
 
-  while((k = fread(buffer, 1, BUFFER_SIZE, file)))
-    for(idx = 0 ; idx < k ; ++idx)
-      switch(buffer[idx])
-        {
-        case 'A': ++nSymbols; break;
-        case 'T': ++nSymbols; break;
-        case 'C': ++nSymbols; break;
-        case 'G': ++nSymbols; break;
-        default : ++nSymbols; break;
-        }
+  sym = fgetc(file);
+  switch(sym){
+    case '>': type = 1; break;
+    case '@': type = 2; break;
+    default : type = 0;
+    }
+  rewind(file);
 
+  while((k = fread(buffer, 1, BUFFER_SIZE, file)))
+    for(idx = 0 ; idx < k ; ++idx){
+      sym = buffer[idx];
+      switch(type){
+        case 1:
+        switch(sym){
+          case '>':  header = 1; begin = 0; continue;
+          case '\n': header = 0;            continue;
+          default:   if(header==1)          continue;
+          }
+        break;
+        case 2:
+          switch(line){
+            case 0: if(sym == '\n'){ line = 1; dna = 1; begin = 0; } break;
+            case 1: if(sym == '\n'){ line = 2; dna = 0; }            break;
+            case 2: if(sym == '\n'){ line = 3; dna = 0; }            break;
+            case 3: if(sym == '\n'){ line = 0; dna = 0; }            break;
+            }
+        if(dna == 0 || sym == '\n') continue;
+        break;
+        }
+      ++nSymbols;
+      }
   rewind(file);
   return nSymbols;
   }
