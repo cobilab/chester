@@ -70,5 +70,10 @@ downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assem
 zcat $INITALS-X$CHR | grep -v ">" | tr -d -c "ACGTN" > $INITALS$CHR;
 echo "$INITALS UNPLACED filtered";
 
+CHR=27;
+downloadEach "$WGETOP" "ftp://ftp.ncbi.nlm.nih.gov/genomes/Pan_troglodytes/Assembled_chromosomes/seq/ptr_ref_Pan_troglodytes-2.1.4_chrMT.fa.gz" "$CHR" "$INITALS";
+zcat $INITALS-X$CHR | grep -v ">" | tr -d -c "ACGTN" > $INITALS$CHR;
+echo "$INITALS MITOCONDRIA filtered";
+
 rm -f *PT-* $INITALS-X2A $INITALS-X2B;
 echo "Done!"
