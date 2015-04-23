@@ -115,7 +115,7 @@ The following illustrate a Human-Chimp (large) example. For the purpose go to th
 <pre>
 cp scripts/RunHumanChimp.sh .
 cp scripts/GetHumanParse.sh .
-cp scripts/GetHumanParse.sh .
+cp scripts/GetChimpParse.sh .
 . GetHumanParse.sh
 . GetChimpParse.sh
 . RunHumanChimp.sh &
