@@ -123,11 +123,13 @@ cp scripts/GetChimpParse.sh .
 . RunHumanChimp.sh &
 </pre>
 
-It will download all the sequences (need at least 100 GB of hard-disk memory) and run CHESTER.
+It will download all the sequences (need at least 100 GB of hard-disk memory when using -p option) and run CHESTER.
 This will output the plot.svg, with the human novel regions relatively to the chimpanzee, chromosome by chromosome. The next image illustrate such result:
 
 <p align="center"><img src="imgs/example.png" 
 alt="CHESTER" width="600" height="300" border="0" /></p>
+
+The example image show most of the centromers contained in the chromosomes and a few genes.
 
 ## CITATION ##
 
