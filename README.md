@@ -109,6 +109,8 @@ while the target files may be FASTA or DNA-SEQ.
 Report bugs to &#60{pratas,ap,pjf}@ua.pt&#62. 
 </pre>
 
+Most of the values are set automatically. Nevertheless, higher threshold values are associated to more unique regions detected.
+
 ## EXAMPLE ##
 
 The following illustrate a Human-Chimp (large) example. For the purpose go to the base and run:
