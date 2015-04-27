@@ -129,7 +129,7 @@ This will output the plot.svg, with the human novel regions relatively to the ch
 <p align="center"><img src="imgs/example.png" 
 alt="CHESTER" width="600" height="300" border="0" /></p>
 
-The example image show most of the centromers contained in the chromosomes and a few genes.
+The example image show most of the centromers contained in the chromosomes and several genes.
 
 ## CITATION ##
 
