@@ -1,0 +1,238 @@
+======================================================================
+C1:2638976:2763456
+TTC34 tetratricopeptide repeat domain 34
+LOC105378602 uncharacterized LOC105378602
+
+======================================================================
+C2:89799872:89849664
+STS probe G17851 for hypothetical LOC100510362 (LOC100510362)
+LOC105374862 uncharacterized LOC105374862
+    Alignment:     NG_000833.2 x NC_000002.12
+    Anchor:     NC_000002.12 (89,841,366..90,248,799)
+    Query:     NG_000833.2 (1..407,490)
+    Homo sapiens immunoglobulin kappa locus, distal duplicated V-cluster (IGK-distal) on chromosome 2
+    Strand:     reverse
+    Aligned bases:     407,545
+    Segments:     1
+    Coverage:     99.9+%
+    Identity:     99.9%
+    Mismatches:     292
+    Gaps:     42
+
+C2:241864640:241939328
+RTP5 receptor (chemosensory) transporter protein 5 (putative)
+LOC105373978 uncharacterized LOC105373978
+LOC285095 uncharacterized LOC285095
+LINC01237 long intergenic non-protein coding RNA 1237
+
+======================================================================
+C3:
+
+======================================================================
+C4:
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815594&v=10157568:10306944
+10157568:10306944
+LOC100130161 developmental pluripotency associated 4 pseudogene
+LOC100129344 developmental pluripotency associated 4 pseudogene
+RAF1P1 RAF1 pseudogene 1
+LOC100422637 MX dynamin-like GTPase 1 pseudogene
+LOC100422639 MX dynamin-like GTPase 1 pseudogene
+LOC100422638 MX dynamin-like GTPase 1 pseudogene
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815594&v=69235776:69360256
+69235776:69360256
+LOC100533845 UDP glucuronosyltransferase 2 family, polypeptide A3 pseudogene
+UGT2B28 UDP glucuronosyltransferase 2 family, polypeptide B28 (This gene encodes a member of the uridine diphosphoglucuronosyltransferase protein family. The encoded enzyme catalyzes the transfer of glucuronic acid from uridine diphosphoglucuronic acid to a diverse array of substrates including steroid hormones and lipid-soluble drugs. This process, known as glucuronidation, is an intermediate step in the metabolism of steroids. Two transcript variants encoding different isoforms have been found for this gene. While both isoforms are targeted to the endoplasmic reticulum, only the longer isoform appears to be active)
+LOC100422022 UDP glucuronosyltransferase 2 family, polypeptide A3 pseudogene
+LOC642496 UDP glucuronosyltransferase 2 family, polypeptide A3 pseudogene
+
+======================================================================
+C5:
+
+======================================================================
+C6:
+31443648:31468544
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815592&v=31443648:31468544
+HLA-X major histocompatibility complex, class I, X (pseudogene)
+HCP5 HLA complex P5 (non-protein coding)
+
+======================================================================
+C7:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815591&v=174272:348544
+174272:348544
+LOC105375117 uncharacterized LOC105375117
+FAM20C family with sequence similarity 20, member C (This gene encodes a member of the family of secreted protein kinases. The encoded protein binds calcium and phosphorylates proteins involved in bone mineralization. Mutations in this gene are associated with the autosomal recessive disorder Raine syndrome.)
+WI2-2373I1.2 forkhead box L1-like
+LOC105375118 uncharacterized LOC105375118
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815591&v=1095424:1195008
+1095424:1195008
+LOC102723758 uncharacterized LOC102723758
+ZFAND2A zinc finger, AN1-type domain 2A (está no rato)
+LOC101927021 uncharacterized LOC101927021
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815591&v=1244800:1643136
+1244800:1643136
+MICALL2 MICAL-like 2
+INTS1 integrator complex subunit 1 (INTS1 is a subunit of the Integrator complex, which associates with the C-terminal domain of RNA polymerase II large subunit (POLR2A; MIM 180660) and mediates 3-prime end processing of small nuclear RNAs U1 (RNU1; MIM 180680) and U2 (RNU2; MIM 180690) (Baillat et al., 2005 [PubMed 16239144]).[supplied by OMIM, Mar 2008])
+LOC105375121 uncharacterized LOC105375121
+MAFK v-maf avian musculoaponeurotic fibrosarcoma oncogene homolog K (The developmentally regulated expression of the globin genes depends on upstream regulatory elements termed locus control regions (LCRs). LCRs are associated with powerful enhancer activity that is mediated by the transcription factor NFE2 (nuclear factor erythroid-2). NFE2 recognition sites are also present in the gene promoters of 2 heme biosynthetic enzymes, porphobilinogen deaminase (PBGD; MIM 609806) and ferrochelatase (FECH; MIM 612386). NFE2 DNA-binding activity consists of a heterodimer containing an 18-kD Maf protein (MafF, MafG (MIM 602020), or MafK) and p45 (MIM 601490). Both subunits are members of the activator protein-1 superfamily of basic leucine zipper (bZIP) proteins (see MIM 165160). Maf homodimers suppress transcription at NFE2 sites.[supplied by OMIM, Nov 2008])
+LOC100128653 uncharacterized LOC100128653
+TMEM184A transmembrane protein 184A
+PSMG3-AS1 PSMG3 antisense RNA 1
+PSMG3 proteasome (prosome, macropain) assembly chaperone 3
+LOC105375122 uncharacterized LOC105375122
+LOC105375123 uncharacterized LOC105375123
+TFAMP1 transcription factor A, mitochondrial pseudogene 1
+LOC105375303 uncharacterized LOC105375303
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815591&v=157467200:158189184
+157467200:158189184
+PTPRN2 protein tyrosine phosphatase, receptor type, N polypeptide [MORE THAN HALF GENE PRESENT](This gene encodes a protein with sequence similarity to receptor-like protein tyrosine phosphatases. However, tyrosine phosphatase activity has not been experimentally validated for this protein. Studies of the rat ortholog suggest that the encoded protein may instead function as a phosphatidylinositol phosphatase with the ability to dephosphorylate phosphatidylinositol 3-phosphate and phosphatidylinositol 4,5-diphosphate, and this function may be involved in the regulation of insulin secretion. This protein has been identified as an autoantigen in insulin-dependent diabetes mellitus. Alternative splicing results in multiple transcript variants)
+LOC100506557 uncharacterized LOC100506557
+MIR153-2 microRNA 153-2 (microRNAs (miRNAs) are short (20-24 nt) non-coding RNAs that are involved in post-transcriptional regulation of gene expression in multicellular organisms by affecting both the stability and translation of mRNAs. miRNAs are transcribed by RNA polymerase II as part of capped and polyadenylated primary transcripts (pri-miRNAs) that can be either protein-coding or non-coding. The primary transcript is cleaved by the Drosha ribonuclease III enzyme to produce an approximately 70-nt stem-loop precursor miRNA (pre-miRNA), which is further cleaved by the cytoplasmic Dicer ribonuclease to generate the mature miRNA and antisense miRNA star (miRNA*) products. The mature miRNA is incorporated into a RNA-induced silencing complex (RISC), which recognizes target mRNAs through imperfect base pairing with the miRNA and most commonly results in translational inhibition or destabilization of the target mRNA. The RefSeq represents the predicted microRNA stem-loop. [provided by RefSeq, Sep 2009])
+LOC105375615 uncharacterized LOC105375615
+LOC105375614 uncharacterized LOC105375614
+LOC100506585 uncharacterized LOC100506585
+LOC105375613 uncharacterized LOC105375613
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815591&v=158238976:158512832
+158238976:158512832
+PTPRN2 protein tyrosine phosphatase, receptor type, N polypeptide 2 (PART OF) (This gene encodes a protein with sequence similarity to receptor-like protein tyrosine phosphatases. However, tyrosine phosphatase activity has not been experimentally validated for this protein. Studies of the rat ortholog suggest that the encoded protein may instead function as a phosphatidylinositol phosphatase with the ability to dephosphorylate phosphatidylinositol 3-phosphate and phosphatidylinositol 4,5-diphosphate, and this function may be involved in the regulation of insulin secretion. This protein has been identified as an autoantigen in insulin-dependent diabetes mellitus. Alternative splicing results in multiple transcript variants. [provided by RefSeq, Feb 2015])
+LOC105375612 uncharacterized LOC105375612
+
+======================================================================
+C8:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815590&v=1294592:1419072
+...
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815590&v=3460544:4531072
+...
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815590&v=4630656:4904512
+...
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815590&v=5726080:5875456
+...
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815590&v=39435264:39509952
+ADAM3A ADAM metallopeptidase domain 3A (pseudogene)
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815590&v=85766720:85816512
+REXO1L2P REX1, RNA exonuclease 1 homolog (S. cerevisiae)-like 2, pseudogene
+LOC100288562 putative exonuclease GOR
+REXO1L4P REX1, RNA exonuclease 1 homolog (S. cerevisiae)-like 4, pseudogene
+REXO1L5P REX1, RNA exonuclease 1 homolog (S. cerevisiae)-like 5, pseudogene
+ADAM3A ADAM metallopeptidase domain 3A (pseudogene)
+
+======================================================================
+C10:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815588&v=%20547712:572608
+DIP2C DIP2 disco-interacting protein 2 homolog C (Drosophila) [ONLY PART OF IT]
+
+======================================================================
+C11:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815587&v=49841792:49941376
+...
+
+======================================================================
+[VER BEM ESTE!]
+C12:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815586&v=132172864:132322240
+GALNT9 polypeptide N-acetylgalactosaminyltransferase 9 (This gene encodes a member of the UDP-N-acetyl-alpha-D-galactosamine:polypeptide N-acetylgalactosaminyltransferase (GalNAc-T) family of enzymes. GalNAc-Ts initiate mucin-type O-linked glycosylation in the Golgi apparatus by catalyzing the transfer of GalNAc to serine and threonine residues on target proteins. They are characterized by an N-terminal transmembrane domain, a stem region, a lumenal catalytic domain containing a GT1 motif and Gal/GalNAc transferase motif, and a C-terminal ricin/lectin-like domain. GalNAc-Ts have different, but overlapping, substrate specificities and patterns of expression. This gene is expressed specifically in the brain, with highest expression in the cerebellum. Multiple transcript variants encoding different isoforms have been found for this gene. [provided by RefSeq, Jul 2008])
+GALNT9 polypeptide N-acetylgalactosaminyltransferase 9
+
+======================================================================
+C14:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815584&v=18373248:18622208
+BNIP3P6 BCL2/adenovirus E1B 19kDa interacting protein 3 pseudogene 6
+OR11H12 olfactory receptor, family 11, subfamily H, member 12 (Olfactory receptors interact with odorant molecules in the nose, to initiate a neuronal response that triggers the perception of a smell. The olfactory receptor proteins are members of a large family of G-protein-coupled receptors (GPCR) arising from single coding-exon genes. Olfactory receptors share a 7-transmembrane domain structure with many neurotransmitter and hormone receptors and are responsible for the recognition and G protein-mediated transduction of odorant signals. The olfactory receptor gene family is the largest in the genome. The nomenclature assigned to the olfactory receptor genes and proteins for this organism is independent of other organisms. [provided by RefSeq, Jul 2008])
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815584&v=106106752:106181440
+IGH immunoglobulin heavy locus [ONLY A "SMALL" PART] (Immunoglobulins recognize foreign antigens and initiate immune responses such as phagocytosis and the complement system. Each immunoglobulin molecule consists of two identical heavy chains and two identical light chains. This region represents the germline organization of the heavy chain locus. The locus includes V (variable), D (diversity), J (joining), and C (constant) segments. During B cell development, a recombination event at the DNA level joins a single D segment with a J segment; this partially rearranged D-J gene is then joined to a V segment. The rearranged V-D-J is then transcribed with the IGHM constant region; this transcript encodes a mu heavy chain. Later in development B cells generate V-D-J-Cmu-Cdelta pre-messenger RNA, which is alternatively spliced to encode either a mu or a delta heavy chain. Mature B cells in the lymph nodes undergo switch recombination, so that the V-D-J gene is brought in proximity to one of the IGHG, IGHA, or IGHE genes and each cell expresses either the gamma, alpha, or epsilon heavy chain. Recombination of many different V segments with several J segments provides a wide range of antigen recognition. Additional diversity is attained by junctional diversity, resulting from the random additional of nucleotides by terminal deoxynucleotidyltransferase, and by somatic hypermutation, which occurs during B cell maturation in the spleen and lymph nodes. Due to polymorphism, the numbers of functional V, J, and D genes differ among individuals and some V, D, J, and C segments may be pseudogenes. [provided by RefSeq, Oct 2013])
+IGHV1-14 immunoglobulin heavy variable 1-14 (pseudogene)
+... (IGHV...) uma data deles...
+
+======================================================================
+C16:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815582&v=12547584:12647168
+LOC101929304 uncharacterized LOC101929304
+SNX29 sorting nexin 29
+LOC105371085 uncharacterized LOC105371085
+
+======================================================================
+C17:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815581&v=298752:348544
+RPH3AL rabphilin 3A-like (without C2 domains) [PART OF] (The protein encoded by this gene plays a direct regulatory role in calcium-ion-dependent exocytosis in both endocrine and exocrine cells and plays a key role in insulin secretion by pancreatic cells. This gene is likely a tumor suppressor. Alternative splicing results in multiple transcript variants encoding distinct isoforms. [provided by RefSeq, Jun 2010])
+LOC105371425 uncharacterized LOC105371425
+LOC100506388 uncharacterized LOC100506388
+LOC105371426 uncharacterized LOC105371426
+
+======================================================================
+C18:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815580&v=14937600:15012288
+LINC01443 long intergenic non-protein coding RNA 1443
+LOC100887076 chromosome 9 open reading frame 172 pseudogene
+LOC284269 chromosome 9 open reading frame 86 pseudogene 1
+
+======================================================================
+C19:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815579&v=41501632:41601216
+TPM3P5 tropomyosin 3 pseudogene 5
+PLEKHA3P1 pleckstrin homology domain containing, family A member 3 pseudogene 1
+LINC01480 long intergenic non-protein coding RNA 1480
+CEACAM21 carcinoembryonic antigen-related cell adhesion molecule 21
+
+======================================================================
+C20:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815578&v=31144896:31269376
+DEFB115 defensin, beta 115 (in the tip of the region)
+Defensins form a family of antimicrobial and cytotoxic peptides made by neutrophils. Defensins are short, processed peptide molecules that are classified by structure into three groups: alpha-defensins, beta-defensins and theta-defensins. All beta-defensin genes are densely clustered in four to five syntenic chromosomal regions. [provided by RefSeq, Oct 2014]
+
+======================================================================
+C21:
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815577&v=8165888:8215680
+MIR3648-1 microRNA 3648-1
+MIR3687-1 microRNA 3687-1
+MIR6724-1 microRNA 6724-1
+microRNAs (miRNAs) are short (20-24 nt) non-coding RNAs that are involved in post-transcriptional regulation of gene expression in multicellular organisms by affecting both the stability and translation of mRNAs. miRNAs are transcribed by RNA polymerase II as part of capped and polyadenylated primary transcripts (pri-miRNAs) that can be either protein-coding or non-coding. The primary transcript is cleaved by the Drosha ribonuclease III enzyme to produce an approximately 70-nt stem-loop precursor miRNA (pre-miRNA), which is further cleaved by the cytoplasmic Dicer ribonuclease to generate the mature miRNA and antisense miRNA star (miRNA*) products. The mature miRNA is incorporated into a RNA-induced silencing complex (RISC), which recognizes target mRNAs through imperfect base pairing with the miRNA and most commonly results in translational inhibition or destabilization of the target mRNA. The RefSeq represents the predicted microRNA stem-loop. [provided by RefSeq, Sep 2009]
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815577&v=8389952:8414848
+LOC105379509 fibril-forming collagen alpha chain-like
+LOC105379508 uncharacterized LOC105379508
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815577&v=10630592:10779968
+IGHV1OR21-1 immunoglobulin heavy variable 1/OR21-1 (non-functional) (very short for long selected region)
+
+======================================================================
+C22:
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815576&v=15311040:15535104
+LOC100533637 zinc finger protein 83 pseudogene
+BNIP3P2 BCL2/adenovirus E1B 19kDa interacting protein 3 pseudogene 2
+YME1L1P1 YME1L1 pseudogene 1
+LOC105372846 uncharacterized LOC105372846
+OR11H1 olfactory receptor, family 11, subfamily H, member 1 (Olfactory receptors interact with odorant molecules in the nose, to initiate a neuronal response that triggers the perception of a smell. The olfactory receptor proteins are members of a large family of G-protein-coupled receptors (GPCR) arising from single coding-exon genes. Olfactory receptors share a 7-transmembrane domain structure with many neurotransmitter and hormone receptors and are responsible for the recognition and G protein-mediated transduction of odorant signals. The olfactory receptor gene family is the largest in the genome. The nomenclature assigned to the olfactory receptor genes and proteins for this organism is independent of other organisms. [provided by RefSeq, Jul 2008])
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815576&v=22406400:22431296
+IGL immunoglobulin lambda locus ( PEQUENA PARTE) (
+    Immunoglobulins recognize foreign antigens and initiate immune responses such as phagocytosis and the complement system. Each immunoglobulin molecule consists of two identical heavy chains and two identical light chains. There are two classes of light chains, kappa and lambda. This region represents the germline organization of the lambda light chain locus. The locus includes V (variable), J (joining), and C (constant) segments. During B cell development, a recombination event at the DNA level joins a single V segment with a J segment; the C segment is later joined by splicing at the RNA level. Recombination of many different V segments with several J segments provides a wide range of antigen recognition. Additional diversity is attained by junctional diversity, resulting from the random additional of nucleotides by terminal deoxynucleotidyltransferase, and by somatic hypermutation, which occurs during B cell maturation in the spleen and lymph nodes. Several V segments and three C segments are known to be incapable of encoding a protein and are considered pseudogenes. The locus also includes several non-immunoglobulin genes, many of which are pseudogenes or are predicted by automated computational analysis or homology to other species. [provided by RefSeq, Jul 2008])
+ASH2LP1 ash2 (absent, small, or homeotic)-like (Drosophila) pseudogene 1
+IGLVI-38 immunoglobulin lambda variable (I)-38 (pseudogene)
+IGLV5-37 immunoglobulin lambda variable 5-37
+IGLV1-40 immunoglobulin lambda variable 1-40
+
+======================================================================
+CX:
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815575&v=273856:871360
+PLCXD1 phosphatidylinositol-specific phospholipase C, X domain containing 1 (This gene is the most terminal protein-coding gene in the pseudoautosomal (PAR) region on chromosomes X and Y. Alternate splicing results in multiple transcript variants. [provided by RefSeq, Mar 2010])
+GTPBP6 GTP binding protein 6 (putative) (his gene encodes a GTP binding protein and is located in the pseudoautosomal region (PAR) at the end of the short arms of the X and Y chromosomes. [provided by RefSeq, Nov 2011])
+LINC00685 long intergenic non-protein coding RNA 685
+PPP2R3B protein phosphatase 2, regulatory subunit B'', beta (Protein phosphatase 2 (formerly named type 2A) is one of the four major Ser/Thr phosphatases and is implicated in the negative control of cell growth and division. Protein phosphatase 2 holoenzymes are heterotrimeric proteins composed of a structural subunit A, a catalytic subunit C, and a regulatory subunit B. The regulatory subunit is encoded by a diverse set of genes that have been grouped into the B/PR55, B'/PR61, and B''/PR72 families. These different regulatory subunits confer distinct enzymatic specificities and intracellular localizations to the holozenzyme. The product of this gene belongs to the B'' family. The B'' family has been further divided into subfamilies. The product of this gene belongs to the beta subfamily of regulatory subunit B''. [provided by RefSeq, Apr 2010])
+LOC102723840 uncharacterized LOC102723840
+SHOX short stature homeobox (This gene belongs to the paired homeobox family and is located in the pseudoautosomal region 1 (PAR1) of X and Y chromosomes. Defects in this gene are associated with idiopathic growth retardation and in the short stature phenotype of Turner syndrome patients. This gene is highly conserved across species from mammals to fish to flies. Alternatively spliced transcript variants encoding different isoforms have been noted for this gene. [provided by RefSeq, Jul 2008])
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815575&v=921152:1020736
+RPL14P5 ribosomal protein L14 pseudogene 5
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815575&v=1369280:1842304
+a lot... 
