@@ -2,7 +2,7 @@
 <p align="center"><img src="imgs/logo.png" 
 alt="CHESTER" width="300" height="300" border="0" /></p>
 CHESTER is an alignment-free tool to compute and visualise uniqueness (Relative Absent Words) maps.
-The references can be non-aligned, such as those outputed directly from NGS plataforms (FASTQ), while the target sequences should be aligned (FASTA). CHESTER has a probabilistic way to detect the relative absense of large k-mer sizes (up to 31), namely using bloom filters.
+The references can be non-aligned, such as those outputed directly from NGS plataforms (FASTQ), while the target sequences should be aligned (FASTA). CHESTER has a probabilistic way to detect the relative absense of large k-mer sizes (up to 31), namely using bloom filters, although it can also run in a deterministic mode, namely using and array table (below contexts 17) or a hash table (above 16 and up to 28).
 
 ## INSTALLATION ##
 
@@ -95,6 +95,7 @@ CHESTER is a fast tool to compute uniqueness maps.
   -t &#60value&#62               threshold [0.0;1.0],      
   -w &#60value&#62               window size,              
   -u &#60value&#62               sub-sampling,             
+  -x                       use hash instead bloom,
   -n &#60value&#62               bloom hashes number,      
   -s &#60value&#62               bloom size,               
   -i                       use inversions,           
