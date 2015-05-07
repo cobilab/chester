@@ -61,13 +61,13 @@ Param;
 #define DEFAULT_SUBSAMPLE      50000
 #define DEFAULT_SAMPLE_RATIO   10000
 #define MIN_CTX                1
-#define MAX_CTX                31
+#define MAX_CTX                30
 #define BGUARD                 32
 #define ALPHABET_SIZE          4
 #define HASH_TABLE_MODE        2
 #define HASH_TABLE_BEGIN_CTX   17
-#define HASH_SIZE              33554467        // first PRIME NUMBER after 2^25
-#define MAX_HASH_CTX           28
+#define HASH_SIZE              268435459      // first PRIME NUMBER after 2^28
+#define MAX_HASH_CTX           30
 #define MIN_HASH_CTX           1
 #define DEFAULT_BLOOM          1
 #define DEFAULT_BHASHES        7

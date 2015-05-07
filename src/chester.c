@@ -406,7 +406,7 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -s <value>               bloom size,               \n");
     fprintf(stderr, "  -i                       use inversions,           \n");
     fprintf(stderr, "  -p                       show positions/words,     \n");
-    fprintf(stderr, "  -k <value>               k-mer size,               \n");
+    fprintf(stderr, "  -k <value>               k-mer size (up to 30),    \n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  [rFile1]:<rFile2>:<...>  reference file(s),        \n");
     fprintf(stderr, "  [tFile1]:<tFile2>:<...>  target file(s).           \n");
