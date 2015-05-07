@@ -27,6 +27,7 @@ typedef struct{
   int64_t  subsamp;
   int64_t  window;
   int64_t  ratio;
+  uint8_t  bloom;
   uint64_t bSize;
   uint32_t bHashes;
   uint64_t max;
@@ -63,8 +64,15 @@ Param;
 #define MAX_CTX                31
 #define BGUARD                 32
 #define ALPHABET_SIZE          4
+#define HASH_TABLE_MODE        2
+#define HASH_TABLE_BEGIN_CTX   17
+#define HASH_SIZE              33554467        // first PRIME NUMBER after 2^25
+#define MAX_HASH_CTX           28
+#define MIN_HASH_CTX           1
+#define DEFAULT_BLOOM          1
 #define DEFAULT_BHASHES        7
 #define DEFAULT_BSIZE          1<<30
+#define EXTRA_CHAR_CODE        7
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

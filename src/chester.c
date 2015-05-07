@@ -96,7 +96,7 @@ void PaintStreams(Param *P){
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - - J O I N - - - - - - - - - - - - - - - -
 void JoinStreams(Param *P){
-  uint32_t ref, tar, k, n;
+  uint32_t ref, tar, k = 0, n;
   FILE *OUT = NULL;
   uint64_t step = 0;
   char **nameout = (char **) Calloc(P->tar->nFiles, sizeof(char *));
@@ -206,7 +206,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
         ++unknown;
         if(P->disk == 0)
           fprintf(Pos, "%"PRIu64"\tN\n", base-P->M->ctx);
-        fprintf(Bin, "7"); // THIS IS A FALSE POSITIVE: "N"
+        fprintf(Bin, "%u", EXTRA_CHAR_CODE); // THIS IS A FALSE POSITIVE: "N"
         continue;
         }
       sBuf[idx] = sym;
@@ -225,8 +225,28 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
             fprintf(Bin, "1");
             }
           }
-        else{ // BLOOM TABLE
+        else if(P->M->mode == 1){ // BLOOM TABLE
           if(SearchBloom(P->M->bloom, P->M->idx) == 0){ // IF NOT MATCH:
+            if(P->disk == 0){
+              fprintf(Pos, "%"PRIu64"\t", base-P->M->ctx);
+              RWord(Pos, sBuf, idx, P->M->ctx);
+              }
+            fprintf(Bin, "0");
+            ++raw;
+            }
+          else{
+            fprintf(Bin, "1");
+            }
+          }
+        else{
+          found = 0;
+          hIndex = P->M->idx % HASH_SIZE;
+          for(n = 0 ; n < P->M->hash->entrySize[hIndex] ; n++)
+            if(((uint64_t) P->M->hash->keys[hIndex][n]*HASH_SIZE)+hIndex == P->M->idx){
+              found = 1;
+              break;
+              }
+          if(found == 0){
             if(P->disk == 0){
               fprintf(Pos, "%"PRIu64"\t", base-P->M->ctx);
               RWord(Pos, sBuf, idx, P->M->ctx);
@@ -357,7 +377,6 @@ void LoadReference(Param *P, uint32_t ref){
 int32_t main(int argc, char *argv[]){
   char     **p = *&argv;
   uint32_t n, k;
-  float    *w;
   Param    *P;
   clock_t  start = clock();
 
@@ -382,6 +401,7 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -t <value>               threshold [0.0;1.0],      \n");
     fprintf(stderr, "  -w <value>               window size,              \n");
     fprintf(stderr, "  -u <value>               sub-sampling,             \n");
+    fprintf(stderr, "  -x                       use hash instead bloom,   \n");
     fprintf(stderr, "  -n <value>               bloom hashes number,      \n");
     fprintf(stderr, "  -s <value>               bloom size,               \n");
     fprintf(stderr, "  -i                       use inversions,           \n");
@@ -404,6 +424,7 @@ int32_t main(int argc, char *argv[]){
   P->threshold = ArgsDouble (DEFAULT_THRESHOLD, p, argc, "-t");
   P->subsamp   = ArgsNum    (DEFAULT_SAMPLE_RATIO, p, argc, "-u", 1, 999999);
   P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
+  P->bloom     = ArgsState  (DEFAULT_BLOOM,   p, argc, "-x");
   P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 100, 9999999999);
   P->bHashes   = ArgsNum    (DEFAULT_BHASHES, p, argc, "-n", 1,   999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
@@ -419,7 +440,7 @@ int32_t main(int argc, char *argv[]){
 
   P->size = (uint64_t **) Calloc(P->ref->nFiles, sizeof(uint64_t *));
   for(n = 0 ; n < P->ref->nFiles ; ++n){
-    P->M = CreateModel(P->context, P->inverse, P->bHashes, P->bSize); 
+    P->M = CreateModel(P->context, P->inverse, P->bHashes, P->bSize, P->bloom);
     LoadReference(P, n);
     P->size[n] = (uint64_t *) Calloc(P->tar->nFiles, sizeof(uint64_t));
     for(k = 0 ; k < P->tar->nFiles ; ++k){

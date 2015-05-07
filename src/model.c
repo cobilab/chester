@@ -35,7 +35,7 @@ void DeleteHFamily(HFAM *H){
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-uint64_t Hash(HFAM *H, uint64_t i, uint32_t n){
+uint64_t HashFunc(HFAM *H, uint64_t i, uint32_t n){
   return (H->a[n] * i + H->b[n]) % H->p;
   }
 
@@ -68,7 +68,7 @@ BLOOM *CreateBloom(uint32_t k, uint64_t size){
 uint8_t SearchBloom(BLOOM *B, uint64_t i){
   uint32_t n;
   for(n = 0 ; n < B->H->k ; ++n)
-    if(B->array[Hash(B->H, i, n) % B->size] == 0)
+    if(B->array[HashFunc(B->H, i, n) % B->size] == 0)
       return 0;
   return 1;
   }
@@ -78,23 +78,69 @@ uint8_t SearchBloom(BLOOM *B, uint64_t i){
 void UpdateBloom(BLOOM *B, uint64_t i){
   uint32_t n;
   for(n = 0 ; n < B->H->k ; ++n)
-    B->array[Hash(B->H, i, n) % B->size] = 1;
+    B->array[HashFunc(B->H, i, n) % B->size] = 1;
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+static void InitHashTable(Hash *H){
+  H->keys      = (KEYSMAX **) Calloc(HASH_SIZE, sizeof(KEYSMAX *));
+  H->entrySize = (ENTMAX   *) Calloc(HASH_SIZE, sizeof(ENTMAX   ));
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Hash *CreateHash(void){
+  Hash *H = (Hash *) Calloc(1, sizeof(Hash));
+  InitHashTable(H);
+  return H;
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+static void InsertKey(Hash *hash, uint32_t h, uint64_t key){
+  hash->keys[h] = (KEYSMAX *) Realloc(hash->keys[h], (hash->entrySize[h] + 1)
+  * sizeof(KEYSMAX), sizeof(KEYSMAX));
+  hash->keys[h][hash->entrySize[h]] = (uint32_t) (key / HASH_SIZE);
+  hash->entrySize[h]++;
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void UpdateHash(Hash *hModel, uint64_t idx){
+  uint32_t n, h = idx % HASH_SIZE;                                // The hash index
+  for(n = 0 ; n < hModel->entrySize[h] ; n++)
+    if(((uint64_t) hModel->keys[h][n] * HASH_SIZE) + h == idx)
+      return;
+  InsertKey(hModel, h, idx);                           // If key not found
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void DeleteHash(Hash *H){
+  uint32_t k;
+  for(k = 0 ; k < HASH_SIZE ; ++k)
+    if(H->entrySize[k] != 0)
+      Free(H->keys[k]);
+  Free(H->keys);
+  Free(H->entrySize);
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void DeleteModel(Model *M){
-  uint32_t k;
-  if(M->mode == BLOOM_MODE)
-    DeleteBloom(M->bloom);
-  else // TABLE_MODE
-    Free(M->array.states);
+  switch(M->mode){
+    case BLOOM_MODE:       DeleteBloom(M->bloom);  break;
+    case HASH_TABLE_MODE:  DeleteHash(M->hash);    break;
+    default:               Free(M->array.states);  break;
+    }
   Free(M);
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Model *CreateModel(uint32_t ctx, uint32_t ir, uint32_t bh, uint64_t bs){
+Model *CreateModel(uint32_t ctx, uint32_t ir, uint32_t bh, uint64_t bs, 
+uint8_t x){
   Model *M = (Model *) Calloc(1, sizeof(Model));
   uint64_t prod = 1, *multipliers;
   uint32_t n;
@@ -107,8 +153,18 @@ Model *CreateModel(uint32_t ctx, uint32_t ir, uint32_t bh, uint64_t bs){
   M->ir        = ir == 0 ? 0 : 1;
 
   if(ctx >= BLOOM_TABLE_BEGIN_CTX){
-    M->mode  = BLOOM_MODE;
-    M->bloom = CreateBloom(bh, bs);
+    if(x == 1){
+      M->mode  = BLOOM_MODE;
+      M->bloom = CreateBloom(bh, bs);
+      }
+    else{
+      if(ctx > MAX_HASH_CTX){
+        fprintf(stderr, "Error: context is greater than %d!\n", MAX_HASH_CTX);
+        exit(1);
+        }
+      M->mode = HASH_TABLE_MODE;
+      M->hash = CreateHash();
+      }
     }
   else{
     M->mode = ARRAY_MODE;
@@ -147,19 +203,21 @@ inline void GetIdx(uint8_t *p, Model *M){
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void UpdateIR(Model *M){
-  if(M->mode == BLOOM_MODE)
-    UpdateBloom(M->bloom, M->idxIR); 
-  else
-    M->array.states[M->idxIR] = 1;
+  switch(M->mode){
+    case BLOOM_MODE:       UpdateBloom(M->bloom, M->idxIR);  break;
+    case HASH_TABLE_MODE:  UpdateHash(M->hash, M->idxIR);    break;
+    default:               M->array.states[M->idxIR] = 1;
+    }
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void Update(Model *M){
-  if(M->mode == BLOOM_MODE)
-    UpdateBloom(M->bloom, M->idx); 
-  else
-    M->array.states[M->idx] = 1;
+  switch(M->mode){
+    case BLOOM_MODE:       UpdateBloom(M->bloom, M->idx);  break;
+    case HASH_TABLE_MODE:  UpdateHash(M->hash, M->idx);    break;
+    default:               M->array.states[M->idx] = 1;
+    }
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

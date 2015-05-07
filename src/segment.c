@@ -12,7 +12,6 @@ void SegmentSequence(char *fName, Param *P){
   float    val, threshold;
   uint64_t pos, initPosition, lastPosition;
   int32_t  region;
-  clock_t  stop = 0, start = 0;
   char     *fNameOut;
 
   threshold    = (float) P->threshold; 

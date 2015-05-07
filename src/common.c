@@ -22,7 +22,7 @@ uint64_t NBytesInFile(FILE *F){
 
 uint64_t NDNASyminFile(FILE *file){
   uint8_t  buffer[BUFFER_SIZE], sym;
-  uint32_t k, idx, header = 0, type = 0, line = 0, dna = 0, begin = 0;
+  uint32_t k, idx, header = 0, type = 0, line = 0, dna = 0;
   uint64_t nSymbols = 0;
 
   sym = fgetc(file);
@@ -39,17 +39,17 @@ uint64_t NDNASyminFile(FILE *file){
       switch(type){
         case 1:
         switch(sym){
-          case '>':  header = 1; begin = 0; continue;
-          case '\n': header = 0;            continue;
-          default:   if(header==1)          continue;
+          case '>':  header = 1;    continue;
+          case '\n': header = 0;    continue;
+          default:   if(header==1)  continue;
           }
         break;
         case 2:
           switch(line){
-            case 0: if(sym == '\n'){ line = 1; dna = 1; begin = 0; } break;
-            case 1: if(sym == '\n'){ line = 2; dna = 0; }            break;
-            case 2: if(sym == '\n'){ line = 3; dna = 0; }            break;
-            case 3: if(sym == '\n'){ line = 0; dna = 0; }            break;
+            case 0: if(sym == '\n'){ line = 1; dna = 1; } break;
+            case 1: if(sym == '\n'){ line = 2; dna = 0; } break;
+            case 2: if(sym == '\n'){ line = 3; dna = 0; } break;
+            case 3: if(sym == '\n'){ line = 0; dna = 0; } break;
             }
         if(dna == 0 || sym == '\n') continue;
         break;
@@ -395,13 +395,18 @@ uint8_t CmpCheckSum(uint32_t cs, uint32_t checksum){
 void PrintArgs(Param *P){
   uint32_t n;
   fprintf(stderr, "K-mer model:\n");
-  fprintf(stderr, "  [+] K-mer ........................ %u\n", P[n].context);
-  fprintf(stderr, "  [+] Use inversions ............... %s\n", !P[n].inverse? 
+  fprintf(stderr, "  [+] K-mer ........................ %u\n", P->context);
+  fprintf(stderr, "  [+] Use inversions ............... %s\n", !P->inverse? 
   "no" : "yes");
-  if(P[n].context >= BLOOM_TABLE_BEGIN_CTX){
-    fprintf(stderr, "  [+] Bloom array size ............. %"PRIu64"\n", 
-    P[n].bSize);
-    fprintf(stderr, "  [+] Bloom hashes number .......... %u\n", P[n].bHashes);
+  if(P->context >= BLOOM_TABLE_BEGIN_CTX){
+    if(P->bloom == 1){
+      fprintf(stderr, "  [+] Bloom array size ............. %"PRIu64"\n", 
+      P->bSize);
+      fprintf(stderr, "  [+] Bloom hashes number .......... %u\n", P->bHashes);
+      }
+    else{
+      fprintf(stderr, "  [+] Using Hash (not Bloom)\n");
+      }
     }
   fprintf(stderr, "Threshold .......................... %.4g\n", P->threshold);
   fprintf(stderr, "Sub-sampling ....................... %"PRIi64"\n", 
