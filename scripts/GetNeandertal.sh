@@ -29,7 +29,7 @@ for((x=1 ; x <= $MAX ; ++x));
   do
   ZPATH="$ONWAY$x.dq.bam";
   downloadEach "$WGETOP" "$ZPATH" "$x" "$INITALS";
-  samtools view AltaiNea.hg19_1000g.$x.dq.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' > $INITALS$x;
+  samtools view $INITALS-X$x | awk '{OFS="\t"; print ">"$1"\n"$10}' > $INITALS$x;
   echo "$INITALS C$x filtered!";
   done
 
@@ -37,14 +37,14 @@ CHR=23;
 FIELD="X";
 ZPATH="$ONWAY$FIELD.dq.bam";
 downloadEach "$WGETOP" "$ZPATH" "$CHR" "$INITALS";
-samtools view AltaiNea.hg19_1000g.$FIELD.dq.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' > $INITALS$CHR;
+samtools view $INITALS-X$CHR | awk '{OFS="\t"; print ">"$1"\n"$10}' > $INITALS$CHR;
 echo "$INITALS CX filtered";
 
 CHR=24;
 FIELD="Y";
 ZPATH="$ONWAY$FIELD.dq.bam";
 downloadEach "$WGETOP" "$ZPATH" "$CHR" "$INITALS";
-samtools view AltaiNea.hg19_1000g.$FIELD.dq.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' > $INITALS$CHR;
+samtools view $INITALS-X$CHR | awk '{OFS="\t"; print ">"$1"\n"$10}' > $INITALS$CHR;
 echo "$INITALS CY filtered";
 
 
