@@ -3,5 +3,5 @@
 . GetGorillaParse.sh  
 . GetChimpParse.sh
 . GetHumanParse.sh
-. GetHumanCHMParse.sh
+#. GetHumanCHMParse.sh
 #. GetNeandertal.sh
