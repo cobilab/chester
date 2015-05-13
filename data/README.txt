@@ -1,9 +1,10 @@
 # The "data/" folder contains sub-folders with:
 #
-#  humanChimp     -> human vs chimp, 
-#  humanGorilla   -> human vs gorilla, 
-#  humanOrangutan -> human vs orangutan 
-#  humanPrimates  -> human vs primates (chimp, gorilla & orangutan)
-#  humanHuman2    -> human vs human2 (CHM build)
+#  humanChimp      -> human vs chimp, 
+#  humanGorilla    -> human vs gorilla, 
+#  humanOrangutan  -> human vs orangutan 
+#  humanPrimates   -> human vs primates (chimp, gorilla & orangutan)
+#  humanHuman2     -> human vs human2 (CHM build)
+#  humanNeandertal -> human vs Neandertal (altai)
 #
 # RAWs maps with the respective block positions.
