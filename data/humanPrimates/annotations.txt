@@ -125,7 +125,7 @@ ADAM3A ADAM metallopeptidase domain 3A (pseudogene)
 
 ======================================================================
 C10:
-http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815588&v=%20547712:572608
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815588&v=547712:572608
 DIP2C DIP2 disco-interacting protein 2 homolog C (Drosophila) [ONLY PART OF IT]
 
 ======================================================================
