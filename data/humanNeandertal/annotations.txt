@@ -1,4 +1,6 @@
+================================================================================
 CHR 6
+
 http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815592&v=51161280:51235968
 nothing....
 
@@ -16,46 +18,136 @@ LOC100131532 uncharacterized LOC100131532
 LOC102724475 uncharacterized LOC102724475
 LOC105378150 uncharacterized LOC105378150
 
+================================================================================
 CHR 7
+
 http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815591&v=142529600:142629184
 TRB T cell receptor beta locus - T cell receptors recognize foreign antigens which have been processed as small peptides and bound to major histocompatibility complex (MHC) molecules at the surface of antigen presenting cells (APC). Each T cell receptor is a dimer consisting of one alpha and one beta chain or one delta and one gamma chain. In a single cell, the T cell receptor loci are rearranged and expressed in the order delta, gamma, beta, and alpha. If both delta and gamma rearrangements produce functional chains, the cell expresses delta and gamma. If not, the cell proceeds to rearrange the beta and alpha loci. This region represents the germline organization of the T cell receptor beta locus. The beta locus includes V (variable), J (joining), diversity (D), and C (constant) segments. During T cell development, the beta chain is synthesized by a recombination event at the DNA level joining a D segment with a J segment; a V segment is then joined to the D-J gene. The C segment is later joined by splicing at the RNA level. Recombination of many different V segments with several J segments provides a wide range of antigen recognition. Additional diversity is attained by junctional diversity, resulting from the random additional of nucleotides by terminal deoxynucleotidyltransferase. Several V segments and one J segment of the beta locus are known to be incapable of encoding a protein and are considered pseudogenes. The beta locus also includes eight trypsinogen genes, three of which encode functional proteins and five of which are pseudogenes. Chromosomal abnormalities involving the T-cell receptor beta locus have been associated with T-cell lymphomas. [provided by RefSeq, Jul 2008]
 
+================================================================================
 CHR 9
+
 http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815589&v=89849664:89924352
-89849664	89924352
 nothing
 
+================================================================================
 CHR 10
-39061824	39186304
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815588&v=39061824:39186304
 nothing
 
 http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815588&v=124106560:124255936
 LOC105378536 uncharacterized LOC105378536
 
-131874112	131899008
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815588&v=131874112:13189900
+MICU1 mitochondrial calcium uptake 1
+This gene encodes an essential regulator of mitochondrial Ca2+ uptake under basal conditions. The encoded protein interacts with the mitochondrial calcium uniporter, a mitochondrial inner membrane Ca2+ channel, and is essential in preventing mitochondrial Ca2+ overload, which can cause excessive production of reactive oxygen species and cell stress. Alternatively spliced transcript variants encoding different isoforms have been described. [provided by RefSeq, Mar 2013]
 
+================================================================================
 CHR 17
-64356160	64455744
-79542720	79667200
 
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815581&v=64356160:64455744
+PECAM1 platelet/endothelial cell adhesion molecule 1 - The protein encoded by this gene is found on the surface of platelets, monocytes, neutrophils, and some types of T-cells, and makes up a large portion of endothelial cell intercellular junctions. The encoded protein is a member of the immunoglobulin superfamily and is likely involved in leukocyte migration, angiogenesis, and integrin activation. [provided by RefSeq, May 2010]
+MIR1273E microRNA 1273e - microRNAs (miRNAs) are short (20-24 nt) non-coding RNAs that are involved in post-transcriptional regulation of gene expression in multicellular organisms by affecting both the stability and translation of mRNAs. miRNAs are transcribed by RNA polymerase II as part of capped and polyadenylated primary transcripts (pri-miRNAs) that can be either protein-coding or non-coding. The primary transcript is cleaved by the Drosha ribonuclease III enzyme to produce an approximately 70-nt stem-loop precursor miRNA (pre-miRNA), which is further cleaved by the cytoplasmic Dicer ribonuclease to generate the mature miRNA and antisense miRNA star (miRNA*) products. The mature miRNA is incorporated into a RNA-induced silencing complex (RISC), which recognizes target mRNAs through imperfect base pairing with the miRNA and most commonly results in translational inhibition or destabilization of the target mRNA. The RefSeq represents the predicted microRNA stem-loop. [provided by RefSeq, Sep 2009]
+MILR1 mast cell immunoglobulin-like receptor 1
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815581&v=79542720:79667200
+RBFOX3 RNA binding protein, fox-1 homolog (C. elegans) 3 (PART OF [AT END])
+LOC644767 uncharacterized LOC644767
+LOC101929831 uncharacterized LOC101929831
+
+================================================================================
 CHR 21
-5502016	5900352
-6224000	6398272
-6647232	6771712
-6995776	7170048
-7369216	7717760
-8091200	8464640
-9784128	9833920
 
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815577&v=5502016:5900352
+LOC102724219 uncharacterized LOC102724219
+LOC102724291 keratin, type I cytoskeletal 18 pseudogene
+LOC102724310 C-terminal-binding protein 2 pseudogene
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815577&v=6224000:6398272
+LOC102724441 uncharacterized LOC102724441
+LOC105379493 uncharacterized LOC105379493
+LOC102724525 carboxy-terminal domain RNA polymerase II polypeptide A small phosphatase 2 pseudogene
+LOC105379494 uncharacterized LOC10537949
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815577&v=6647232:6771712
+LOC102724701 uncharacterized LOC102724701
+LOC105379496 uncharacterized LOC105379496
+LOC105379497 uncharacterized LOC105379497
+LOC105379498 uncharacterized LOC105379498
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815577&v=6995776:7170048
+LOC105379501 uncharacterized LOC105379501
+LOC102724843 uncharacterized LOC102724843
+LOC102724909 keratin, type I cytoskeletal 18 pseudogene
+LOC102724931 C-terminal-binding protein 2 pseudogene
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815577&v=7369216:7717760
+LOC105379502 uncharacterized LOC105379502
+LOC105379503 uncharacterized LOC105379503
+LOC102724951 uncharacterized LOC102724951
+LOC102723400 C-terminal-binding protein 2 pseudogene
+LOC102723424 keratin, type I cytoskeletal 18 pseudogene
+LOC102723360 uncharacterized LOC102723360
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815577&v=8091200:8464640
+MIR3648-1 microRNA 3648-1 
+MIR6724-1 microRNA 6724-1
+MIR3687-1 microRNA 3687-1
+- microRNAs (miRNAs) are short (20-24 nt) non-coding RNAs that are involved in post-transcriptional regulation of gene expression in multicellular organisms by affecting both the stability and translation of mRNAs. miRNAs are transcribed by RNA polymerase II as part of capped and polyadenylated primary transcripts (pri-miRNAs) that can be either protein-coding or non-coding. The primary transcript is cleaved by the Drosha ribonuclease III enzyme to produce an approximately 70-nt stem-loop precursor miRNA (pre-miRNA), which is further cleaved by the cytoplasmic Dicer ribonuclease to generate the mature miRNA and antisense miRNA star (miRNA*) products. The mature miRNA is incorporated into a RNA-induced silencing complex (RISC), which recognizes target mRNAs through imperfect base pairing with the miRNA and most commonly results in translational inhibition or destabilization of the target mRNA. The RefSeq represents the predicted microRNA stem-loop. [provided by RefSeq, Sep 2009]
+LOC105379506 uncharacterized LOC105379506
+LOC102723570 cell division cycle protein 27 homolog pseudogene
+MIR6724-2 microRNA 6724-2
+MIR6724-3 microRNA 6724-3
+LOC105379509 fibril-forming collagen alpha chain-like
+LOC105379508 uncharacterized LOC105379508
+LOC102723584 cell division cycle protein 27 homolog pseudogene 
+MIR6724-4 microRNA 6724-4
+LOC105379510 collagen alpha-1(II) chain-like
+LOC105379507 uncharacterized LOC105379507
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815577&v=9784128:9833920
+MGC39584 uncharacterized LOC441058 (Gene ID: 441058, updated on 12-May-2015)
+(Hypothetical protein MGC39584)
+
+================================================================================
 CHR 24
-2788352	3087104
-6248896	6572544
-6746816	9360896
-9560064	10207360
-10730176	11128512
-11477056	11526848
-11676224	20140864
-20315136	24223808
-24373184	25319232
-25493504	26638720
 
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815574&v=2788352:3087104
+RPS4Y1 ribosomal protein S4, Y-linked 1 - Cytoplasmic ribosomes, organelles that catalyze protein synthesis, consist of a small 40S subunit and a large 60S subunit. Together these subunits are composed of 4 RNA species and approximately 80 structurally distinct proteins. This gene encodes ribosomal protein S4, a component of the 40S subunit. Ribosomal protein S4 is the only ribosomal protein known to be encoded by more than one gene, namely this gene and ribosomal protein S4, X-linked (RPS4X). The 2 isoforms encoded by these genes are not identical, but are functionally equivalent. Ribosomal protein S4 belongs to the S4E family of ribosomal proteins. It has been suggested that haploinsufficiency of the ribosomal protein S4 genes plays a role in Turner syndrome; however, this hypothesis is controversial. As is typical for genes encoding ribosomal proteins, there are multiple processed pseudogenes of this gene dispersed through the genome. [provided by RefSeq, Jul 2008]
+HSFY3P heat shock transcription factor, Y-linked 3, pseudogene
+ZFY zinc finger protein, Y-linked - This gene encodes a zinc finger-containing protein that may function as a transcription factor. This gene was once a candidate gene for the testis-determining factor (TDF) and was erroneously referred to as TDF. [provided by RefSeq, Jul 2008]. Note: This gene is annotated on the Y chromosome of the reference genome and HuRef assemblies but is annotated on the X chromosome of the Celera assembly (as gene LOC100130829 and model XM_001713692.1). [18 Feb 2009]
+NAP1L1P2 nucleosome assembly protein 1-like 1 pseudogene 2
+EEF1A1P41 eukaryotic translation elongation factor 1 alpha 1 pseudogene 41
+LINC00278 long intergenic non-protein coding RNA 278
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815574&v=6248896:6572544
+LOC105377228 uncharacterized LOC105377228
+TSPY11P testis specific protein, Y-linked 11, pseudogene
+TSPY19P testis specific protein, Y-linked 19, pseudogene
+RBMY2GP RNA binding motif protein, Y-linked, family 2, member G pseudogene
+LINC00280 long intergenic non-protein coding RNA 280
+TTTY1B testis-specific transcript, Y-linked 1B (non-protein coding)
+TTTY2B testis-specific transcript, Y-linked 2B (non-protein coding)
+TTTY21B testis-specific transcript, Y-linked 21B (non-protein coding)
+TTTY7 testis-specific transcript, Y-linked 7 (non-protein coding)
+TTTY8B testis-specific transcript, Y-linked 8B (non-protein coding)
+TSPY17P testis specific protein, Y-linked 17, pseudogene
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815574&v=6746816:9360896
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815574&v=9560064:10207360
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815574&v=10730176:11128512
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815574&v=11477056:11526848
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815574&v=11676224:20140864
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815574&v=20315136:24223808
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815574&v=24373184:25319232
+
+http://www.ncbi.nlm.nih.gov/projects/sviewer/?id=568815574&v=25493504:26638720
+
+================================================================================
