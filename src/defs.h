@@ -58,7 +58,7 @@ Param;
 #define SUBSAMPLE_RATIO        5
 #define DEFAULT_THRESHOLD      0.5 
 #define DEFAULT_WINDOW         -1
-#define DEFAULT_SUBSAMPLE      50000
+#define DEFAULT_SUBSAMPLE      0
 #define DEFAULT_SAMPLE_RATIO   10000
 #define MIN_CTX                1
 #define MAX_CTX                30
