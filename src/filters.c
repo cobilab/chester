@@ -61,6 +61,7 @@ static float Mean(float *ent, int64_t nEnt, int64_t n, int64_t M, float *w){
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 void FilterSequence(char *fName, Param *P, float *w){
   FILE    *Reader  = NULL, *Writter = NULL;
   float   *entries = NULL;
