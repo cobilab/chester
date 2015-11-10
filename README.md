@@ -136,9 +136,9 @@ The example image show most of the centromers contained in the chromosomes and s
 
 On using this software/method please cite:
 
-Diogo Pratas, Raquel M. Silve, Armando J. Pinho, Paulo J. S. G. Ferreira, Detection and visualisation of regions of human DNA not present in other primates. Proceedings of the 21st Portuguese Conference on Pattern Recognition, RecPad 2015, Faro, Portugal, October 2015. 
+Diogo Pratas, Raquel M. Silva, Armando J. Pinho, Paulo J. S. G. Ferreira, Detection and visualisation of regions of human DNA not present in other primates. Proceedings of the 21st Portuguese Conference on Pattern Recognition, RecPad 2015, Faro, Portugal, October 2015. 
 
-[Download paper] (https://github.com/pratas/chester/paper.pdf)
+[Download paper] (https://github.com/pratas/chester/blob/master/paper.pdf)
 
 ## ISSUES ##
 
