@@ -86,7 +86,6 @@ or
 
 These will print the following options:
 <pre>
-<p>
 Usage: CHESTER &#60OPTIONS&#62... [FILE]:&#60...&#62 [FILE]:&#60...&#62
 CHESTER is a fast tool to compute uniqueness maps.   
                                                      
