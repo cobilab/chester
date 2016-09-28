@@ -190,13 +190,13 @@ void ResetIdx(Model *M){
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-inline void GetIdxIR(uint8_t *p, Model *M){
+void GetIdxIR(uint8_t *p, Model *M){
   M->idxIR = (M->idxIR>>2)+GetCompNum(*p)*M->multiplier;
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-inline void GetIdx(uint8_t *p, Model *M){
+void GetIdx(uint8_t *p, Model *M){
   M->idx = ((M->idx-*(p-M->ctx)*M->multiplier)<<2)+*p;
   }
 
