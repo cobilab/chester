@@ -394,7 +394,7 @@ int32_t main(int argc, char *argv[]){
   if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || ArgsState(DEFAULT_HELP, p, 
   argc, "?") == 1 || argc < 3){
     fprintf(stderr, "Usage: CHESTER <OPTIONS>... [FILE]:<...> [FILE]:<...>\n");
-    fprintf(stderr, "CHESTER is a tool to compute whole genome RAWs maps.   \n");
+    fprintf(stderr, "CHESTER is a tool to visualize relative singularity. \n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
