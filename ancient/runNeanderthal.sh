@@ -20,12 +20,8 @@ fi
 #==============================================================================
 # GET GOOSE
 if [[ "$GET_GOOSE" -eq "1" ]]; then  
-  rm -fr goose/ goose-*
+  rm -fr goose/ GetHumanParse.sh
   git clone https://github.com/pratas/goose.git
-  cd goose/src/
-  make
-  cp goose-* ../../
-  cd ../../
   cp goose/scripts/GetHumanParse.sh .
 fi
 #==============================================================================
