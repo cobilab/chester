@@ -92,6 +92,6 @@ fi
 #==============================================================================
 # RUN FALCON
 if [[ "$RUN_CHESTER" -eq "1" ]]; then
-  (time ./CHESTER -v -i -t 0.6 -k 30 -x NEAN HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) & REPORT_CHESTER_HUMAN_NEAN
+  (time ./CHESTER -v -i -t 0.6 -k 30 -x NEAN HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
 fi
 #==============================================================================
