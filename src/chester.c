@@ -425,7 +425,7 @@ int32_t main(int argc, char *argv[]){
   P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999);
   P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
   P->bloom     = ArgsState  (DEFAULT_BLOOM,   p, argc, "-x");
-  P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 100, 9999999999);
+  P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 100, 99999999999);
   P->bHashes   = ArgsNum    (DEFAULT_BHASHES, p, argc, "-n", 1,   999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
   P->inverse   = ArgsState  (DEFAULT_IR,      p, argc, "-i");
