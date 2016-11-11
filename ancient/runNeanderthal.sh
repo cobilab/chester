@@ -5,7 +5,7 @@ GET_NEANDERTHAL=1;
 GET_HUMAN=1;
 RUN_CHESTER=1;
 #==============================================================================
-sudo apt-get install samtools
+# sudo apt-get install samtools
 #==============================================================================
 # GET CHESTER
 if [[ "$GET_CHESTER" -eq "1" ]]; then
@@ -19,7 +19,7 @@ if [[ "$GET_CHESTER" -eq "1" ]]; then
 fi
 #==============================================================================
 # GET GOOSE
-if [[ "$GET_GOOSE" -eq "1" ]]; then  
+if [[ "$GET_GOOSE" -eq "1" ]]; then
   rm -fr goose/ GetHumanParse.sh
   git clone https://github.com/pratas/goose.git
   cp goose/scripts/GetHumanParse.sh .
@@ -46,6 +46,7 @@ if [[ "$GET_NEANDERTHAL" -eq "1" ]]; then
     do
     wget $WGETO $EVAPT/AltaiNea.hg19_1000g.$x.dq.bam -O HN-C$x.bam;
     done
+  wget $WGETO $EVAPT/AltaiNea.hg19_1000g.X.dq.bam -O HN-C23.bam;
   wget $WGETO $EVAPT/AltaiNea.hg19_1000g.Y.dq.bam -O HN-C24.bam;
   # UNMAPPED DATA:
   wget $WGETO $EVAPK/NIOBE_0139_A_D0B5GACXX_7_unmapped.bam -O HN-C25.bam;
@@ -83,15 +84,15 @@ if [[ "$GET_NEANDERTHAL" -eq "1" ]]; then
   # FROM SAM 2 MFASTA
   for((xi=1 ; xi<=56 ; ++xi));
     do
-    samtools view HN-C$xi.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' > HN-C$xi ;
+    samtools view HN-C$xi.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' > HN-XC$xi ;
     done
   rm -fr NEAN;
-  cat HN-C* >> NEAN;
-  rm -fr HN-C*;
+  cat HN-XC* >> NEAN;
+  rm -fr HN-XC*;
 fi
 #==============================================================================
 # RUN FALCON
 if [[ "$RUN_CHESTER" -eq "1" ]]; then
-  (time ./CHESTER -v -i -t 0.6 -k 30 -x NEAN HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
+  (time ./CHESTER -v -i -s 99999999999 -n 15 -t 0.6 -k 30 NEAN HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
 fi
 #==============================================================================
