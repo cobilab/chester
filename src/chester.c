@@ -321,7 +321,7 @@ void LoadReference(Param *P, uint32_t ref){
 
       if(ParseSym(PA, (sym = readBuf[idxPos])) == -1){ idx = 0; continue; }
       symBuf->buf[symBuf->idx] = sym = S2N(sym);
-      GetIdx(symBuf+idx-1, P->M);
+      GetIdx(symBuf->buf+symBuf->idx-1, P->M);
 
       if(++begin > P->M->ctx){ // SKIP INITIAL CONTEXT FROM EACH READ
         Update(P->M);
@@ -367,7 +367,7 @@ int32_t main(int argc, char *argv[]){
   if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || ArgsState(DEFAULT_HELP, p, 
   argc, "?") == 1 || argc < 3){
     fprintf(stderr, "Usage: CHESTER <OPTIONS>... [FILE]:<...> [FILE]:<...>\n");
-    fprintf(stderr, "CHESTER is a tool to map and visualize relative singularity.\n");
+    fprintf(stderr, "CHESTER: a tool to map and visualize DNA relative singularity.\n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
