@@ -370,7 +370,7 @@ int32_t main(int argc, char *argv[]){
     VERSION, RELEASE);
     PrintArgs(P);
     fprintf(stderr, "==========================================\n");
-    fprintf(stderr, "Estimating number of hashes and precision...\n");
+    fprintf(stderr, "Estimating optimal number of hash functions and precision...\n");
     }
 
   // ESTIMATE NUMBER OF HASHES FOR BEST PRECISION
@@ -381,14 +381,15 @@ int32_t main(int argc, char *argv[]){
     fclose(Reader);
     }
 
-  P->bHashes = (P->bSize / n_entries) * log(2);
-  double precision = 444;
+  P->bHashes =  (((double) P->bSize / n_entries) * M_LN2);
+  double precision = pow((1 - pow(M_E, -(((double)P->bSize / n_entries) * M_LN2) 
+  * ((double) n_entries/P->bSize))), (((double) P->bSize / n_entries) * M_LN2));
 
   if(P->verbose){
     fprintf(stderr, "Done!\n");
+    fprintf(stderr, "Bloom array size  : %"PRIu64"\n", P->bSize);
     fprintf(stderr, "Number of entries : %"PRIu64"\n", n_entries);
     fprintf(stderr, "Number of Hashes  : %u\n", P->bHashes);
-    fprintf(stderr, "Bloom array size  : %u\n", P->bSize);
     fprintf(stderr, "Precision         : %lf\n", precision);
     fprintf(stderr, "==========================================\n");
     }
