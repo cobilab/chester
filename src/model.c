@@ -84,26 +84,26 @@ void DeleteModel(Model *M){
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Model *CreateModel(uint32_t ctx, uint32_t ir, uint32_t bh, uint64_t bs){
+Model *CreateModel(uint32_t kmer, uint32_t ir, uint32_t bh, uint64_t bs){
   Model *M = (Model *) Calloc(1, sizeof(Model));
   uint64_t prod = 1, *multipliers;
   uint32_t n;
   
-  multipliers  = (uint64_t *) Calloc(ctx, sizeof(uint64_t));
-  M->nPModels  = (uint64_t) pow(ALPHABET_SIZE, ctx);
-  M->ctx       = ctx;
+  multipliers  = (uint64_t *) Calloc(kmer, sizeof(uint64_t));
+  M->nPModels  = (uint64_t) pow(ALPHABET_SIZE, kmer);
+  M->kmer      = kmer;
   M->idx       = 0;
   M->idxIR     = M->nPModels - 1;
   M->ir        = ir == 0 ? 0 : 1;
 
   M->bloom = CreateBloom(bh, bs);
 
-  for(n = 0 ; n < M->ctx ; ++n){
+  for(n = 0 ; n < M->kmer ; ++n){
     multipliers[n] = prod;
     prod <<= 2;
     }
 
-  M->multiplier = multipliers[M->ctx-1];
+  M->multiplier = multipliers[M->kmer-1];
   Free(multipliers);
   return M;
   }
@@ -124,7 +124,7 @@ void GetIdxIR(uint8_t *p, Model *M){
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void GetIdx(uint8_t *p, Model *M){
-  M->idx = ((M->idx-*(p-M->ctx)*M->multiplier)<<2)+*p;
+  M->idx = ((M->idx-*(p-M->kmer)*M->multiplier)<<2)+*p;
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

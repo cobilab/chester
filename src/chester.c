@@ -17,12 +17,12 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - W R I T E   W O R D - - - - - - - - - - - -
-void RWord(FILE *F, uint8_t *b, int32_t i, uint32_t ctx){
-  uint8_t w[ctx+1], n;
-  i -= ctx;
-  for(n = 0 ; n < ctx ; ++n)
+void RWord(FILE *F, uint8_t *b, int32_t i, uint32_t kmer){
+  uint8_t w[kmer+1], n;
+  i -= kmer;
+  for(n = 0 ; n < kmer ; ++n)
     w[n] = N2S(b[i+n]);
-  w[ctx] = '\0';
+  w[kmer] = '\0';
   fprintf(F, "%s\n", w);
   }
 
@@ -207,17 +207,17 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
       if((sym = S2N(rBuf[idxPos])) == 4){
         ++unknown;
         if(P->disk == 0)
-          fprintf(Pos, "%"PRIu64"\tN\n", base-P->M->ctx);
+          fprintf(Pos, "%"PRIu64"\tN\n", base-P->M->kmer);
         fprintf(Bin, "%u", EXTRA_CHAR_CODE); // THIS IS A FALSE POSITIVE: "N"
         continue;
         }
       sBuf[idx] = sym;
       GetIdx(sBuf+idx-1, P->M); 
-      if(i > P->M->ctx){  // SKIP INITIAL CONTEXT, ALL "AAA..."
+      if(i > P->M->kmer){  // SKIP INITIAL CONTEXT, ALL "AAA..."
         if(SearchBloom(P->M->bloom, P->M->idx) == 0){ // IF NOT MATCH:
           if(P->disk == 0){
-            fprintf(Pos, "%"PRIu64"\t", base-P->M->ctx);
-            RWord(Pos, sBuf, idx, P->M->ctx);
+            fprintf(Pos, "%"PRIu64"\t", base-P->M->kmer);
+            RWord(Pos, sBuf, idx, P->M->kmer);
             }
           fprintf(Bin, "0");
           ++raw;
@@ -288,10 +288,10 @@ void LoadReference(Param *P, uint32_t ref){
       symBuf->buf[symBuf->idx] = sym = S2N(sym);
       GetIdx(symBuf->buf+symBuf->idx-1, P->M);
 
-      if(++begin > P->M->ctx){ // SKIP INITIAL CONTEXT FROM EACH READ
+      if(++begin > P->M->kmer){ // SKIP INITIAL CONTEXT FROM EACH READ
         Update(P->M);
 /*      if(P->M->ir == 1){  // Inverted repeats
-          GetIdxIR(sBuf+idx, P->M);
+          GetIdxIR(symBuf->buf+symBuf->idx, P->M);
           UpdateIR(P->M);
           }  */
         }

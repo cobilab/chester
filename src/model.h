@@ -16,14 +16,14 @@ HFAM;
 typedef struct{
   uint8_t  *array;
   uint64_t size;
-  uint32_t ctx;
+  uint32_t kmer;
   HFAM     *H;
   }
 BLOOM;
 
 typedef struct{
-  uint32_t ctx;                          // Current depth of context template
-  uint64_t nPModels;                  // Maximum number of probability models
+  uint32_t kmer;         // Current depth of context template
+  uint64_t nPModels;     // Maximum number of probability models
   uint64_t multiplier;
   uint64_t idx;
   uint64_t idxIR;
