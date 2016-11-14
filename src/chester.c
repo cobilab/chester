@@ -213,18 +213,24 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
         }
       sBuf[idx] = sym;
       GetIdx(sBuf+idx-1, P->M); 
+
+      GetIdxIR(sBuf+idx, P->M); // XXX: TEST REVERSE
+
       if(i > P->M->kmer){  // SKIP INITIAL CONTEXT, ALL "AAA..."
-        if(SearchBloom(P->M->bloom, P->M->idx) == 0){ // IF NOT MATCH:
+
+        if(SearchBloom(P->M->bloom, P->M->idx)   == 0 || 
+           SearchBloom(P->M->bloom, P->M->idxIR) == 0){ // IF NOT MATCH:
           if(P->disk == 0){
             fprintf(Pos, "%"PRIu64"\t", base-P->M->kmer);
             RWord(Pos, sBuf, idx, P->M->kmer);
             }
           fprintf(Bin, "0");
           ++raw;
-          }
+          } 
         else{
           fprintf(Bin, "1");
           }
+
         }
 
       if(++idx == BUFFER_SIZE){
@@ -370,7 +376,7 @@ int32_t main(int argc, char *argv[]){
     VERSION, RELEASE);
     PrintArgs(P);
     fprintf(stderr, "==========================================\n");
-    fprintf(stderr, "Estimating optimal number of hash functions and precision...\n");
+    fprintf(stderr, "Estimating optimal number of hash functions and precision ...\n");
     }
 
   // ESTIMATE NUMBER OF HASHES FOR BEST PRECISION
