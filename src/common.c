@@ -397,7 +397,6 @@ void PrintArgs(Param *P){
   fprintf(stderr, "  [+] Use inversions ............... %s\n", !P->inverse? 
   "no" : "yes");
   fprintf(stderr, "  [+] Bloom array size ............. %"PRIu64"\n", P->bSize);
-  fprintf(stderr, "  [+] Bloom hashes number .......... %u\n", P->bHashes);
   fprintf(stderr, "Threshold .......................... %.4g\n", P->threshold);
   fprintf(stderr, "Sub-sampling ....................... %"PRIi64"\n", 
   P->subsamp);

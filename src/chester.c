@@ -339,7 +339,6 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -t <value>               threshold [0.0;1.0],      \n");
     fprintf(stderr, "  -w <value>               window size,              \n");
     fprintf(stderr, "  -u <value>               sub-sampling,             \n");
-    fprintf(stderr, "  -n <value>               bloom hashes number,      \n");
     fprintf(stderr, "  -s <value>               bloom size,               \n");
     fprintf(stderr, "  -i                       use inversions,           \n");
     fprintf(stderr, "  -p                       show positions/words,     \n");
@@ -362,15 +361,35 @@ int32_t main(int argc, char *argv[]){
   P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999);
   P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
   P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 100, 99999999999);
-  P->bHashes   = ArgsNum    (DEFAULT_BHASHES, p, argc, "-n", 1,   999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
   P->inverse   = ArgsState  (DEFAULT_IR,      p, argc, "-i");
   P->disk      = ArgsState  (DEFAULT_DISK,    p, argc, "-p");
 
   if(P->verbose){
-    fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n", 
+    fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n",
     VERSION, RELEASE);
     PrintArgs(P);
+    fprintf(stderr, "==========================================\n");
+    fprintf(stderr, "Estimating number of hashes and precision...\n");
+    }
+
+  // ESTIMATE NUMBER OF HASHES FOR BEST PRECISION
+  uint64_t n_entries = 0;
+  for(n = 0 ; n < P->ref->nFiles ; ++n){
+    FILE *Reader = Fopen(P->ref->names[n], "r");
+    n_entries += NDNASyminFile(Reader);
+    fclose(Reader);
+    }
+
+  P->bHashes = (P->bSize / n_entries) * log(2);
+  double precision = 444;
+
+  if(P->verbose){
+    fprintf(stderr, "Done!\n");
+    fprintf(stderr, "Number of entries : %"PRIu64"\n", n_entries);
+    fprintf(stderr, "Number of Hashes  : %u\n", P->bHashes);
+    fprintf(stderr, "Bloom array size  : %u\n", P->bSize);
+    fprintf(stderr, "Precision         : %lf\n", precision);
     fprintf(stderr, "==========================================\n");
     }
 
