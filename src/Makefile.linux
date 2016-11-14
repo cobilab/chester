@@ -1,5 +1,5 @@
 #============================================================================#
-#                 CHESTER 2015 IEETA/DETI, UNIVERSITY OF AVEIRO              #
+#              CHESTER 2015-2017 IEETA/DETI, UNIVERSITY OF AVEIRO            #
 #============================================================================#
 BIN    = .
 CC     = gcc
@@ -10,7 +10,7 @@ CFLAGS = -O3 -Wall $(CPLP)
 LIBS   = -lm
 DEPS   = defs.h
 PROGS  = $(BIN)/CHESTER
-OBJS   = mem.o model.o common.o filters.o segment.o paint.o 
+OBJS   = mem.o model.o common.o filters.o segment.o paint.o parser.o
 #-----------------------------------------------------------------------------
 all:
 	$(MAKE) progs
@@ -29,6 +29,8 @@ segment.o: segment.c segment.h $(DEPS)
 	$(CC) -c $(CFLAGS) segment.c
 paint.o: paint.c paint.h
 	$(CC) -c $(CFLAGS) paint.c
+parser.o: parser.c parser.h
+	$(CC) -c $(CFLAGS) parser.c
 clean:
 	/bin/rm -f *.o
 cleanall:

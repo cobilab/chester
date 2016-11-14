@@ -39,7 +39,7 @@ Param;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // CHESTER VALUES:
-#define VERSION                1
+#define VERSION                2
 #define RELEASE                1
 
 // SYSTEM VALUES:

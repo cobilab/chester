@@ -12,6 +12,7 @@
 #include "filters.h"
 #include "segment.h"
 #include "paint.h"
+#include "parser.h"
 
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - W R I T E   W O R D - - - - - - - - - - - -
@@ -349,10 +350,14 @@ void LoadReference(Param *P, uint32_t ref){
 
       if(++begin > P->M->ctx){ // SKIP INITIAL CONTEXT FROM EACH READ
         Update(P->M);
+
+/*
         if(P->M->ir == 1){  // Inverted repeats
           GetIdxIR(sBuf+idx, P->M);
           UpdateIR(P->M);
           }
+*/
+
         }
 
       if(++idx == BUFFER_SIZE){
@@ -382,7 +387,7 @@ int32_t main(int argc, char *argv[]){
 
   if(ArgsState(0, p, argc, "-a") || ArgsState(0, p, argc, "-V")){
     fprintf(stderr, "CHESTER %u.%u\n"
-    "Copyright (C) 2015 University of Aveiro.\nThis is Free software.\nYou "
+    "Copyright (C) 2015-2017 University of Aveiro.\nThis is Free software.\nYou "
     "may redistribute copies of it under the terms of the GNU \nGeneral "
     "Public License v2 <http://www.gnu.org/licenses/gpl.html>. \nThere is NO "
     "WARRANTY, to the extent permitted by law.\nCode by Diogo Pratas,"
@@ -394,7 +399,7 @@ int32_t main(int argc, char *argv[]){
   if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || ArgsState(DEFAULT_HELP, p, 
   argc, "?") == 1 || argc < 3){
     fprintf(stderr, "Usage: CHESTER <OPTIONS>... [FILE]:<...> [FILE]:<...>\n");
-    fprintf(stderr, "CHESTER is a tool to visualize relative singularity. \n");
+    fprintf(stderr, "CHESTER is a tool to map and visualize relative singularity.\n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
