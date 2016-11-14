@@ -305,7 +305,7 @@ void LoadReference(Param *P, uint32_t ref){
   #endif
   PARSER   *PA = CreateParser();
   CBUF     *symBuf = CreateCBuffer(BUFFER_SIZE, BGUARD);
-  uin8_t   *rBuf = (uint8_t *) Calloc(BUFFER_SIZE + 1, sizeof(uint8_t));
+  uint8_t  *readBuf = (uint8_t *) Calloc(BUFFER_SIZE + 1, sizeof(uint8_t));
 
   if(P->verbose == 1)
     fprintf(stderr, "Building reference model (k=%u) ...\n", P->context);
@@ -320,7 +320,7 @@ void LoadReference(Param *P, uint32_t ref){
       #endif
 
       if(ParseSym(PA, (sym = readBuf[idxPos])) == -1){ idx = 0; continue; }
-      symBuf->buf[symBuf->idx] = sym = DNASymToNum(sym);
+      symBuf->buf[symBuf->idx] = sym = S2N(sym);
       GetIdx(symBuf+idx-1, P->M);
 
       if(++begin > P->M->ctx){ // SKIP INITIAL CONTEXT FROM EACH READ
