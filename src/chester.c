@@ -37,7 +37,7 @@ void FilterStreams(Param *P){
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     char *name = (char *) Calloc(4096, sizeof(char));
-    sprintf(name, "%s-k%u.oxch", P->tar->names[tar], P->context);
+    sprintf(name, "%s-k%u.oxch", P->tar->names[tar], P->kmer);
     FilterSequence(name, P, winWeights);
     Free(name);
     }
@@ -52,7 +52,7 @@ void SegmentStreams(Param *P){
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     char *name = (char *) Calloc(4096, sizeof(char));
-    sprintf(name, "%s-k%u.fil", P->tar->names[tar], P->context);
+    sprintf(name, "%s-k%u.fil", P->tar->names[tar], P->kmer);
     SegmentSequence(name, P);
     Free(name);
     }
@@ -77,7 +77,7 @@ void PaintStreams(Param *P){
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     char *name = (char *) Calloc(4096, sizeof(char));
-    sprintf(name, "%s-k%u.seg", P->tar->names[tar], P->context);
+    sprintf(name, "%s-k%u.seg", P->tar->names[tar], P->kmer);
     FILE *Reader = Fopen(name, "r");
 
     while(fscanf(Reader, "%"PRIu64"\t%"PRIu64"", &init, &end) == 2){
@@ -106,7 +106,7 @@ void JoinStreams(Param *P){
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     nameout[tar]  = (char *) Calloc(4096, sizeof(char));
-    sprintf(nameout[tar], "%s-k%u.oxch", P->tar->names[tar], P->context);
+    sprintf(nameout[tar], "%s-k%u.oxch", P->tar->names[tar], P->kmer);
     OUT           = Fopen(nameout[tar], "w");
     FILE **Bins   = (FILE **)    Calloc(P->ref->nFiles, sizeof(FILE *));
     char **name   = (char **)    Calloc(P->ref->nFiles, sizeof(char *));
@@ -115,7 +115,7 @@ void JoinStreams(Param *P){
     uint8_t *res  = (uint8_t *)  Calloc(WINDOW_SIZE,    sizeof(uint8_t));
     for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
       name[ref]  = (char *) Calloc(4096, sizeof(char));
-      sprintf(name[ref], "-r%u-k%u.xch", ref+1, P->context);
+      sprintf(name[ref], "-r%u-k%u.xch", ref+1, P->kmer);
       name2[ref] = concatenate(P->tar->names[tar], name[ref]);
       Bins[ref]  = Fopen(name2[ref], "r");
       buf[ref]   = (uint8_t *) Calloc(WINDOW_SIZE, sizeof(uint8_t));
@@ -169,8 +169,8 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
   FILE     *Reader = Fopen(P->tar->names[tar], "r");
   char     *name1 = (char *) Calloc(4096, sizeof(char));
   char     *namex = (char *) Calloc(4096, sizeof(char));
-  sprintf(name1, "-r%u-k%u.ch",  ref+1, P->context);
-  sprintf(namex, "-r%u-k%u.xch", ref+1, P->context);
+  sprintf(name1, "-r%u-k%u.ch",  ref+1, P->kmer);
+  sprintf(namex, "-r%u-k%u.xch", ref+1, P->kmer);
   char     *name2 = concatenate(P->tar->names[tar], name1);
   char     *namex2 = concatenate(P->tar->names[tar], namex);
   FILE     *Pos = NULL, *Bin = Fopen(namex2, "w");
@@ -214,51 +214,16 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
       sBuf[idx] = sym;
       GetIdx(sBuf+idx-1, P->M); 
       if(i > P->M->ctx){  // SKIP INITIAL CONTEXT, ALL "AAA..."
-        if(P->M->mode == 0){ // TABLE MODE
-          if(!P->M->array.states[P->M->idx]){ // IF NO MATCH:
-            if(P->disk == 0){
-              fprintf(Pos, "%"PRIu64"\t", base-P->M->ctx);
-              RWord(Pos, sBuf, idx, P->M->ctx);
-              }
-            fprintf(Bin, "0");
-            ++raw;
+        if(SearchBloom(P->M->bloom, P->M->idx) == 0){ // IF NOT MATCH:
+          if(P->disk == 0){
+            fprintf(Pos, "%"PRIu64"\t", base-P->M->ctx);
+            RWord(Pos, sBuf, idx, P->M->ctx);
             }
-          else{
-            fprintf(Bin, "1");
-            }
-          }
-        else if(P->M->mode == 1){ // BLOOM TABLE
-          if(SearchBloom(P->M->bloom, P->M->idx) == 0){ // IF NOT MATCH:
-            if(P->disk == 0){
-              fprintf(Pos, "%"PRIu64"\t", base-P->M->ctx);
-              RWord(Pos, sBuf, idx, P->M->ctx);
-              }
-            fprintf(Bin, "0");
-            ++raw;
-            }
-          else{
-            fprintf(Bin, "1");
-            }
+          fprintf(Bin, "0");
+          ++raw;
           }
         else{
-          found = 0;
-          hIndex = P->M->idx % HASH_SIZE;
-          for(n = 0 ; n < P->M->hash->entrySize[hIndex] ; n++)
-            if(((uint64_t) P->M->hash->keys[hIndex][n]*HASH_SIZE)+hIndex == P->M->idx){
-              found = 1;
-              break;
-              }
-          if(found == 0){
-            if(P->disk == 0){
-              fprintf(Pos, "%"PRIu64"\t", base-P->M->ctx);
-              RWord(Pos, sBuf, idx, P->M->ctx);
-              }
-            fprintf(Bin, "0");
-            ++raw;
-            }
-          else{
-            fprintf(Bin, "1");
-            }
+          fprintf(Bin, "1");
           }
         }
 
@@ -308,7 +273,7 @@ void LoadReference(Param *P, uint32_t ref){
   uint8_t  *readBuf = (uint8_t *) Calloc(BUFFER_SIZE + 1, sizeof(uint8_t));
 
   if(P->verbose == 1)
-    fprintf(stderr, "Building reference model (k=%u) ...\n", P->context);
+    fprintf(stderr, "Building reference model (k=%u) ...\n", P->kmer);
 
   FileType(PA, Reader);
 
@@ -374,7 +339,6 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -t <value>               threshold [0.0;1.0],      \n");
     fprintf(stderr, "  -w <value>               window size,              \n");
     fprintf(stderr, "  -u <value>               sub-sampling,             \n");
-    fprintf(stderr, "  -x                       use hash instead bloom,   \n");
     fprintf(stderr, "  -n <value>               bloom hashes number,      \n");
     fprintf(stderr, "  -s <value>               bloom size,               \n");
     fprintf(stderr, "  -i                       use inversions,           \n");
@@ -393,11 +357,10 @@ int32_t main(int argc, char *argv[]){
   P = (Param *) Calloc(1 , sizeof(Param));
   P->ref       = ReadFNames (P, argv[argc-2]);  // REF
   P->tar       = ReadFNames (P, argv[argc-1]);  // TAR
-  P->context   = ArgsNum    (DEF_MIN_CTX,     p, argc, "-k", MIN_CTX, MAX_CTX);
+  P->kmer      = ArgsNum    (DEFAULT_KMER,    p, argc, "-k", MIN_KMER, MAX_KMER);
   P->threshold = ArgsDouble (DEFAULT_THRESHOLD, p, argc, "-t");
   P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999);
   P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
-  P->bloom     = ArgsState  (DEFAULT_BLOOM,   p, argc, "-x");
   P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 100, 99999999999);
   P->bHashes   = ArgsNum    (DEFAULT_BHASHES, p, argc, "-n", 1,   999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
@@ -413,7 +376,7 @@ int32_t main(int argc, char *argv[]){
 
   P->size = (uint64_t **) Calloc(P->ref->nFiles, sizeof(uint64_t *));
   for(n = 0 ; n < P->ref->nFiles ; ++n){
-    P->M = CreateModel(P->context, P->inverse, P->bHashes, P->bSize, P->bloom);
+    P->M = CreateModel(P->kmer, P->inverse, P->bHashes, P->bSize);
     LoadReference(P, n);
     P->size[n] = (uint64_t *) Calloc(P->tar->nFiles, sizeof(uint64_t));
     for(k = 0 ; k < P->tar->nFiles ; ++k){

@@ -3,14 +3,7 @@
 
 #include "defs.h"
 
-#define ARRAY_MODE             0
-#define BLOOM_MODE             1
-#define BLOOM_TABLE_BEGIN_CTX  17
-
-typedef uint8_t  ACC;                    // Size of context counters for arrays
-typedef uint8_t  BCC;                     // Size of context counters for bloom
-typedef uint16_t ENTMAX;                  // Entry size (nKeys for each hIndex)
-typedef uint32_t KEYSMAX;                                    // keys index bits
+typedef uint8_t BCC; // Size of kmer for bloom
 
 typedef struct{
   uint32_t k;        // NUMBER OF HASHES 
@@ -19,17 +12,6 @@ typedef struct{
   uint64_t p;        // PRIME
   }
 HFAM;
-
-typedef struct{
-  ACC      *states;
-  }
-ARRAY;
-
-typedef struct{
-  ENTMAX    *entrySize;                        // Number of keys in this entry
-  KEYSMAX   **keys;                        // The keys of the hash table lists
-  }
-Hash;
 
 typedef struct{
   uint8_t  *array;
@@ -46,10 +28,7 @@ typedef struct{
   uint64_t idx;
   uint64_t idxIR;
   uint8_t  ir;
-  ARRAY    array;
   BLOOM    *bloom;
-  Hash     *hash;
-  uint8_t  mode;
   }
 Model;
 
@@ -64,7 +43,7 @@ BLOOM       *CreateBloom     (uint32_t k, uint64_t s);
 void        DeleteBloom      (BLOOM *B);
 uint8_t     SearchBloom      (BLOOM *B, uint64_t i);
 void        UpdateBloom      (BLOOM *B, uint64_t i);
-Model       *CreateModel     (uint32_t, uint32_t, uint32_t, uint64_t, uint8_t);
+Model       *CreateModel     (uint32_t, uint32_t, uint32_t, uint64_t);
 void        DeleteModel      (Model *);
 void        ResetModelIdx    (Model *);
 void        ResetIdx         (Model *);

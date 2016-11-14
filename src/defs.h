@@ -20,14 +20,13 @@ typedef struct{
   char     *output;
   SFILES   *ref;
   SFILES   *tar;
-  uint32_t context;
+  uint32_t kmer;
   uint32_t inverse;
   uint64_t **size;
   uint64_t *chrSize;
   int64_t  subsamp;
   int64_t  window;
   int64_t  ratio;
-  uint8_t  bloom;
   uint64_t bSize;
   uint32_t bHashes;
   uint64_t max;
@@ -51,25 +50,18 @@ Param;
 #define DEFAULT_DISK           1
 #define DEFAULT_VERBOSE        0
 #define DEFAULT_IR             0
-#define DEFAULT_CTX            12
-#define DEF_MIN_CTX            12
-#define DEF_MAX_CTX            13
+#define DEFAULT_KMER           12
 #define WINDOW_RATIO           1300
 #define SUBSAMPLE_RATIO        5
 #define DEFAULT_THRESHOLD      0.5 
 #define DEFAULT_WINDOW         -1
 #define DEFAULT_SUBSAMPLE      0
 #define DEFAULT_SAMPLE_RATIO   10000
-#define MIN_CTX                1
-#define MAX_CTX                30
+#define MIN_KMER               1
+#define MAX_KMER               30
 #define BGUARD                 32
 #define ALPHABET_SIZE          4
-#define HASH_TABLE_MODE        2
-#define HASH_TABLE_BEGIN_CTX   17
 #define HASH_SIZE              268435459      // first PRIME NUMBER after 2^28
-#define MAX_HASH_CTX           30
-#define MIN_HASH_CTX           1
-#define DEFAULT_BLOOM          1
 #define DEFAULT_BHASHES        7
 #define DEFAULT_BSIZE          1<<30
 #define EXTRA_CHAR_CODE        7

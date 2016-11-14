@@ -99,15 +99,13 @@ uint8_t N2S(uint8_t c){
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-uint8_t GetCompSym(uint8_t symbol)
-  {
-  switch(symbol)
-    {
-    case 'A': return 'T';
-    case 'C': return 'G';
-    case 'G': return 'C';
-    case 'T': return 'A';
-    default:  return symbol;
+uint8_t GetCompSym(uint8_t c){
+  switch(c){
+    case 'A': case 'a':                     return 'T';
+    case 'C': case 'c':                     return 'G';
+    case 'G': case 'g':                     return 'C';
+    case 'T': case 't': case 'U': case 'u': return 'A';
+    default:  return c;
     }
   }
 
@@ -395,19 +393,11 @@ uint8_t CmpCheckSum(uint32_t cs, uint32_t checksum){
 void PrintArgs(Param *P){
   uint32_t n;
   fprintf(stderr, "K-mer model:\n");
-  fprintf(stderr, "  [+] K-mer ........................ %u\n", P->context);
+  fprintf(stderr, "  [+] K-mer ........................ %u\n", P->kmer);
   fprintf(stderr, "  [+] Use inversions ............... %s\n", !P->inverse? 
   "no" : "yes");
-  if(P->context >= BLOOM_TABLE_BEGIN_CTX){
-    if(P->bloom == 1){
-      fprintf(stderr, "  [+] Bloom array size ............. %"PRIu64"\n", 
-      P->bSize);
-      fprintf(stderr, "  [+] Bloom hashes number .......... %u\n", P->bHashes);
-      }
-    else{
-      fprintf(stderr, "  [+] Using Hash (not Bloom)\n");
-      }
-    }
+  fprintf(stderr, "  [+] Bloom array size ............. %"PRIu64"\n", P->bSize);
+  fprintf(stderr, "  [+] Bloom hashes number .......... %u\n", P->bHashes);
   fprintf(stderr, "Threshold .......................... %.4g\n", P->threshold);
   fprintf(stderr, "Sub-sampling ....................... %"PRIi64"\n", 
   P->subsamp);
