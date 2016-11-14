@@ -215,6 +215,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
       GetIdx(sBuf+idx-1, P->M); 
 
       GetIdxIR(sBuf+idx, P->M); // XXX: TEST REVERSE
+      //FIXME: -1 also or remove from both?!
 
       if(i > P->M->kmer){  // SKIP INITIAL CONTEXT, ALL "AAA..."
 
@@ -230,7 +231,6 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
         else{
           fprintf(Bin, "1");
           }
-
         }
 
       if(++idx == BUFFER_SIZE){
