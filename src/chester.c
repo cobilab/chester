@@ -13,6 +13,7 @@
 #include "segment.h"
 #include "paint.h"
 #include "parser.h"
+#include "buffer.h"
 
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - W R I T E   W O R D - - - - - - - - - - - -
@@ -295,80 +296,47 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
 // - - - - - - - - - - - - - - - - R E F E R E N C E - - - - - - - - - - - - -
 void LoadReference(Param *P, uint32_t ref){
   FILE     *Reader = Fopen(P->ref->names[ref], "r");
-  uint32_t k, idxPos, header = 0, type = 0, line = 0, dna = 0, begin = 0;
+  uint32_t k, idxPos;
   int32_t  idx = 0;
-  uint8_t  *rBuf, *sBuf, sym;
-  uint64_t i = 0;
+  uint8_t  sym;
+  uint64_t i = 0, begin = 0;
   #ifdef PROGRESS
   uint64_t size = NBytesInFile(Reader);
   #endif
+  PARSER   *PA = CreateParser();
+  CBUF     *symBuf = CreateCBuffer(BUFFER_SIZE, BGUARD);
+  uin8_t   *rBuf = (uint8_t *) Calloc(BUFFER_SIZE + 1, sizeof(uint8_t));
 
   if(P->verbose == 1)
     fprintf(stderr, "Building reference model (k=%u) ...\n", P->context);
 
-  rBuf  = (uint8_t *) Calloc(BUFFER_SIZE + 1, sizeof(uint8_t));
-  sBuf  = (uint8_t *) Calloc(BUFFER_SIZE + BGUARD+1, sizeof(uint8_t));
-  sBuf += BGUARD;
+  FileType(PA, Reader);
 
-  sym = fgetc(Reader);
-  switch(sym){
-    case '>': type = 1; break;
-    case '@': type = 2; break;
-    default : type = 0;
-    }
-  rewind(Reader);
-
-  while((k = fread(rBuf, 1, BUFFER_SIZE, Reader)))
+  while((k = fread(readBuf, 1, BUFFER_SIZE, Reader)))
     for(idxPos = 0 ; idxPos < k ; ++idxPos){
       ++i;
       #ifdef PROGRESS
       CalcProgress(size, i);
       #endif
 
-      switch(type){
-        case 1:
-        switch(rBuf[idxPos]){
-          case '>':  header = 1; begin = 0; continue;
-          case '\n': header = 0;            continue;  
-          default:   if(header==1)          continue;
-          }
-        break;
-        case 2:
-          switch(line){
-            case 0: if(sym == '\n'){ line = 1; dna = 1; begin = 0; } break;
-            case 1: if(sym == '\n'){ line = 2; dna = 0; }            break;
-            case 2: if(sym == '\n'){ line = 3; dna = 0; }            break;
-            case 3: if(sym == '\n'){ line = 0; dna = 0; }            break;
-            }
-        if(dna == 0 || sym == '\n') continue;
-        break;
-        }
-        
-      if((sym = S2N(rBuf[idxPos])) == 4) continue;    
-      sBuf[idx] = sym;
-      GetIdx(sBuf+idx-1, P->M);
+      if(ParseSym(PA, (sym = readBuf[idxPos])) == -1){ idx = 0; continue; }
+      symBuf->buf[symBuf->idx] = sym = DNASymToNum(sym);
+      GetIdx(symBuf+idx-1, P->M);
 
       if(++begin > P->M->ctx){ // SKIP INITIAL CONTEXT FROM EACH READ
         Update(P->M);
-
-/*
-        if(P->M->ir == 1){  // Inverted repeats
+/*      if(P->M->ir == 1){  // Inverted repeats
           GetIdxIR(sBuf+idx, P->M);
           UpdateIR(P->M);
-          }
-*/
-
+          }  */
         }
 
-      if(++idx == BUFFER_SIZE){
-        memcpy(sBuf-BGUARD, sBuf+idx-BGUARD, BGUARD);
-        idx = 0;
-        }
+      UpdateCBuffer(symBuf);
       }
  
-  ResetIdx(P->M);
-  Free(rBuf);
-  Free(sBuf-BGUARD);
+  RemoveCBuffer(symBuf);
+  Free(readBuf);
+  RemoveParser(PA);
   fclose(Reader);
 
   if(P->verbose == 1){
