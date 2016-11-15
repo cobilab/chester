@@ -10,14 +10,14 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-HFAM *CreateHFamily(uint32_t k, uint64_t p){
+HFAM *CreateHFamily(uint32_t number_of_hashes, uint64_t p){
   int n;
   srand(0);
   HFAM *H = (HFAM *) Calloc(1, sizeof(HFAM));
-  H->k = k;
-  H->a = (uint64_t *)  Calloc(k, sizeof(uint64_t));
-  H->b = (uint64_t *)  Calloc(k, sizeof(uint64_t));
-  for(n = 0 ; n < k ; ++n){
+  H->k = number_of_hashes;
+  H->a = (uint64_t *)  Calloc(number_of_hashes, sizeof(uint64_t));
+  H->b = (uint64_t *)  Calloc(number_of_hashes, sizeof(uint64_t));
+  for(n = 0 ; n < number_of_hashes ; ++n){
     H->a[n] = rand() % UINT64_MAX;
     H->b[n] = rand() % UINT64_MAX;
     }
@@ -69,10 +69,10 @@ uint8_t SearchBloom(BLOOM *B, uint64_t i){
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void UpdateBloom(BLOOM *B, uint64_t i){
+void UpdateBloom(BLOOM *B, uint64_t idx){
   uint32_t n;
   for(n = 0 ; n < B->H->k ; ++n)
-    B->array[HashFunc(B->H, i, n) % B->size] = 1;
+    B->array[HashFunc(B->H, idx, n) % B->size] = 1;
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
