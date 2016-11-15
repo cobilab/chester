@@ -84,7 +84,8 @@ void DeleteModel(Model *M){
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Model *CreateModel(uint32_t kmer, uint32_t ir, uint32_t bh, uint64_t bs){
+Model *CreateModel(uint32_t kmer, uint32_t ir, uint32_t number_of_hashes, 
+uint64_t size){
   Model *M = (Model *) Calloc(1, sizeof(Model));
   uint64_t prod = 1, *multipliers;
   uint32_t n;
@@ -96,7 +97,7 @@ Model *CreateModel(uint32_t kmer, uint32_t ir, uint32_t bh, uint64_t bs){
   M->idxIR     = M->nPModels - 1;
   M->ir        = ir == 0 ? 0 : 1;
 
-  M->bloom = CreateBloom(bh, bs);
+  M->bloom = CreateBloom(number_of_hashes, size);
 
   for(n = 0 ; n < M->kmer ; ++n){
     multipliers[n] = prod;

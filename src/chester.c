@@ -174,10 +174,10 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
   char     *name2 = concatenate(P->tar->names[tar], name1);
   char     *namex2 = concatenate(P->tar->names[tar], namex);
   FILE     *Pos = NULL, *Bin = Fopen(namex2, "w");
-  uint64_t nSymbols = NBytesInFile(Reader), i = 0, raw = 0, unknown = 0, 
-           base = 0, hPos = 0;
+  uint64_t nSymbols = NBytesInFile(Reader), idx_symbols = 0, raw = 0, unknown = 0, 
+           base = 0, hPos = 0, possibleK = 0;
   uint32_t n, k, idxPos, hIndex, header = 0;
-  int32_t  idx = 0;
+  int32_t  idx_buffer = 0;
   uint8_t  *wBuf, *rBuf, *sBuf, sym, found = 0;
  
   if(P->verbose)
@@ -193,37 +193,41 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
 
   PARSER   *PA = CreateParser();
   FileType(PA, Reader);
+  ResetIdx(P->M);
 
   while((k = fread(rBuf, 1, BUFFER_SIZE, Reader))){
     for(idxPos = 0 ; idxPos < k ; ++idxPos){
       #ifdef PROGRESS
-      CalcProgress(nSymbols, i);
+      CalcProgress(nSymbols, idx_symbols);
       #endif
-      ++i;
+      ++idx_symbols;
 
-      if(ParseSym(PA, rBuf[idxPos]) == -1){ hPos = 0; continue; }
+      if(ParseSym(PA, (sym = rBuf[idxPos])) == -1){ hPos = 0; continue; }
 
       // AFTER HEADER IS A BASE OR UNKNOWN BASE
       ++base;
-      if((sym = S2N(rBuf[idxPos])) == 4){
+      if((sym = S2N(sym)) == 4){
         ++unknown;
+        hPos = 0; // FLUSH INIT OF CONTEXT
         if(P->disk == 0)
-          fprintf(Pos, "%"PRIu64"\tN\n", base-P->M->kmer);
+          fprintf(Pos, "%"PRIu64"\tN\n", base-P->M->kmer+1);
         fprintf(Bin, "%u", EXTRA_CHAR_CODE); // THIS IS A FALSE POSITIVE: "N"
         continue;
         }
-      sBuf[idx] = sym;
-      GetIdx(sBuf+idx-1, P->M);
-      if(P->M->ir != 0)
-        GetIdxIR(sBuf+idx-1, P->M);
+
+      sBuf[idx_buffer] = sym;
+      GetIdx(sBuf+idx_buffer, P->M);
+      if(P->M->ir == 1)
+        GetIdxIR(sBuf+idx_buffer, P->M);
 
       if(++hPos >= P->M->kmer){  // SKIP INITIAL CONTEXT, ALL "AAA..."
+        ++possibleK;
 
         if(P->M->ir == 0){
-          if(SearchBloom(P->M->bloom, P->M->idx)   == 0){
+          if(SearchBloom(P->M->bloom, P->M->idx) == 0){ // IF RAW FOUND
             if(P->disk == 0){
-              fprintf(Pos, "%"PRIu64"\t", base-P->M->kmer);
-              RWord(Pos, sBuf, idx, P->M->kmer);
+              fprintf(Pos, "%"PRIu64"\t", base-P->M->kmer+1);
+              RWord(Pos, sBuf, idx_buffer+1, P->M->kmer);
               }
             fprintf(Bin, "0");
             ++raw;
@@ -233,11 +237,11 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
             }
           }
         else{
-          if(SearchBloom(P->M->bloom, P->M->idx)   == 0 && 
+          if(SearchBloom(P->M->bloom, P->M->idx) == 0 && 
              SearchBloom(P->M->bloom, P->M->idxIR) == 0){ // IF NOT MATCH:
             if(P->disk == 0){
-              fprintf(Pos, "%"PRIu64"\t", base-P->M->kmer);
-              RWord(Pos, sBuf, idx, P->M->kmer);
+              fprintf(Pos, "%"PRIu64"\t", base-P->M->kmer+1);
+              RWord(Pos, sBuf, idx_buffer+1, P->M->kmer);
               }
             fprintf(Bin, "0");
             ++raw;
@@ -248,9 +252,9 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
           }
         }
 
-      if(++idx == BUFFER_SIZE){
-        memcpy(sBuf-BGUARD, sBuf+idx-BGUARD, BGUARD);
-        idx = 0;
+      if(++idx_buffer == BUFFER_SIZE){
+        memcpy(sBuf-BGUARD, sBuf+idx_buffer-BGUARD, BGUARD);
+        idx_buffer = 0;
         }
       }
     }
@@ -271,9 +275,9 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
   if(P->verbose == 1){
     fprintf(stderr, "Done!                          \n");  // SPACES ARE VALID
     fprintf(stderr, "RAWs FOUND  : %.4lf %% ( %"PRIu64" in %"PRIu64" )\n", 
-    (double) raw / (nSymbols-unknown) * 100.0, raw, nSymbols-unknown);  
+    (double) raw / possibleK * 100.0, raw, possibleK);  
     fprintf(stderr, "Unknown sym : %"PRIu64"\n", unknown);
-    fprintf(stderr, "Total sym   : %"PRIu64"\n", nSymbols);
+    fprintf(stderr, "Total base  : %"PRIu64"\n", base);
     if(P->tar->nFiles != tar+1)
       fprintf(stderr, "------------------------------------------\n");
     }
@@ -285,11 +289,11 @@ void LoadReference(Param *P, uint32_t ref){
   FILE     *Reader = Fopen(P->ref->names[ref], "r");
   uint32_t k, idxPos;
   uint8_t  sym;
-  uint64_t i = 0, idx = 0;
+  uint64_t idx_symbols = 0, idx_buffer = 0, idx_read = 0;
   #ifdef PROGRESS
   uint64_t size = NBytesInFile(Reader);
   #endif
-  PARSER   *PA = CreateParser();
+  PARSER   *PA = CreateParser(); 
   CBUF     *symBuf = CreateCBuffer(BUFFER_SIZE, BGUARD);
   uint8_t  *readBuf = (uint8_t *) Calloc(BUFFER_SIZE + 1, sizeof(uint8_t));
 
@@ -297,19 +301,21 @@ void LoadReference(Param *P, uint32_t ref){
     fprintf(stderr, "Building reference model (k=%u) ...\n", P->kmer);
 
   FileType(PA, Reader);
+  ResetIdx(P->M);
 
   while((k = fread(readBuf, 1, BUFFER_SIZE, Reader)))
     for(idxPos = 0 ; idxPos < k ; ++idxPos){
-      ++i;
+      ++idx_symbols;
       #ifdef PROGRESS
-      CalcProgress(size, i);
+      CalcProgress(size, idx_symbols);
       #endif
 
-      if(ParseSym(PA, (sym = readBuf[idxPos])) == -1){ idx = 0; continue; }
-      symBuf->buf[symBuf->idx] = sym = S2N(sym);
-      GetIdx(symBuf->buf+symBuf->idx-1, P->M);
+      if(ParseSym(PA, (sym = readBuf[idxPos])) == -1){ idx_read = 0; continue; }
+        symBuf->buf[symBuf->idx] = sym = S2N(sym);
 
-      if(++idx >= P->M->kmer) // SKIP INITIAL CONTEXT FROM EACH READ
+      GetIdx(symBuf->buf+symBuf->idx, P->M);
+
+      if(++idx_read >= P->M->kmer) // SKIP INITIAL CONTEXT FROM EACH READ
         Update(P->M);
 
       UpdateCBuffer(symBuf);
@@ -377,7 +383,7 @@ int32_t main(int argc, char *argv[]){
   P->threshold = ArgsDouble (DEFAULT_THRESHOLD, p, argc, "-t");
   P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999);
   P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
-  P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 100, 99999999999);
+  P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 10, 99999999999);
   P->enlarge   = ArgsNumI64 (DEFAULT_ENLARGE, p, argc, "-e", -1,  999999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
   P->inverse   = ArgsState  (DEFAULT_IR,      p, argc, "-i");
@@ -448,7 +454,7 @@ int32_t main(int argc, char *argv[]){
   SegmentStreams(P);
   if(P->verbose){
     fprintf(stderr, "Done!                                     \n");
-    fprintf(stderr, "==========================================\n");
+   fprintf(stderr, "==========================================\n");
     }
 
   if(P->verbose) fprintf(stderr, "Painting ...\n");
