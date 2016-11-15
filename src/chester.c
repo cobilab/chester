@@ -212,24 +212,38 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
         continue;
         }
       sBuf[idx] = sym;
-      GetIdx(sBuf+idx-1, P->M); 
-
-      GetIdxIR(sBuf+idx, P->M); // XXX: TEST REVERSE
-      //FIXME: -1 also or remove from both?!
+      GetIdx(sBuf+idx, P->M);  //XXX: idx-1
+      if(P->M->ir != 0)
+        GetIdxIR(sBuf+idx, P->M); // XXX: TEST REVERSE
 
       if(i > P->M->kmer){  // SKIP INITIAL CONTEXT, ALL "AAA..."
 
-        if(SearchBloom(P->M->bloom, P->M->idx)   == 0 || 
-           SearchBloom(P->M->bloom, P->M->idxIR) == 0){ // IF NOT MATCH:
-          if(P->disk == 0){
-            fprintf(Pos, "%"PRIu64"\t", base-P->M->kmer);
-            RWord(Pos, sBuf, idx, P->M->kmer);
+        if(P->M->ir == 0){
+          if(SearchBloom(P->M->bloom, P->M->idx)   == 0){
+            if(P->disk == 0){
+              fprintf(Pos, "%"PRIu64"\t", base-P->M->kmer);
+              RWord(Pos, sBuf, idx, P->M->kmer);
+              }
+            fprintf(Bin, "0");
+            ++raw;
             }
-          fprintf(Bin, "0");
-          ++raw;
-          } 
+          else{
+            fprintf(Bin, "1");
+            }
+          }
         else{
-          fprintf(Bin, "1");
+          if(SearchBloom(P->M->bloom, P->M->idx)   == 0 && 
+             SearchBloom(P->M->bloom, P->M->idxIR) == 0){ // IF NOT MATCH:
+            if(P->disk == 0){
+              fprintf(Pos, "%"PRIu64"\t", base-P->M->kmer);
+              RWord(Pos, sBuf, idx, P->M->kmer);
+              }
+            fprintf(Bin, "0");
+            ++raw;
+            } 
+          else{
+            fprintf(Bin, "1");
+            }
           }
         }
 
@@ -328,7 +342,7 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "CHESTER %u.%u\n"
     "Copyright (C) 2015-2017 University of Aveiro.\nThis is Free software.\nYou "
     "may redistribute copies of it under the terms of the GNU \nGeneral "
-    "Public License v2 <http://www.gnu.org/licenses/gpl.html>. \nThere is NO "
+    "Public License v3 <http://www.gnu.org/licenses/gpl.html>. \nThere is NO "
     "WARRANTY, to the extent permitted by law.\nCode by Diogo Pratas,"
     " Armando J. Pinho and Paulo J. S. G Ferreira\n{pratas,ap,pjf}@ua.pt.\n",
     RELEASE, VERSION);
@@ -376,7 +390,7 @@ int32_t main(int argc, char *argv[]){
     VERSION, RELEASE);
     PrintArgs(P);
     fprintf(stderr, "==========================================\n");
-    fprintf(stderr, "Estimating optimal number of hash functions and precision ...\n");
+    fprintf(stderr, "Estimating number of hash functions and precision ...\n");
     }
 
   // ESTIMATE NUMBER OF HASHES FOR BEST PRECISION
