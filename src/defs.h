@@ -28,7 +28,7 @@ typedef struct{
   int64_t  window;
   int64_t  ratio;
   uint64_t bSize;
-  uint32_t bHashes;
+  int32_t  bHashes;
   uint64_t max;
   double   threshold;
   Model    *M;

@@ -387,12 +387,9 @@ int32_t main(int argc, char *argv[]){
     fclose(Reader);
     }
 
-  P->bHashes =  (((double) P->bSize / n_entries) * M_LN2);
-  double precision = pow((1 - pow(M_E, -(((double)P->bSize / n_entries) * M_LN2) 
-  * ((double) n_entries/P->bSize))), (((double) P->bSize / n_entries) * M_LN2));
-
-  // double precision2 = pow((1-pow(M_E,-P->bHashes*((double)n_entries + 0.5) / (P->bSize-1))), P->bHashes);
-  // XXX: APPROXIMATION TO NUMBER OF HASH FUNCTIONS MIGHT BE A PROBLEM FOR PRECISION CALCUS
+  P->bHashes = (int32_t) (((double) P->bSize / n_entries) * M_LN2);
+  double precision = pow(1-exp(-P->bHashes*((double)n_entries + 0.5) 
+  / (P->bSize-1)), P->bHashes);
 
   if(P->verbose){
     fprintf(stderr, "Done!\n");
@@ -400,7 +397,6 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "Number of entries : %"PRIu64"\n", n_entries);
     fprintf(stderr, "Number of Hashes  : %u\n", P->bHashes);
     fprintf(stderr, "Precision         : %lf\n", precision);
-    // fprintf(stderr, "Precision2        : %lf\n", precision2);
     fprintf(stderr, "==========================================\n");
     }
 
