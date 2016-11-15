@@ -27,6 +27,7 @@ typedef struct{
   int64_t  subsamp;
   int64_t  window;
   int64_t  ratio;
+  int64_t  enlarge;
   uint64_t bSize;
   int32_t  bHashes;
   uint64_t max;
@@ -50,7 +51,8 @@ Param;
 #define DEFAULT_DISK           1
 #define DEFAULT_VERBOSE        0
 #define DEFAULT_IR             0
-#define DEFAULT_KMER           12
+#define DEFAULT_KMER           14
+#define DEFAULT_ENLARGE        5
 #define WINDOW_RATIO           1300
 #define SUBSAMPLE_RATIO        5
 #define DEFAULT_THRESHOLD      0.5 

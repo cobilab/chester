@@ -81,7 +81,7 @@ void PaintStreams(Param *P){
     FILE *Reader = Fopen(name, "r");
 
     while(fscanf(Reader, "%"PRIu64"\t%"PRIu64"", &init, &end) == 2){
-      Rect(Plot, Paint->width, GetPoint(end-init+1), Paint->cx,
+      Rect(Plot, Paint->width, GetPoint(end-init+1+P->enlarge), Paint->cx,
       Paint->cy + GetPoint(init), GetRgbColor(LEVEL_HUE));
       }
 
@@ -175,7 +175,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
   char     *namex2 = concatenate(P->tar->names[tar], namex);
   FILE     *Pos = NULL, *Bin = Fopen(namex2, "w");
   uint64_t nSymbols = NBytesInFile(Reader), i = 0, raw = 0, unknown = 0, 
-           base = 0;
+           base = 0, hPos = 0;
   uint32_t n, k, idxPos, hIndex, header = 0;
   int32_t  idx = 0;
   uint8_t  *wBuf, *rBuf, *sBuf, sym, found = 0;
@@ -191,17 +191,18 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
   sBuf  = (uint8_t *) Calloc(BUFFER_SIZE + BGUARD, sizeof(uint8_t));
   sBuf += BGUARD;
 
+  PARSER   *PA = CreateParser();
+  FileType(PA, Reader);
+
   while((k = fread(rBuf, 1, BUFFER_SIZE, Reader))){
     for(idxPos = 0 ; idxPos < k ; ++idxPos){
       #ifdef PROGRESS
       CalcProgress(nSymbols, i);
       #endif
       ++i;
-      switch(rBuf[idxPos]){
-        case '>':  header = 1; continue;
-        case '\n': header = 0; continue;  
-        default:   if(header==1) continue;
-        }
+
+      if(ParseSym(PA, rBuf[idxPos]) == -1){ hPos = 0; continue; }
+
       // AFTER HEADER IS A BASE OR UNKNOWN BASE
       ++base;
       if((sym = S2N(rBuf[idxPos])) == 4){
@@ -212,11 +213,11 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
         continue;
         }
       sBuf[idx] = sym;
-      GetIdx(sBuf+idx, P->M);
+      GetIdx(sBuf+idx-1, P->M);
       if(P->M->ir != 0)
-        GetIdxIR(sBuf+idx, P->M);
+        GetIdxIR(sBuf+idx-1, P->M);
 
-      if(i > P->M->kmer){  // SKIP INITIAL CONTEXT, ALL "AAA..."
+      if(++hPos >= P->M->kmer){  // SKIP INITIAL CONTEXT, ALL "AAA..."
 
         if(P->M->ir == 0){
           if(SearchBloom(P->M->bloom, P->M->idx)   == 0){
@@ -265,6 +266,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
   Free(rBuf);
   Free(wBuf);
   Free(sBuf-BGUARD);
+  RemoveParser(PA);
 
   if(P->verbose == 1){
     fprintf(stderr, "Done!                          \n");  // SPACES ARE VALID
@@ -282,9 +284,8 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
 void LoadReference(Param *P, uint32_t ref){
   FILE     *Reader = Fopen(P->ref->names[ref], "r");
   uint32_t k, idxPos;
-  int32_t  idx = 0;
   uint8_t  sym;
-  uint64_t i = 0, begin = 0;
+  uint64_t i = 0, idx = 0;
   #ifdef PROGRESS
   uint64_t size = NBytesInFile(Reader);
   #endif
@@ -308,7 +309,7 @@ void LoadReference(Param *P, uint32_t ref){
       symBuf->buf[symBuf->idx] = sym = S2N(sym);
       GetIdx(symBuf->buf+symBuf->idx-1, P->M);
 
-      if(++begin > P->M->kmer) // SKIP INITIAL CONTEXT FROM EACH READ
+      if(++idx >= P->M->kmer) // SKIP INITIAL CONTEXT FROM EACH READ
         Update(P->M);
 
       UpdateCBuffer(symBuf);
@@ -356,6 +357,7 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -u <value>               sub-sampling,             \n");
     fprintf(stderr, "  -s <value>               bloom size,               \n");
     fprintf(stderr, "  -i                       use inversions,           \n");
+    fprintf(stderr, "  -e <value>               enlarge painted regions,  \n");
     fprintf(stderr, "  -p                       show positions/words,     \n");
     fprintf(stderr, "  -k <value>               k-mer size (up to 30),    \n");
     fprintf(stderr, "                                                     \n");
@@ -376,6 +378,7 @@ int32_t main(int argc, char *argv[]){
   P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999);
   P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
   P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 100, 99999999999);
+  P->enlarge   = ArgsNumI64 (DEFAULT_ENLARGE, p, argc, "-e", -1,  999999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
   P->inverse   = ArgsState  (DEFAULT_IR,      p, argc, "-i");
   P->disk      = ArgsState  (DEFAULT_DISK,    p, argc, "-p");

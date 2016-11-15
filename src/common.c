@@ -446,6 +446,8 @@ void PrintArgs(Param *P){
   fprintf(stderr, "Threshold .......................... %.4g\n", P->threshold);
   fprintf(stderr, "Sub-sampling ....................... %"PRIi64"\n", 
   P->subsamp);
+  fprintf(stderr, "Enlarge size ....................... %"PRIi64"\n", 
+  P->enlarge);
   if(P->window == -1)
     fprintf(stderr, "Window size ........................ Automatic\n");
   else 
