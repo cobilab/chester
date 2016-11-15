@@ -212,9 +212,9 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
         continue;
         }
       sBuf[idx] = sym;
-      GetIdx(sBuf+idx, P->M);  //XXX: idx-1
+      GetIdx(sBuf+idx, P->M);
       if(P->M->ir != 0)
-        GetIdxIR(sBuf+idx, P->M); // XXX: TEST REVERSE
+        GetIdxIR(sBuf+idx, P->M);
 
       if(i > P->M->kmer){  // SKIP INITIAL CONTEXT, ALL "AAA..."
 
@@ -308,13 +308,8 @@ void LoadReference(Param *P, uint32_t ref){
       symBuf->buf[symBuf->idx] = sym = S2N(sym);
       GetIdx(symBuf->buf+symBuf->idx-1, P->M);
 
-      if(++begin > P->M->kmer){ // SKIP INITIAL CONTEXT FROM EACH READ
+      if(++begin > P->M->kmer) // SKIP INITIAL CONTEXT FROM EACH READ
         Update(P->M);
-/*      if(P->M->ir == 1){  // Inverted repeats
-          GetIdxIR(symBuf->buf+symBuf->idx, P->M);
-          UpdateIR(P->M);
-          }  */
-        }
 
       UpdateCBuffer(symBuf);
       }
@@ -407,10 +402,12 @@ int32_t main(int argc, char *argv[]){
 
   if(P->verbose){
     fprintf(stderr, "Done!\n");
-    fprintf(stderr, "Bloom array size  : %"PRIu64"\n", P->bSize);
-    fprintf(stderr, "Number of entries : %"PRIu64"\n", n_entries);
-    fprintf(stderr, "Number of Hashes  : %u\n", P->bHashes);
-    fprintf(stderr, "Precision         : %lf\n", precision);
+    fprintf(stderr, "Bloom array size ................... %"PRIu64"\n", 
+    P->bSize);
+    fprintf(stderr, "Number of entries .................. %"PRIu64"\n", 
+    n_entries);
+    fprintf(stderr, "Number of Hashes ................... %u\n", P->bHashes);
+    fprintf(stderr, "Precision .......................... %lf\n", precision);
     fprintf(stderr, "==========================================\n");
     }
 
