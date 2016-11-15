@@ -415,7 +415,8 @@ int32_t main(int argc, char *argv[]){
     P->bSize);
     fprintf(stderr, "Number of entries .................. %"PRIu64"\n", 
     n_entries);
-    fprintf(stderr, "Number of Hashes ................... %u\n", P->bHashes);
+    fprintf(stderr, "Number of Hashes ................... %u (%lf)\n", 
+    P->bHashes, ((double) P->bSize / n_entries) * M_LN2);
     fprintf(stderr, "Precision .......................... %lf\n", precision);
     fprintf(stderr, "==========================================\n");
     }
