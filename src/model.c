@@ -65,7 +65,7 @@ BLOOM *CreateBloom(uint32_t k, uint64_t size){
   BLOOM *B = (BLOOM *) Calloc(1, sizeof(BLOOM));
   B->array = (BCC *) Calloc((size+1)>>3, sizeof(BCC));
   // B->array = (BCC *) Calloc(size, sizeof(BCC));
-  B->H     = CreateHFamily(k, 68719476735); // ~2^36 // GENERATES MAX 64 GB
+  B->H     = CreateHFamily(k, 68719476735); // ~2^36 // GENERATES MAX 64 GB FIXME: INCREASE THIS!
   B->size  = size;
   return B;
   }
@@ -76,7 +76,7 @@ uint8_t SearchBloom(BLOOM *B, uint64_t i){
   uint32_t n;
   for(n = 0 ; n < B->H->k ; ++n)
     //if(B->array[HashFunc(B->H, i, n) % B->size] == 0)
-    if(ReadBit(B, HashFunc(B->H, i, n) % B->size) == 0)
+    if(ReadBit(B, HashFunc(B->H, i, n) % (B->size>>3)) == 0)
       return 0;
   return 1;
   }
@@ -87,7 +87,7 @@ void UpdateBloom(BLOOM *B, uint64_t idx){
   uint32_t n;
   for(n = 0 ; n < B->H->k ; ++n)
     //B->array[HashFunc(B->H, idx, n) % B->size] = 1;
-    SetBitTo1(B, HashFunc(B->H, idx, n) % B->size);
+    SetBitTo1(B, HashFunc(B->H, idx, n) % (B->size>>3));
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
