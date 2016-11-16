@@ -10,21 +10,14 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-uint8_t InsertBit(uint8_t c, uint64_t idx){
-  return 0x01<<(idx%8)|c;
+int ReadBit(BLOOM *B, uint64_t idx){
+  return (B->array[idx>>3]>>(idx%8)&0x01) ? 0 : 1;
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-int ReadBit(uint8_t c, uint64_t idx){
-  return (c>>(idx%8)&0x01) ? 0 : 1;
-  }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-void AccessByte(BLOOM *B, uint64_t idx){
-    
-
+void SetBitTo1(BLOOM *B, uint64_t idx){
+  B->array[idx>>3] = 0x01<<(idx%8)|B->array[idx>>3];
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

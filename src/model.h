@@ -34,6 +34,8 @@ Model;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+int         ReadBit          (BLOOM *, uint64_t);
+void        SetBitTo1        (BLOOM *, uint64_t);
 HFAM        *CreateHFamily   (uint32_t, uint64_t);
 void        DeleteHFamily    (HFAM *);
 uint64_t    HashFunc         (HFAM *, uint64_t, uint32_t);
