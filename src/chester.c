@@ -421,6 +421,12 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "==========================================\n");
     }
 
+  if(P->bHashes == 0){
+    fprintf(stderr, "Error: 0 bloom hashes used!\n");
+    fprintf(stderr, "Try to increase the bloom array size.\n");
+    return 1;
+    }
+
   P->size = (uint64_t **) Calloc(P->ref->nFiles, sizeof(uint64_t *));
   for(n = 0 ; n < P->ref->nFiles ; ++n){
     P->M = CreateModel(P->kmer, P->inverse, P->bHashes, P->bSize);
