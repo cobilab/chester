@@ -423,7 +423,7 @@ int32_t main(int argc, char *argv[]){
 
   if(P->bHashes == 0){
     fprintf(stderr, "Error: 0 bloom hashes used!\n");
-    fprintf(stderr, "Try to increase the bloom array size.\n");
+    fprintf(stderr, "Note: try to increase the bloom array size.\n");
     return 1;
     }
 
