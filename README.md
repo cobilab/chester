@@ -1,8 +1,8 @@
 # CHESTER #
 <p align="center"><img src="imgs/logo.png" 
 alt="CHESTER" width="300" height="300" border="0" /></p>
-CHESTER is an alignment-free tool to compute and visualise uniqueness (Relative Absent Words) maps.
-The references can be non-aligned, such as those outputed directly from NGS plataforms (FASTQ), while the target sequences should be aligned (FASTA). CHESTER has a probabilistic way to detect the relative absense of large k-mer sizes (up to 30), namely using bloom filters.
+CHESTER is a probabilistic tool to map and visualize relative singularity regions.
+The references can be non-aligned, such as those outputed directly from NGS plataforms (FASTQ), while the target sequences should be aligned (FASTA). CHESTER has a probabilistic way to detect the relative absense of large k-mer sizes (up to 30), namely using bloom filters. The bloom filters are set automatically.
 
 ## INSTALLATION ##
 
@@ -85,8 +85,8 @@ or
 These will print the following options:
 <pre>
 Usage: CHESTER &#60OPTIONS&#62... [FILE]:&#60...&#62 [FILE]:&#60...&#62
-CHESTER is a fast tool to compute uniqueness maps.   
-                                                     
+CHESTER is a probabilistic tool to map and visualize relative
+singularity regions. The Bloom filter is automatically set.                                                    
   -v                       verbose mode,             
   -a                       about CHESTER,            
   -t &#60value&#62               threshold [0.0;1.0],      
