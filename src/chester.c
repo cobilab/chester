@@ -418,9 +418,9 @@ int32_t main(int argc, char *argv[]){
     P->bSize);
     fprintf(stderr, "Max number of entries .............. %"PRIu64"\n", 
     max_entries);
-    fprintf(stderr, "Minimum number of Hashes ........... %u (%lf)\n", 
-    P->bHashes, ((double) P->bSize / n_entries) * M_LN2);
-    fprintf(stderr, "Worst precision .................... %lf\n", precision);
+    fprintf(stderr, "Minimum number of Hashes ........... %u (%.10lf)\n", 
+    P->bHashes, ((double) P->bSize / max_entries) * M_LN2);
+    fprintf(stderr, "Worst precision .................... %.10lf\n", precision);
     fprintf(stderr, "==========================================\n");
     }
 
