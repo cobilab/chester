@@ -398,26 +398,29 @@ int32_t main(int argc, char *argv[]){
     }
 
   // ESTIMATE NUMBER OF HASHES FOR BEST PRECISION
-  uint64_t n_entries = 0;
+  uint64_t max_entries = 0;
   for(n = 0 ; n < P->ref->nFiles ; ++n){
+    uint64_t n_entries = 0;
     FILE *Reader = Fopen(P->ref->names[n], "r");
     n_entries += EntriesInFile(Reader, P->kmer);
+    if(max_entries < n_entries)
+      max_entries = n_entries;
     fclose(Reader);
     }
 
-  P->bHashes = (int32_t) (((double) P->bSize / n_entries) * M_LN2);
-  double precision = pow(1-exp(-P->bHashes*((double)n_entries + 0.5) 
+  P->bHashes = (int32_t) (((double) P->bSize / max_entries) * M_LN2);
+  double precision = pow(1-exp(-P->bHashes*((double) max_entries + 0.5) 
   / (P->bSize-1)), P->bHashes);
 
   if(P->verbose){
     fprintf(stderr, "Done!\n");
     fprintf(stderr, "Bloom array size ................... %"PRIu64"\n", 
     P->bSize);
-    fprintf(stderr, "Number of entries .................. %"PRIu64"\n", 
-    n_entries);
-    fprintf(stderr, "Number of Hashes ................... %u (%lf)\n", 
+    fprintf(stderr, "Max number of entries .............. %"PRIu64"\n", 
+    max_entries);
+    fprintf(stderr, "Minimum number of Hashes ........... %u (%lf)\n", 
     P->bHashes, ((double) P->bSize / n_entries) * M_LN2);
-    fprintf(stderr, "Precision .......................... %lf\n", precision);
+    fprintf(stderr, "Worst precision .................... %lf\n", precision);
     fprintf(stderr, "==========================================\n");
     }
 
