@@ -317,7 +317,6 @@ void LoadReference(Param *P, uint32_t ref){
 
       if(++idx_read >= P->M->kmer) // SKIP INITIAL CONTEXT FROM EACH READ
         UpdateBloom(P->M->bloom,P->M->idx);
-        //Update(P->M);
 
       UpdateCBuffer(symBuf);
       }
