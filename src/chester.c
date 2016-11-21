@@ -383,7 +383,8 @@ int32_t main(int argc, char *argv[]){
   P->threshold = ArgsDouble (DEFAULT_THRESHOLD, p, argc, "-t");
   P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999);
   P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
-  P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 10, 299999999999);
+  P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 10, 1999999999999);
+                                                               //1717987999999
   P->enlarge   = ArgsNumI64 (DEFAULT_ENLARGE, p, argc, "-e", -1,  999999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
   P->inverse   = ArgsState  (DEFAULT_IR,      p, argc, "-i");
