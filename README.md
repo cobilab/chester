@@ -2,7 +2,7 @@
 <p align="center"><img src="imgs/logo.png" 
 alt="CHESTER" width="300" height="300" border="0" /></p>
 CHESTER is an alignment-free tool to compute and visualise uniqueness (Relative Absent Words) maps.
-The references can be non-aligned, such as those outputed directly from NGS plataforms (FASTQ), while the target sequences should be aligned (FASTA). CHESTER has a probabilistic way to detect the relative absense of large k-mer sizes (up to 30), namely using bloom filters, although it can also run in a deterministic mode, namely using and array table (below contexts 17) or a hash table (above 16 and up to 30).
+The references can be non-aligned, such as those outputed directly from NGS plataforms (FASTQ), while the target sequences should be aligned (FASTA). CHESTER has a probabilistic way to detect the relative absense of large k-mer sizes (up to 30), namely using bloom filters.
 
 ## INSTALLATION ##
 
@@ -15,15 +15,13 @@ Download, install and resolve conflicts.
 #### Linux 
 <pre>
 sudo apt-get install cmake
-wget https://github.com/pratas/chester/archive/master.zip
-unzip master.zip
-cd chester-master/src/
+git clone https://github.com/pratas/chester.git
+cd chester/src/
 cmake .
 make
 </pre>
 
-Alternatively, you can install (without cmake and only for linux) using
-
+Alternatively, you can install (without cmake and git, but only for linux) using
 <pre>
 wget https://github.com/pratas/chester/archive/master.zip
 unzip master.zip
@@ -94,10 +92,9 @@ CHESTER is a fast tool to compute uniqueness maps.
   -t &#60value&#62               threshold [0.0;1.0],      
   -w &#60value&#62               window size,              
   -u &#60value&#62               sub-sampling,             
-  -x                       use hash instead bloom,
-  -n &#60value&#62               bloom hashes number,      
   -s &#60value&#62               bloom size,               
   -i                       use inversions,           
+  -e &#60value&#62               enlarge painted regions,        
   -p                       show positions/words,
   -k &#60value&#62               k-mer size (up to 30),               
                                                      
@@ -123,7 +120,7 @@ cp scripts/GetChimpParse.sh .
 . RunHumanChimp.sh &
 </pre>
 
-It will download all the sequences (need at least 100 GB of hard-disk memory when using -p option) and run CHESTER.
+It will download all the sequences and run CHESTER.
 This will output the plot.svg, with the human novel regions relatively to the chimpanzee, chromosome by chromosome. The next image illustrate such result:
 
 <p align="center"><img src="imgs/example.png" 
@@ -147,10 +144,10 @@ For any issue let us know at [issues link](https://github.com/pratas/chester/iss
 
 ## LICENSE ##
 
-GPL v2.
+GPL v3.
 
 For more information:
-<pre>http://www.gnu.org/licenses/gpl-2.0.html</pre>
+<pre>http://www.gnu.org/licenses/gpl-3.0.html</pre>
 
                                                     
 
