@@ -66,7 +66,7 @@ BLOOM *CreateBloom(uint32_t k, uint64_t size){
   B->elem  = size;     // Number of bits
   B->size  = size>>3;  // Number of BYTES :: PACK 8 bits in Byte
   B->array = (BCC *) Calloc(B->size, sizeof(BCC));
-  //B->H     = CreateHFamily(k, 68719476735); // ~2^36 2199023255579
+  // NOTE: PRIME MUST BE LARGER THAN B->elem!
   B->H     = CreateHFamily(k, 2199023255579); // ~2^41 -> 256 GB MAX ARRAY
   return B;
   }
