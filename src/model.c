@@ -11,13 +11,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 int ReadBit(BLOOM *B, uint64_t idx){
-  return (B->array[idx>>3]>>(idx%8)&0x01) ? 0 : 1;
+  return (B->array[idx>>3]>>(idx%8)) & 0x01;
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void SetBitTo1(BLOOM *B, uint64_t idx){
-  B->array[idx>>3] = 0x01<<(idx%8)|B->array[idx>>3];
+  B->array[idx>>3] |= (0x01<<(idx%8));
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -63,20 +63,20 @@ void DeleteBloom(BLOOM *B){
 
 BLOOM *CreateBloom(uint32_t k, uint64_t size){
   BLOOM *B = (BLOOM *) Calloc(1, sizeof(BLOOM));
-  B->array = (BCC *) Calloc((size+1)>>3, sizeof(BCC));
-  // B->array = (BCC *) Calloc(size, sizeof(BCC));
-  B->H     = CreateHFamily(k, 68719476735); // ~2^36 // GENERATES MAX 64 GB FIXME: INCREASE THIS!
-  B->size  = size;
+  B->elem  = size;     // Number of bits
+  B->size  = size>>3;  // Number of BYTES :: PACK 8 bits in Byte
+  B->array = (BCC *) Calloc(B->size, sizeof(BCC));
+  B->H     = CreateHFamily(k, 68719476735); // ~2^36 
+                                 // GENERATES MAX 64 GB FIXME: INCREASE THIS!?
   return B;
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-uint8_t SearchBloom(BLOOM *B, uint64_t i){
+uint8_t SearchBloom(BLOOM *B, uint64_t idx){
   uint32_t n;
   for(n = 0 ; n < B->H->k ; ++n)
-    //if(B->array[HashFunc(B->H, i, n) % B->size] == 0)
-    if(ReadBit(B, HashFunc(B->H, i, n) % (B->size>>3)) == 0)
+    if(ReadBit(B, HashFunc(B->H, idx, n) % B->elem) == 0)
       return 0;
   return 1;
   }
@@ -86,8 +86,7 @@ uint8_t SearchBloom(BLOOM *B, uint64_t i){
 void UpdateBloom(BLOOM *B, uint64_t idx){
   uint32_t n;
   for(n = 0 ; n < B->H->k ; ++n)
-    //B->array[HashFunc(B->H, idx, n) % B->size] = 1;
-    SetBitTo1(B, HashFunc(B->H, idx, n) % (B->size>>3));
+    SetBitTo1(B, HashFunc(B->H, idx, n) % B->elem);
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

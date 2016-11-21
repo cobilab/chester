@@ -16,6 +16,7 @@ HFAM;
 typedef struct{
   uint8_t  *array;
   uint64_t size;
+  uint64_t elem;
   uint32_t kmer;
   HFAM     *H;
   }
