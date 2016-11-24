@@ -397,41 +397,6 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "==========================================\n");
     }
 
-/*
-  // ESTIMATE NUMBER OF HASHES FOR BEST PRECISION
-  uint64_t max_entries = 0;
-  for(n = 0 ; n < P->ref->nFiles ; ++n){
-    uint64_t n_entries = 0;
-    FILE *Reader = Fopen(P->ref->names[n], "r");
-    n_entries += EntriesInFile(Reader, P->kmer);
-    if(max_entries < n_entries)
-      max_entries = n_entries;
-    fclose(Reader);
-    }
-
-  P->bHashes = (int32_t) (((double) P->bSize / max_entries) * M_LN2);
-  double precision = pow(1-exp(-P->bHashes*((double) max_entries + 0.5) 
-  / (P->bSize-1)), P->bHashes);
-
-  if(P->verbose){
-    fprintf(stderr, "Done!\n");
-    fprintf(stderr, "Bloom array size ................... %"PRIu64"\n", 
-    P->bSize);
-    fprintf(stderr, "Max number of entries .............. %"PRIu64"\n", 
-    max_entries);
-    fprintf(stderr, "Minimum number of Hashes ........... %u (%.10lf)\n", 
-    P->bHashes, ((double) P->bSize / max_entries) * M_LN2);
-    fprintf(stderr, "Worst precision .................... %.10lf\n", precision);
-    fprintf(stderr, "==========================================\n");
-    }
-
-  if(P->bHashes == 0){
-    fprintf(stderr, "Error: 0 bloom hashes used!\n");
-    fprintf(stderr, "Note: try to increase the bloom array size.\n");
-    return 1;
-    }
-*/
-
   uint64_t max_entries = 0;
   double max_precision = 0;
   P->size = (uint64_t **) Calloc(P->ref->nFiles, sizeof(uint64_t *));
@@ -487,7 +452,7 @@ int32_t main(int argc, char *argv[]){
   
   if(P->verbose){
     fprintf(stderr, "Bloom metrics:\n");
-    fprintf(stderr, "Bloom array size ................... %"PRIu64"\n", 
+    fprintf(stderr, "Array size ......................... %"PRIu64"\n", 
     P->bSize);
     fprintf(stderr, "Max number of entries .............. %"PRIu64"\n", 
     max_entries);
