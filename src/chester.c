@@ -397,7 +397,7 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "==========================================\n");
     }
 
-  uint64_t max_entries = 0;
+  uint64_t max_entries = 0, min_hashes;
   double max_precision = 0;
   P->size = (uint64_t **) Calloc(P->ref->nFiles, sizeof(uint64_t *));
   for(n = 0 ; n < P->ref->nFiles ; ++n){
@@ -405,25 +405,25 @@ int32_t main(int argc, char *argv[]){
     // ESTIMATE NUMBER OF HASHES FOR BEST PRECISION ===========================
     FILE *Reader = Fopen(P->ref->names[n], "r");
     uint64_t n_entries = EntriesInFile(Reader, P->kmer);
-    if(max_entries < n_entries)
-      max_entries = n_entries;
+    if(max_entries < n_entries) max_entries = n_entries;
     fclose(Reader);
 
     P->bHashes = (int32_t) (((double) P->bSize / max_entries) * M_LN2);
     double precision = pow(1-exp(-P->bHashes*((double) max_entries + 0.5)
     / (P->bSize-1)), P->bHashes);
 
-    if(max_precision < precision)
-      max_precision = precision;
+    if(n == 0) min_hashes = P->bHashes;
+    if(min_hashes > P->bHashes) min_hashes = P->bHashes;
+    if(max_precision < precision) max_precision = precision;
 
     if(P->verbose){
       fprintf(stderr, "Bloom array size ................... %"PRIu64"\n", 
       P->bSize);
       fprintf(stderr, "Number of entries .................. %"PRIu64"\n", 
       n_entries);
-      fprintf(stderr, "Minimum number of Hashes ........... %u (%.10lf)\n",
+      fprintf(stderr, "Number of optimized hashes ......... %u (%.10lf)\n",
       P->bHashes, ((double) P->bSize / max_entries) * M_LN2);
-      fprintf(stderr, "Precision .......................... %.10lf\n", 
+      fprintf(stderr, "Probability of false positive ...... %.10lf\n", 
       precision);
       fprintf(stderr, "==========================================\n");
       }
@@ -456,7 +456,9 @@ int32_t main(int argc, char *argv[]){
     P->bSize);
     fprintf(stderr, "Max number of entries .............. %"PRIu64"\n", 
     max_entries);
-    fprintf(stderr, "Worst precision .................... %.10lf\n", 
+    fprintf(stderr, "Min number of optimized hashes ..... %"PRIu64"\n", 
+    min_hashes);
+    fprintf(stderr, "Max probability of false positive .. %.10lf\n", 
     max_precision);
     fprintf(stderr, "==========================================\n");
     }
