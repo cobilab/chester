@@ -395,9 +395,9 @@ int32_t main(int argc, char *argv[]){
     VERSION, RELEASE);
     PrintArgs(P);
     fprintf(stderr, "==========================================\n");
-    fprintf(stderr, "Estimating number of hash functions and precision ...\n");
     }
 
+/*
   // ESTIMATE NUMBER OF HASHES FOR BEST PRECISION
   uint64_t max_entries = 0;
   for(n = 0 ; n < P->ref->nFiles ; ++n){
@@ -430,9 +430,47 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "Note: try to increase the bloom array size.\n");
     return 1;
     }
+*/
 
+  uint64_t max_entries = 0;
+  double max_precision = 0;
   P->size = (uint64_t **) Calloc(P->ref->nFiles, sizeof(uint64_t *));
   for(n = 0 ; n < P->ref->nFiles ; ++n){
+    
+    // ESTIMATE NUMBER OF HASHES FOR BEST PRECISION ===========================
+    FILE *Reader = Fopen(P->ref->names[n], "r");
+    uint64_t n_entries = EntriesInFile(Reader, P->kmer);
+    if(max_entries < n_entries)
+      max_entries = n_entries;
+    fclose(Reader);
+
+    P->bHashes = (int32_t) (((double) P->bSize / max_entries) * M_LN2);
+    double precision = pow(1-exp(-P->bHashes*((double) max_entries + 0.5)
+    / (P->bSize-1)), P->bHashes);
+
+    if(max_precision < precision)
+      max_precision = precision;
+
+    if(P->verbose){
+      fprintf(stderr, "Bloom array size ................... %"PRIu64"\n", 
+      P->bSize);
+      fprintf(stderr, "Number of entries .................. %"PRIu64"\n", 
+      n_entries);
+      fprintf(stderr, "Minimum number of Hashes ........... %u (%.10lf)\n",
+      P->bHashes, ((double) P->bSize / max_entries) * M_LN2);
+      fprintf(stderr, "Precision .......................... %.10lf\n", 
+      precision);
+      fprintf(stderr, "==========================================\n");
+      }
+
+    if(P->bHashes == 0){
+      fprintf(stderr, "Error: 0 bloom hashes used!\n");
+      fprintf(stderr, "Note: try to increase the bloom array size.\n");
+      return 1;
+      }
+
+    // ========================================================================
+
     P->M = CreateModel(P->kmer, P->inverse, P->bHashes, P->bSize);
     LoadReference(P, n);
     P->size[n] = (uint64_t *) Calloc(P->tar->nFiles, sizeof(uint64_t));
@@ -445,6 +483,17 @@ int32_t main(int argc, char *argv[]){
     DeleteModel(P->M);
     if(P->verbose)
       fprintf(stderr, "==========================================\n");
+    }
+  
+  if(P->verbose){
+    fprintf(stderr, "Bloom metrics:\n");
+    fprintf(stderr, "Bloom array size ................... %"PRIu64"\n", 
+    P->bSize);
+    fprintf(stderr, "Max number of entries .............. %"PRIu64"\n", 
+    max_entries);
+    fprintf(stderr, "Worst precision .................... %.10lf\n", 
+    max_precision);
+    fprintf(stderr, "==========================================\n");
     }
 
   if(P->verbose) fprintf(stderr, "Joinning ...\n");
