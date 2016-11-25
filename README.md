@@ -65,28 +65,29 @@ In windows use cygwin (https://www.cygwin.com/) and make sure that it is include
 
 ## EXECUTION
 
-Run CHESTER:
+Run CHESTER-map:
 
 <pre>
-./CHESTER -v -k 30 -i -t 0.5 -s 6099999999 File1.fastq:File2.fastq:File3.fasta FileA.fasta:FileB.fasta
+./CHESTER-map -v -k 30 -i -t 0.5 -s 6099999999 File1.fastq:File2.fastq:File3.fasta FileA.fasta:FileB.fasta
 </pre>
 
 ## PARAMETERS
 
 To see the possible options type
 <pre>
-./CHESTER
+./CHESTER-map
 </pre>
 or
 <pre>
-./CHESTER -h
+./CHESTER-map -h
 </pre>
 
 These will print the following options:
 <pre>
-Usage: CHESTER &#60OPTIONS&#62... [FILE]:&#60...&#62 [FILE]:&#60...&#62
-CHESTER is a probabilistic tool to map and visualize relative
-singularity regions. The Bloom filter is automatically set.                                                    
+Usage: CHESTER-map &#60OPTIONS&#62... [FILE]:&#60...&#62 [FILE]:&#60...&#62
+CHESTER-map: a tool to map relative singularity regions  
+The (probabilistic) Bloom filter is automatically set.
+
   -v                       verbose mode,             
   -a                       about CHESTER,            
   -t &#60value&#62               threshold [0.0;1.0],      
@@ -94,7 +95,6 @@ singularity regions. The Bloom filter is automatically set.
   -u &#60value&#62               sub-sampling,             
   -s &#60value&#62               bloom size,               
   -i                       use inversions,           
-  -e &#60value&#62               enlarge painted regions,        
   -p                       show positions/words,
   -k &#60value&#62               k-mer size (up to 30),               
                                                      
@@ -120,7 +120,7 @@ cp scripts/GetChimpParse.sh .
 . RunHumanChimp.sh &
 </pre>
 
-It will download all the sequences and run CHESTER.
+It will download all the sequences and run CHESTER-map.
 This will output the plot.svg, with the human novel regions relatively to the chimpanzee, chromosome by chromosome. The next image illustrate such result:
 
 <p align="center"><img src="imgs/example.png" 
