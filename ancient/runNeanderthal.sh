@@ -3,6 +3,7 @@ GET_GOOSE=1;
 GET_CHESTER=1;
 GET_NEANDERTHAL=1;
 GET_HUMAN=1;
+SAM2FASTA=1;
 RUN_CHESTER=1;
 #==============================================================================
 # sudo apt-get install samtools
@@ -81,18 +82,18 @@ if [[ "$GET_NEANDERTHAL" -eq "1" ]]; then
   wget $WGETO $EVAPK/SN7001204_0131_BC0M3YACXX_PEdi_SS_L9302_L9303_2_6_unmapped.bam -O HN-C54.bam;
   wget $WGETO $EVAPK/SN7001204_0131_BC0M3YACXX_PEdi_SS_L9302_L9303_2_7_unmapped.bam -O HN-C55.bam;
   wget $WGETO $EVAPK/SN7001204_0131_BC0M3YACXX_PEdi_SS_L9302_L9303_2_8_unmapped.bam -O HN-C56.bam;
-  # FROM SAM 2 MFASTA
+fi
+#==============================================================================
+# FROM SAM 2 MFASTA
+if [[ "$SAM2FASTA" -eq "1" ]]; then
   for((xi=1 ; xi<=56 ; ++xi));
     do
     samtools view HN-C$xi.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' > HN-XC$xi ;
     done
-  rm -fr NEAN;
-  cat HN-XC* >> NEAN;
-  rm -fr HN-XC*;
 fi
 #==============================================================================
 # RUN FALCON
-if [[ "$RUN_CHESTER" -eq "1" ]]; then
-  (time ./CHESTER -v -i -s 1717987999999 -t 0.6 -k 30 NEAN HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
+if [[ "$RUN_CHESTER" -eq "1" ]]; then # 223338299392 = 26 GB
+  (time ./CHESTER -p -v -i -s 223338299392 -t 0.6 -k 30 HN-XC1:HN-XC2:HN-XC3:HN-XC4:HN-XC5:HN-XC6:HN-XC7:HN-XC8:HN-XC9:HN-XC10:HN-XC11:HN-XC12:HN-XC13:HN-XC14:HN-XC15:HN-XC16:HN-XC17:HN-XC18:HN-XC19:HN-XC20:HN-XC21:HN-XC22:HN-XC23:HN-XC24:HN-XC25:HN-XC26:HN-XC27:HN-XC28:HN-XC29:HN-XC30:HN-XC31:HN-XC32:HN-XC33:HN-XC34:HN-XC35:HN-XC36:HN-XC37:HN-XC38:HN-XC39:HN-XC40:HN-XC41:HN-XC42:HN-XC43:HN-XC44:HN-XC45:HN-XC46:HN-XC47:HN-XC48:HN-XC49:HN-XC50:HN-XC51:HN-XC52:HN-XC53:HN-XC54:HN-XC55:HN-XC56 HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
 fi
 #==============================================================================
