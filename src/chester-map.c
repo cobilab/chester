@@ -353,9 +353,9 @@ int32_t main(int argc, char *argv[]){
 
   if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || ArgsState(DEFAULT_HELP, p, 
   argc, "?") == 1 || argc < 3){
-    fprintf(stderr, "Usage: CHESTER <OPTIONS>... [FILE]:<...> [FILE]:<...>\n");
-    fprintf(stderr, "CHESTER is a probabilistic tool to map and visualize relative\n");
-    fprintf(stderr, "singularity regions. The Bloom filter is automatically set.\n");
+    fprintf(stderr, "Usage: CHESTER-map <OPTIONS>... [FILE]:<...> [FILE]:<...>\n");
+    fprintf(stderr, "CHESTER-map: a tool to map relative singularity regions  \n");
+    fprintf(stderr, "The (probabilistic) Bloom filter is automatically set.   \n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
