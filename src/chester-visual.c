@@ -37,6 +37,8 @@ void PaintStreams(Param *P){
   P->max = x_size;
   fclose(Reader);
 
+fprintf(stderr, "SIZE=%"PRIu64"\n", P->max);
+
   SetScale(P->max);
   Paint = CreatePainter(GetPoint(P->max), backColor);
 

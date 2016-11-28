@@ -436,7 +436,7 @@ int32_t main(int argc, char *argv[]){
       P->bHashes, ((double) P->bSize / n_entries) * M_LN2);
       fprintf(stderr, "Probability of false positive ...... %.10lf\n", 
       precision);
-      fprintf(stderr, "==========================================\n");
+      fprintf(stderr, "------------------------------------------\n");
       }
 
     if(P->bHashes == 0){
