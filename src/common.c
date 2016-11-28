@@ -37,7 +37,7 @@ uint64_t NDNASyminFile(FILE *file){
     for(idx = 0 ; idx < k ; ++idx){
       sym = buffer[idx];
       switch(type){
-        case 0: continue;
+        case 0: break;
         case 1:
         switch(sym){
           case '>':  header = 1;    continue;
@@ -80,7 +80,7 @@ uint64_t EntriesInFile(FILE *F, uint32_t kmer){
     for(idx = 0 ; idx < k ; ++idx){
       sym = buffer[idx];
       switch(type){
-        case 0: n_lines = 1; continue;
+        case 0: n_lines = 1; break;
         case 1:
         switch(sym){
           case '>':  header = 1; ++n_lines; continue;

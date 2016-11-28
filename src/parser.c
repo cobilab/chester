@@ -25,7 +25,7 @@ void FileType(PARSER *PA, FILE *IN){
     switch(PA->sym){
     case '>': PA->type = 1; break;
     case '@': PA->type = 2; break;
-    default : PA->type = 0;
+    default : PA->type = 0; break;
     }
   rewind(IN);
   } 
@@ -44,6 +44,7 @@ int FBasesPol(int b){
     case 'c': return 'C';
     case 'g': return 'G';
     case 't': return 'T';
+    case 'u': return 'T';
     default: return -1;
     }
   return -1;
@@ -76,7 +77,7 @@ int32_t ParseSym(PARSER *PA, uint8_t sym){
     break;
 
     // OTHER (SUCH AS DNA SEQ)
-    default: ; // DO NOTHING
+    default: break; // DO NOTHING
     }
 
   return FBasesPol(sym);
