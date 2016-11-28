@@ -60,15 +60,23 @@ fprintf(stderr, "X=%"PRIu64"\n", x_size);
 
 
     while(fscanf(Reader, "%"PRIu64"\t%"PRIu64"", &init, &end) == 2){
+      fprintf(stderr, "one");
       Rect(Plot, Paint->width, GetPoint(end-init+1+P->enlarge), Paint->cx,
       Paint->cy + GetPoint(init), GetRgbColor(LEVEL_HUE));
+      fprintf(stderr, "Two");
       }
+
+fprintf(stderr, "Y=%"PRIu64"\n", x_size);
 
     Chromosome(Plot, Paint->width, GetPoint(P->chrSize[tar]), Paint->cx, 
     Paint->cy);
+
+fprintf(stderr, "Z=%"PRIu64"\n", x_size);
     if(P->tar->nFiles > 0) Paint->cx += DEFAULT_WIDTH + DEFAULT_SPACE;
     fclose(Reader);
-    Free(name);
+//    Free(name);
+
+fprintf(stderr, "W=%"PRIu64"\n", x_size);
     }
 
 

@@ -97,7 +97,7 @@ fi
 #==============================================================================
 # FROM SAM 2 MFASTA
 if [[ "$SPLIT_FASTA" -eq "1" ]]; then
-  split --lines=10000000 < HNEAN; # SPLIT IN FOUR FILES, % PAR ENSURE HEADER ON
+  split --lines=1534662800 < HNEAN; # SPLIT IN ~4 FILES, % PAR ENSURE HEADER ON
 fi
 #==============================================================================
 # RUN FALCON
