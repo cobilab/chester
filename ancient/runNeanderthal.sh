@@ -16,7 +16,8 @@ if [[ "$GET_CHESTER" -eq "1" ]]; then
   cd chester/src/
   cmake .
   make
-  cp CHESTER ../../
+  cp CHESTER-map ../../
+  cp CHESTER-visual ../../
   cd ../../
 fi
 #==============================================================================
@@ -97,7 +98,7 @@ fi
 #==============================================================================
 # FROM SAM 2 MFASTA
 if [[ "$SPLIT_FASTA" -eq "1" ]]; then
-  split --lines=1534662800 < HNEAN; # SPLIT IN ~4 FILES, % PAR ENSURE HEADER ON
+  split --lines=1534662800 < NEAN; # SPLIT IN ~4 FILES, % PAR ENSURE HEADER ON
 fi
 #==============================================================================
 # RUN FALCON
