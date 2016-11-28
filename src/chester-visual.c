@@ -64,13 +64,24 @@ int32_t main(int argc, char *argv[]){
   clock_t  start = clock();
 
   if(ArgsState(0, p, argc, "-a") || ArgsState(0, p, argc, "-V")){
-    fprintf(stderr, "CHESTER %u.%u\n"
-    "Copyright (C) 2015-2017 University of Aveiro.\nThis is Free software.\nYou "
-    "may redistribute copies of it under the terms of the GNU \nGeneral "
-    "Public License v3 <http://www.gnu.org/licenses/gpl.html>. \nThere is NO "
-    "WARRANTY, to the extent permitted by law.\nCode by Diogo Pratas,"
-    " Armando J. Pinho and Paulo J. S. G Ferreira\n{pratas,ap,pjf}@ua.pt.\n",
-    RELEASE, VERSION);
+  fprintf(stderr,
+    "                                                                       \n"
+    "                          ===================                          \n"
+    "                          |   CHESTER %u.%u   |                        \n"
+    "                          ===================                          \n"
+    "                                                                       \n"
+    "               A probabilistic tool to map and visualize               \n"
+    "                     relative singularity regions.                     \n"
+    "                                                                       \n"
+    "              Copyright (C) 2015-2017 University of Aveiro.            \n"
+    "                                                                       \n"
+    "                  This is a Free software, under GPLv3.                \n"
+    "                                                                       \n"
+    "You may redistribute copies of it under the terms of the GNU - General \n"
+    "Public License v3 <http://www.gnu.org/licenses/gpl.html>. There is NOT \n"
+    "ANY WARRANTY, to the extent permitted by law. Developed and Written by \n"
+    "Diogo Pratas, Armando J. Pinho and Paulo J. S. G. Ferreira.\n\n", VERSION, 
+    RELEASE);
     return EXIT_SUCCESS;
     }
 
