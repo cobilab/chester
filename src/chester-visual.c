@@ -105,7 +105,6 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
     fprintf(stderr, "  -e <value>               enlarge painted regions,  \n");
-    fprintf(stderr, "  -k <value>               k-mer size (up to 30),    \n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  [tFile1]:<tFile2>:<...>  target file(s).           \n");
     fprintf(stderr, "                                                     \n");
@@ -117,7 +116,6 @@ int32_t main(int argc, char *argv[]){
   P->tar       = ReadFNames (P, argv[argc-1]);  // TAR
   P->enlarge   = ArgsNumI64 (DEFAULT_ENLARGE, p, argc, "-e", -1,  999999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
-  P->kmer      = ArgsNum    (DEFAULT_KMER,    p, argc, "-k", MIN_KMER, MAX_KMER);
 
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n",
