@@ -51,7 +51,7 @@ Param;
 #define DEFAULT_DISK           1
 #define DEFAULT_VERBOSE        0
 #define DEFAULT_IR             0
-#define DEFAULT_KMER           14
+#define DEFAULT_KMER           30
 #define DEFAULT_ENLARGE        5
 #define WINDOW_RATIO           1300
 #define SUBSAMPLE_RATIO        5
