@@ -13,7 +13,7 @@
 #define EXTRA                  150                   // EXTRA SPACE FOR BORDER
 #define LEVEL_SATURATION       220 
 #define LEVEL_VALUE            160
-#define LEVEL_HUE              150
+#define LEVEL_HUE              1
 #define LEVEL_HUE_N            1                              // N's HUE COLOR
 
 typedef struct

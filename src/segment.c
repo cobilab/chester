@@ -12,11 +12,13 @@ void SegmentSequence(char *fName, Param *P, uint32_t tar){
   float    val, threshold;
   uint64_t pos, initPosition, lastPosition;
   int32_t  region;
-  char     *fNameOut;
+  char     fNameOut[4096];
 
   threshold    = (float) P->threshold; 
   Reader       = Fopen(fName, "r");
-  fNameOut     = ReplaceSubStr(fName, ".fil", ".seg");
+
+  sprintf(fNameOut, "%s.seg", P->tar->names[tar]);
+//  fNameOut     = ReplaceSubStr(fName, ".fil", ".seg");
   Writter      = Fopen(fNameOut, "w");
 
   fprintf(Writter, "#%"PRIu64"#%"PRIu64"\n", P->max, P->size[0][tar]); // WRITE MAX AT THE HEAD
@@ -34,7 +36,7 @@ void SegmentSequence(char *fName, Param *P, uint32_t tar){
     if(val >= threshold){ 
       if(region == LOW_REGION){
         region = HIGH_REGION;
-        fprintf(Writter, "%"PRIu64"\t%"PRIu64"\n", initPosition, pos);
+        fprintf(Writter, "%"PRIu64":%"PRIu64"\n", initPosition, pos);
         }
       }
     else{ // val < threshold ====> LOW_REGION
@@ -47,7 +49,7 @@ void SegmentSequence(char *fName, Param *P, uint32_t tar){
     }
 
   if(region == LOW_REGION)
-    fprintf(Writter, "%"PRIu64"\t%"PRIu64"\n", initPosition, lastPosition);
+    fprintf(Writter, "%"PRIu64":%"PRIu64"\n", initPosition, lastPosition);
 
   fclose(Reader);
   fclose(Writter);

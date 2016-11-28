@@ -497,12 +497,14 @@ int32_t main(int argc, char *argv[]){
    fprintf(stderr, "==========================================\n");
     }
 
+/*
   if(P->verbose) fprintf(stderr, "Painting ...\n");
   PaintStreams(P);
   if(P->verbose){
     fprintf(stderr, "Done!                                     \n");
     fprintf(stderr, "==========================================\n");
     }
+*/
 
   if(P->verbose)
     fprintf(stderr, "All jobs done in %.3g sec.\n", ((double)(clock()-start))/
