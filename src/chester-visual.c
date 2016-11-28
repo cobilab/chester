@@ -21,6 +21,22 @@ void PaintStreams(Param *P){
   Painter *Paint;
   uint32_t tar;
 
+  // SET MAXIMUM FROM FILE:
+  char *sample_name = (char *) Calloc(4096, sizeof(char));
+  sprintf(sample_name, "%s-k%u.seg", P->tar->names[0], P->kmer);
+  FILE *Reader = Fopen(sample_name, "r");
+  uint64_t x_size = 0;
+  if(fgetc(Reader) != '#'){
+    fprintf(stderr, "Error: unknown segmented file!\n");
+    exit(1);
+    }
+  if(fscanf(Reader, "%"PRIu64"", &x_size) != 1){
+    fprintf(stderr, "Error: unknown segmented file!\n");
+    exit(1);
+    }
+  P->max = x_size;
+  fclose(Reader);
+
   SetScale(P->max);
   Paint = CreatePainter(GetPoint(P->max), backColor);
 
@@ -93,7 +109,8 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
     fprintf(stderr, "  -e <value>               enlarge painted regions,  \n");
-    fprintf(stderr, "  -p                       show positions/words,     \n");
+    fprintf(stderr, "  -k <value>               k-mer size (up to 30),    \n");
+//    fprintf(stderr, "  -p                       show positions/words,     \n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  [tFile1]:<tFile2>:<...>  target file(s).           \n");
     fprintf(stderr, "                                                     \n");
@@ -105,6 +122,7 @@ int32_t main(int argc, char *argv[]){
   P->tar       = ReadFNames (P, argv[argc-1]);  // TAR
   P->enlarge   = ArgsNumI64 (DEFAULT_ENLARGE, p, argc, "-e", -1,  999999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
+  P->kmer      = ArgsNum    (DEFAULT_KMER,    p, argc, "-k", MIN_KMER, MAX_KMER);
 
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n",

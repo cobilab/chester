@@ -328,7 +328,7 @@ void LoadReference(Param *P, uint32_t ref){
 
   if(P->verbose == 1){
     fprintf(stderr, "Done!                          \n");  // SPACES ARE VALID  
-    fprintf(stderr, "==========================================\n");
+    fprintf(stderr, "##########################################\n");
     }
   }
 
