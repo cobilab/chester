@@ -11,7 +11,6 @@
 #include "model.h"
 #include "filters.h"
 #include "segment.h"
-#include "paint.h"
 #include "parser.h"
 #include "buffer.h"
 
@@ -59,43 +58,6 @@ void SegmentStreams(Param *P){
   }
 
 //////////////////////////////////////////////////////////////////////////////
-// - - - - - - - - - - - - - - - - - P A I N T - - - - - - - - - - - - - - - -
-void PaintStreams(Param *P){
-  FILE *Plot = Fopen("plot.svg", "w");
-  char backColor[] = "#ffffff";
-  uint64_t init, end;
-  Painter *Paint;
-  uint32_t tar;
-
-  SetScale(P->max);
-  Paint = CreatePainter(GetPoint(P->max), backColor);
-
-  PrintHead(Plot, (2 * DEFAULT_CX) + (((Paint->width + DEFAULT_SPACE) * 
-  P->tar->nFiles) - DEFAULT_SPACE), Paint->size + EXTRA);
-  Rect(Plot, (2 * DEFAULT_CX) + (((Paint->width + DEFAULT_SPACE) * 
-  P->tar->nFiles) - DEFAULT_SPACE), Paint->size + EXTRA, 0, 0, backColor);
-
-  for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
-    char *name = (char *) Calloc(4096, sizeof(char));
-    sprintf(name, "%s-k%u.seg", P->tar->names[tar], P->kmer);
-    FILE *Reader = Fopen(name, "r");
-
-    while(fscanf(Reader, "%"PRIu64"\t%"PRIu64"", &init, &end) == 2){
-      Rect(Plot, Paint->width, GetPoint(end-init+1+P->enlarge), Paint->cx,
-      Paint->cy + GetPoint(init), GetRgbColor(LEVEL_HUE));
-      }
-
-    Chromosome(Plot, Paint->width, GetPoint(P->chrSize[tar]), Paint->cx, 
-    Paint->cy);
-    if(P->tar->nFiles > 0) Paint->cx += DEFAULT_WIDTH + DEFAULT_SPACE;
-    fclose(Reader);
-    Free(name);
-    }
-
-  PrintFinal(Plot);
-  }
-
-//////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - - J O I N - - - - - - - - - - - - - - - -
 void JoinStreams(Param *P){
   uint32_t ref, tar, k = 0, n;
@@ -123,8 +85,6 @@ void JoinStreams(Param *P){
     res = (uint8_t *) Calloc(WINDOW_SIZE+1, sizeof(uint8_t));
 
     P->chrSize[tar] = P->size[0][tar]; 
-
-printf("SIZE: %"PRIu64"\n", P->chrSize[tar]);
 
     step = WINDOW_SIZE;
     do{
@@ -377,7 +337,6 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -u <value>               sub-sampling,             \n");
     fprintf(stderr, "  -s <value>               bloom size,               \n");
     fprintf(stderr, "  -i                       use inversions,           \n");
-    fprintf(stderr, "  -e <value>               enlarge painted regions,  \n");
     fprintf(stderr, "  -p                       show positions/words,     \n");
     fprintf(stderr, "  -k <value>               k-mer size (up to 30),    \n");
     fprintf(stderr, "                                                     \n");
@@ -398,7 +357,6 @@ int32_t main(int argc, char *argv[]){
   P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999);
   P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
   P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 10, 2999999999999);
-  P->enlarge   = ArgsNumI64 (DEFAULT_ENLARGE, p, argc, "-e", -1,  999999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
   P->inverse   = ArgsState  (DEFAULT_IR,      p, argc, "-i");
   P->disk      = ArgsState  (DEFAULT_DISK,    p, argc, "-p");
@@ -496,15 +454,6 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "Done!                                     \n");
    fprintf(stderr, "==========================================\n");
     }
-
-/*
-  if(P->verbose) fprintf(stderr, "Painting ...\n");
-  PaintStreams(P);
-  if(P->verbose){
-    fprintf(stderr, "Done!                                     \n");
-    fprintf(stderr, "==========================================\n");
-    }
-*/
 
   if(P->verbose)
     fprintf(stderr, "All jobs done in %.3g sec.\n", ((double)(clock()-start))/
