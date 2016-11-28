@@ -408,8 +408,8 @@ int32_t main(int argc, char *argv[]){
     if(max_entries < n_entries) max_entries = n_entries;
     fclose(Reader);
 
-    P->bHashes = (int32_t) (((double) P->bSize / max_entries) * M_LN2);
-    double precision = pow(1-exp(-P->bHashes*((double) max_entries + 0.5)
+    P->bHashes = (int32_t) (((double) P->bSize / n_entries) * M_LN2);
+    double precision = pow(1-exp(-P->bHashes*((double) n_entries + 0.5)
     / (P->bSize-1)), P->bHashes);
 
     if(n == 0) min_hashes = P->bHashes;
@@ -422,7 +422,7 @@ int32_t main(int argc, char *argv[]){
       fprintf(stderr, "Number of entries .................. %"PRIu64"\n", 
       n_entries);
       fprintf(stderr, "Number of optimized hashes ......... %u (%.10lf)\n",
-      P->bHashes, ((double) P->bSize / max_entries) * M_LN2);
+      P->bHashes, ((double) P->bSize / n_entries) * M_LN2);
       fprintf(stderr, "Probability of false positive ...... %.10lf\n", 
       precision);
       fprintf(stderr, "==========================================\n");
