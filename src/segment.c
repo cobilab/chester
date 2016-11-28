@@ -7,7 +7,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void SegmentSequence(char *fName, Param *P){
+void SegmentSequence(char *fName, Param *P, uint32_t tar){
   FILE     *Reader = NULL , *Writter = NULL;
   float    val, threshold;
   uint64_t pos, initPosition, lastPosition;
@@ -19,7 +19,7 @@ void SegmentSequence(char *fName, Param *P){
   fNameOut     = ReplaceSubStr(fName, ".fil", ".seg");
   Writter      = Fopen(fNameOut, "w");
 
-  fprintf(Writter, "#%"PRIu64"\n", P->max); // WRITE MAX AT THE HEAD
+  fprintf(Writter, "#%"PRIu64"#%"PRIu64"\n", P->max, P->size[0][tar]); // WRITE MAX AT THE HEAD
 
   if(fscanf(Reader, "%"PRIu64"\t%f", &pos, &val) == 2)
     region = val < threshold ? LOW_REGION : HIGH_REGION;

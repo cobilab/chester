@@ -21,20 +21,20 @@ void PaintStreams(Param *P){
   Painter *Paint;
   uint32_t tar;
 
+  P->chrSize = (uint64_t *) Calloc(P->tar->nFiles, sizeof(uint64_t));
+
   // SET MAXIMUM FROM FILE:
   char *sample_name = (char *) Calloc(4096, sizeof(char));
   sprintf(sample_name, "%s-k%u.seg", P->tar->names[0], P->kmer);
   FILE *XReader = Fopen(sample_name, "r");
-  uint64_t x_size = 0;
-  if(fscanf(XReader, "#%"PRIu64"", &x_size) != 1){
+  uint64_t x_size = 0, i_size = 0;
+  if(fscanf(XReader, "#%"PRIu64"#%"PRIu64"", &x_size, &i_size) != 2){
     fprintf(stderr, "Error: unknown segmented file!\n");
     exit(1);
     }
   P->max = x_size;
   fclose(XReader);
-//  free(sample_name);
-
-fprintf(stderr, "SIZE=%"PRIu64"\n", P->max);
+  free(sample_name);
 
   SetScale(P->max);
   Paint = CreatePainter(GetPoint(P->max), backColor);
@@ -44,52 +44,34 @@ fprintf(stderr, "SIZE=%"PRIu64"\n", P->max);
   Rect(Plot, (2 * DEFAULT_CX) + (((Paint->width + DEFAULT_SPACE) * 
   P->tar->nFiles) - DEFAULT_SPACE), Paint->size + EXTRA, 0, 0, backColor);
 
-fprintf(stderr, "SIZE=%"PRIu64"\n", P->max);
-
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     char *name = (char *) Calloc(4096, sizeof(char));
     sprintf(name, "%s-k%u.seg", P->tar->names[tar], P->kmer);
     FILE *Reader = Fopen(name, "r");
 
-    if(fscanf(Reader, "#%"PRIu64"\n", &x_size) != 1){
+    if(fscanf(Reader, "#%"PRIu64"#%"PRIu64"\n", &x_size, &i_size) != 2){
       fprintf(stderr, "Error: unknown segmented file!\n");
       exit(1);
       }
-fprintf(stderr, "X=%"PRIu64"\n", x_size);
 
-
+    P->chrSize[tar] = i_size;
 
     while(fscanf(Reader, "%"PRIu64"\t%"PRIu64"", &init, &end) == 2){
-      fprintf(stderr, "one");
       Rect(Plot, Paint->width, GetPoint(end-init+1+P->enlarge), Paint->cx,
       Paint->cy + GetPoint(init), GetRgbColor(LEVEL_HUE));
-      fprintf(stderr, "Two");
       }
-
-fprintf(stderr, "Y=%"PRIu64"\n", x_size);
 
     Chromosome(Plot, Paint->width, GetPoint(P->chrSize[tar]), Paint->cx, 
     Paint->cy);
 
-fprintf(stderr, "Z=%"PRIu64"\n", x_size);
     if(P->tar->nFiles > 0) Paint->cx += DEFAULT_WIDTH + DEFAULT_SPACE;
     fclose(Reader);
-//    Free(name);
-
-fprintf(stderr, "W=%"PRIu64"\n", x_size);
+    Free(name);
     }
-
-
-fprintf(stderr, "SIZE=%"PRIu64"\n", P->max);
 
   PrintFinal(Plot);
   }
 
-/*
-for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
-  nameout[tar]  = (char *) Calloc(4096, sizeof(char));
-  sprintf(nameout[tar], "%s-k%u.oxch", P->tar->names[tar], P->kmer);
-*/
 
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - C H E S T E R   M A I N - - - - - - - - - - - - -
@@ -130,7 +112,6 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -a                       about CHESTER,            \n");
     fprintf(stderr, "  -e <value>               enlarge painted regions,  \n");
     fprintf(stderr, "  -k <value>               k-mer size (up to 30),    \n");
-//    fprintf(stderr, "  -p                       show positions/words,     \n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  [tFile1]:<tFile2>:<...>  target file(s).           \n");
     fprintf(stderr, "                                                     \n");

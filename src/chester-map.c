@@ -53,7 +53,7 @@ void SegmentStreams(Param *P){
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     char *name = (char *) Calloc(4096, sizeof(char));
     sprintf(name, "%s-k%u.fil", P->tar->names[tar], P->kmer);
-    SegmentSequence(name, P);
+    SegmentSequence(name, P, tar);
     Free(name);
     }
   }
@@ -123,6 +123,8 @@ void JoinStreams(Param *P){
     res = (uint8_t *) Calloc(WINDOW_SIZE+1, sizeof(uint8_t));
 
     P->chrSize[tar] = P->size[0][tar]; 
+
+printf("SIZE: %"PRIu64"\n", P->chrSize[tar]);
 
     step = WINDOW_SIZE;
     do{
