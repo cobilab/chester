@@ -24,18 +24,15 @@ void PaintStreams(Param *P){
   // SET MAXIMUM FROM FILE:
   char *sample_name = (char *) Calloc(4096, sizeof(char));
   sprintf(sample_name, "%s-k%u.seg", P->tar->names[0], P->kmer);
-  FILE *Reader = Fopen(sample_name, "r");
+  FILE *XReader = Fopen(sample_name, "r");
   uint64_t x_size = 0;
-  if(fgetc(Reader) != '#'){
-    fprintf(stderr, "Error: unknown segmented file!\n");
-    exit(1);
-    }
-  if(fscanf(Reader, "%"PRIu64"", &x_size) != 1){
+  if(fscanf(XReader, "#%"PRIu64"", &x_size) != 1){
     fprintf(stderr, "Error: unknown segmented file!\n");
     exit(1);
     }
   P->max = x_size;
-  fclose(Reader);
+  fclose(XReader);
+//  free(sample_name);
 
 fprintf(stderr, "SIZE=%"PRIu64"\n", P->max);
 
@@ -47,10 +44,20 @@ fprintf(stderr, "SIZE=%"PRIu64"\n", P->max);
   Rect(Plot, (2 * DEFAULT_CX) + (((Paint->width + DEFAULT_SPACE) * 
   P->tar->nFiles) - DEFAULT_SPACE), Paint->size + EXTRA, 0, 0, backColor);
 
+fprintf(stderr, "SIZE=%"PRIu64"\n", P->max);
+
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     char *name = (char *) Calloc(4096, sizeof(char));
     sprintf(name, "%s-k%u.seg", P->tar->names[tar], P->kmer);
     FILE *Reader = Fopen(name, "r");
+
+    if(fscanf(Reader, "#%"PRIu64"\n", &x_size) != 1){
+      fprintf(stderr, "Error: unknown segmented file!\n");
+      exit(1);
+      }
+fprintf(stderr, "X=%"PRIu64"\n", x_size);
+
+
 
     while(fscanf(Reader, "%"PRIu64"\t%"PRIu64"", &init, &end) == 2){
       Rect(Plot, Paint->width, GetPoint(end-init+1+P->enlarge), Paint->cx,
@@ -63,6 +70,9 @@ fprintf(stderr, "SIZE=%"PRIu64"\n", P->max);
     fclose(Reader);
     Free(name);
     }
+
+
+fprintf(stderr, "SIZE=%"PRIu64"\n", P->max);
 
   PrintFinal(Plot);
   }
