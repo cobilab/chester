@@ -110,31 +110,23 @@ Most of the values are set automatically. Nevertheless, higher threshold values 
 
 ## EXAMPLE ##
 
-The following illustrate a Human-Chimp (large) example. For the purpose go to the base and run:
+The following illustrate a Human-Neanderthal example. For the purpose go to the base and run:
 <pre>
-cp scripts/RunHumanChimp.sh .
-cp scripts/GetHumanParse.sh .
-cp scripts/GetChimpParse.sh .
-. GetHumanParse.sh
-. GetChimpParse.sh
-. RunHumanChimp.sh &
+cp ancient/runNeanderthal.sh .
+. RunNeanderthal.sh &
 </pre>
 
 It will download all the sequences and run CHESTER-map.
-This will output the plot.svg, with the human novel regions relatively to the chimpanzee, chromosome by chromosome. The next image illustrate such result:
+This will output the plot.svg, with the human novel regions relatively to the Neanderthal, chromosome by chromosome. The next image illustrate such result:
 
 <p align="center"><img src="imgs/example.png" 
 alt="CHESTER" width="600" height="300" border="0" /></p>
-
-The example image show most of the centromers contained in the chromosomes and several genes (present in human but not in chimpanzee).
 
 ## CITATION ##
 
 On using this software/method please cite:
 
-D. Pratas, R. M. Silva, A. J. Pinho, P. J. S. G. Ferreira, Detection and visualisation of regions of human DNA not present in other primates. Proceedings of the 21st Portuguese Conference on Pattern Recognition, RecPad 2015, Faro, Portugal, October 2015. 
-
-(Best paper award of RecPad 2015)
+D. Pratas, R. M. Silva, A. J. Pinho, P. J. S. G. Ferreira, Detection and visualisation of regions of human DNA not present in other primates. Proceedings of the 21st Portuguese Conference on Pattern Recognition, RecPad 2015, Faro, Portugal, October 2015.
 
 [Download paper] (https://github.com/pratas/chester/blob/master/paper.pdf)
 
