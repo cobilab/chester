@@ -102,7 +102,7 @@ if [[ "$SPLIT_FASTA" -eq "1" ]]; then
 fi
 #==============================================================================
 # RUN FALCON
-if [[ "$RUN_CHESTER" -eq "1" ]]; then # 223338299392 = 26 GB
-  (time ./CHESTER-map -p -v -i -s 223338299392 -t 0.6 -k 30 xaa:xab:xac:xad HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
+if [[ "$RUN_CHESTER" -eq "1" ]]; then # 223338299392=26 GB, 549755813888=64 GB
+  (time ./CHESTER-map -p -v -i -s 549755813888 -t 0.6 -k 30 xaa:xab:xac:xad HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
 fi
 #==============================================================================
