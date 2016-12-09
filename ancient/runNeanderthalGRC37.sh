@@ -41,6 +41,7 @@ if [[ "$GET_SAMTOOLS" -eq "1" ]]; then
   ./configure --without-curses
   make
   cp samtools ../
+  cd ..
   rm -fr samtools-1.3.1.*
 fi
 #==============================================================================
