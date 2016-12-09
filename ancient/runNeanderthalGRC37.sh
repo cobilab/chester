@@ -27,6 +27,10 @@ if [[ "$GET_GOOSE" -eq "1" ]]; then
   rm -fr goose/ GetHumanParse.sh
   git clone https://github.com/pratas/goose.git
   cp goose/scripts/GetHumanGRC37Parse.sh .
+  cd goose/src/
+  make
+  cp goose-fastq2mfasta ../../
+  cd ../../
 fi
 #==============================================================================
 # GET SAMTOOLS 1.3.1
@@ -103,7 +107,7 @@ if [[ "$SAM2FASTA" -eq "1" ]]; then
   rm -f NEAN;
   for((xi=1 ; xi<=56 ; ++xi));
     do
-    ./samtools view HN-C$xi.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' >> NEAN ;
+    ./samtools bam2fq HN-C$xi.bam | ./goose-fastq2mfasta >> NEAN;
     done
 fi
 #==============================================================================
