@@ -3,7 +3,7 @@
 INITALS="HS";
 MAX=22;
 WGETOP=" --trust-server-names -q ";
-ONWAY="ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p2_chr"
+ONWAY="ftp://ftp.ncbi.nlm.nih.gov/genomes/Homo_sapiens/Assembled_chromosomes/seq/hs_ref_GRCh38.p7_chr"
 #-----------------------------------------------------------------------------
 function downloadEach
   {
