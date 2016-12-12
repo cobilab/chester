@@ -1,6 +1,7 @@
 #!/bin/bash
 GET_GOOSE=1;
 GET_CHESTER=1;
+GET_SAMTOOLS=1;
 GET_NEANDERTHAL=1;
 GET_HUMAN=1;
 SAM2FASTA=1;
@@ -26,6 +27,22 @@ if [[ "$GET_GOOSE" -eq "1" ]]; then
   rm -fr goose/ GetHumanParse.sh
   git clone https://github.com/pratas/goose.git
   cp goose/scripts/GetHumanCHMParse.sh .
+  cd goose/src/
+  make
+  cp goose-fastq2mfasta ../../
+  cd ../../
+fi
+#==============================================================================
+# GET SAMTOOLS 1.3.1
+if [[ "$GET_SAMTOOLS" -eq "1" ]]; then
+  wget https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1.3.1.tar.bz2
+  tar -xvf samtools-1.3.1.tar.bz2
+  cd samtools-1.3.1/
+  ./configure --without-curses
+  make
+  cp samtools ../
+  cd ..
+  rm -fr samtools-1.3.1.*
 fi
 #==============================================================================
 # BUILD DB
@@ -91,19 +108,20 @@ if [[ "$SAM2FASTA" -eq "1" ]]; then
   rm -f NEAN;
   for((xi=1 ; xi<=56 ; ++xi));
     do
-    #samtools view HN-C$xi.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' > HN-XC$xi ;
-    samtools view HN-C$xi.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' >> NEAN ;
+    #samtools view HN-C$xi.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' >> NEAN ;
+    ./samtools bam2fq HN-C$xi.bam | ./goose-fastq2mfasta >> NEAN;
     done
 fi
 #==============================================================================
 # FROM SAM 2 MFASTA
 if [[ "$SPLIT_FASTA" -eq "1" ]]; then
-  split --lines=1534662800 < NEAN; # SPLIT IN ~4 FILES, % PAR ENSURE HEADER ON
+  split --lines=1534662800 < NEAN; # SPLIT IN ~5 FILES, % PAR ENSURE HEADER ON
+  rm -f NEAN;
 fi
 #==============================================================================
 # RUN FALCON
 if [[ "$RUN_CHESTER" -eq "1" ]]; then # 549755813888 = 64 GB
-  (time ./CHESTER-map -p -v -i -s 549755813888 -t 0.5 -k 30 xaa:xab:xac:xad CHM1:CHM2:CHM3:CHM4:CHM5:CHM6:CHM7:CHM8:CHM9:CHM10:CHM11:CHM12:CHM13:CHM14:CHM15:CHM16:CHM17:CHM18:CHM19:CHM20:CHM21:CHM22:CHM23 ) &> REPORT_CHESTER_HUMAN_CHM_NEAN
+  (time ./CHESTER-map -p -v -i -s 549755813888 -t 0.5 -k 30 xaa:xab:xac:xad:xae CHM1:CHM2:CHM3:CHM4:CHM5:CHM6:CHM7:CHM8:CHM9:CHM10:CHM11:CHM12:CHM13:CHM14:CHM15:CHM16:CHM17:CHM18:CHM19:CHM20:CHM21:CHM22:CHM23 ) &> REPORT_CHESTER_HUMAN_CHM_NEAN
   ./CHESTER-visual -v CHM1.seg:CHM2.seg:CHM3.seg:CHM4.seg:CHM5.seg:CHM6.seg:CHM7.seg:CHM8.seg:CHM9.seg:CHM10.seg:CHM11.seg:CHM12.seg:CHM13.seg:CHM14.seg:CHM15.seg:CHM16.seg:CHM17.seg:CHM18.seg:CHM19.seg:CHM20.seg:CHM21.seg:CHM22.seg:CHM23.seg
 fi
 #==============================================================================
