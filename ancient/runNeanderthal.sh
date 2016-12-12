@@ -26,6 +26,22 @@ if [[ "$GET_GOOSE" -eq "1" ]]; then
   rm -fr goose/ GetHumanParse.sh
   git clone https://github.com/pratas/goose.git
   cp goose/scripts/GetHumanParse.sh .
+  cd goose/src/
+  make
+  cp goose-fastq2mfasta ../../
+  cd ../../
+fi
+#==============================================================================
+# GET SAMTOOLS 1.3.1
+if [[ "$GET_SAMTOOLS" -eq "1" ]]; then
+  wget https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1.3.1.tar.bz2
+  tar -xvf samtools-1.3.1.tar.bz2
+  cd samtools-1.3.1/
+  ./configure --without-curses
+  make
+  cp samtools ../
+  cd ..
+  rm -fr samtools-1.3.1.*
 fi
 #==============================================================================
 # BUILD DB
@@ -91,19 +107,20 @@ if [[ "$SAM2FASTA" -eq "1" ]]; then
   rm -f NEAN;
   for((xi=1 ; xi<=56 ; ++xi));
     do
-    #samtools view HN-C$xi.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' > HN-XC$xi ;
-    samtools view HN-C$xi.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' >> NEAN ;
+    #samtools view HN-C$xi.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' >> NEAN ;
+    ./samtools bam2fq HN-C$xi.bam | ./goose-fastq2mfasta >> NEAN;
     done
 fi
 #==============================================================================
 # FROM SAM 2 MFASTA
 if [[ "$SPLIT_FASTA" -eq "1" ]]; then
-  split --lines=1534662800 < NEAN; # SPLIT IN ~4 FILES, % PAR ENSURE HEADER ON
+  split --lines=1534662800 < NEAN; # SPLIT IN ~5 FILES, % PAR ENSURE HEADER ON
+  rm -f NEAN;
 fi
 #==============================================================================
 # RUN CHESTER
 if [[ "$RUN_CHESTER" -eq "1" ]]; then # 223338299392=26 GB, 549755813888=64 GB
-  (time ./CHESTER-map -p -v -i -s 549755813888 -t 0.6 -k 30 xaa:xab:xac:xad HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
+  (time ./CHESTER-map -p -v -i -s 549755813888 -t 0.6 -k 30 xaa:xab:xac:xad:xae HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
   ./CHESTER-visual -v HS1.seg:HS2.seg:HS3.seg:HS4.seg:HS5.seg:HS6.seg:HS7.seg:HS8.seg:HS9.seg:HS10.seg:HS11.seg:HS12.seg:HS13.seg:HS14.seg:HS15.seg:HS16.seg:HS17.seg:HS18.seg:HS19.seg:HS20.seg:HS21.seg:HS22.seg:HS23.seg:HS24.seg:HS25.seg:HS26.seg:HS27.seg
 fi
 #==============================================================================
