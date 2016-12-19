@@ -9,8 +9,6 @@
 #include "defs.h"
 #include "common.h"
 #include "model.h"
-#include "filters.h"
-#include "segment.h"
 #include "parser.h"
 #include "buffer.h"
 
@@ -26,38 +24,6 @@ void RWord(FILE *F, uint8_t *b, int32_t i, uint32_t kmer){
   }
 
 //////////////////////////////////////////////////////////////////////////////
-// - - - - - - - - - - - - - - - - - F I L T E R - - - - - - - - - - - - - - -
-void FilterStreams(Param *P){
-  float *winWeights;
-  uint32_t tar;
-
-  WindowSizeAndDrop(P, P->max);
-  winWeights = InitWinWeights(P->window, W_HAMMING);
-
-  for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
-    char *name = (char *) Calloc(4096, sizeof(char));
-    sprintf(name, "%s-k%u.oxch", P->tar->names[tar], P->kmer);
-    FilterSequence(name, P, winWeights);
-    Free(name);
-    }
-
-  EndWinWeights(winWeights);
-  }
-
-//////////////////////////////////////////////////////////////////////////////
-// - - - - - - - - - - - - - - - - S E G M E N T - - - - - - - - - - - - - - -
-void SegmentStreams(Param *P){
-  uint32_t tar;
-
-  for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
-    char *name = (char *) Calloc(4096, sizeof(char));
-    sprintf(name, "%s-k%u.fil", P->tar->names[tar], P->kmer);
-    SegmentSequence(name, P, tar);
-    Free(name);
-    }
-  }
-
-//////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - - J O I N - - - - - - - - - - - - - - - -
 void JoinStreams(Param *P){
   uint32_t ref, tar, k = 0, n;
@@ -68,7 +34,7 @@ void JoinStreams(Param *P){
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     nameout[tar]  = (char *) Calloc(4096, sizeof(char));
-    sprintf(nameout[tar], "%s-k%u.oxch", P->tar->names[tar], P->kmer);
+    sprintf(nameout[tar], "%s.oxch", P->tar->names[tar]);
     OUT           = Fopen(nameout[tar], "w");
     FILE **Bins   = (FILE **)    Calloc(P->ref->nFiles, sizeof(FILE *));
     char **name   = (char **)    Calloc(P->ref->nFiles, sizeof(char *));
@@ -77,7 +43,7 @@ void JoinStreams(Param *P){
     uint8_t *res  = (uint8_t *)  Calloc(WINDOW_SIZE,    sizeof(uint8_t));
     for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
       name[ref]  = (char *) Calloc(4096, sizeof(char));
-      sprintf(name[ref], "-r%u-k%u.xch", ref+1, P->kmer);
+      sprintf(name[ref], "-r%u.xch", ref+1);
       name2[ref] = concatenate(P->tar->names[tar], name[ref]);
       Bins[ref]  = Fopen(name2[ref], "r");
       buf[ref]   = (uint8_t *) Calloc(WINDOW_SIZE, sizeof(uint8_t));
@@ -131,8 +97,8 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
   FILE     *Reader = Fopen(P->tar->names[tar], "r");
   char     *name1 = (char *) Calloc(4096, sizeof(char));
   char     *namex = (char *) Calloc(4096, sizeof(char));
-  sprintf(name1, "-r%u-k%u.ch",  ref+1, P->kmer);
-  sprintf(namex, "-r%u-k%u.xch", ref+1, P->kmer);
+  sprintf(name1, "-r%u.ch",  ref+1);
+  sprintf(namex, "-r%u.xch", ref+1);
   char     *name2 = concatenate(P->tar->names[tar], name1);
   char     *namex2 = concatenate(P->tar->names[tar], namex);
   FILE     *Pos = NULL, *Bin = Fopen(namex2, "w");
@@ -332,9 +298,6 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  -v                       verbose mode,             \n");
     fprintf(stderr, "  -a                       about CHESTER,            \n");
-    fprintf(stderr, "  -t <value>               threshold [0.0;1.0],      \n");
-    fprintf(stderr, "  -w <value>               window size,              \n");
-    fprintf(stderr, "  -u <value>               sub-sampling,             \n");
     fprintf(stderr, "  -s <value>               bloom size,               \n");
     fprintf(stderr, "  -i                       use inversions,           \n");
     fprintf(stderr, "  -p                       show positions/words,     \n");
@@ -353,9 +316,6 @@ int32_t main(int argc, char *argv[]){
   P->ref       = ReadFNames (P, argv[argc-2]);  // REF
   P->tar       = ReadFNames (P, argv[argc-1]);  // TAR
   P->kmer      = ArgsNum    (DEFAULT_KMER,    p, argc, "-k", MIN_KMER, MAX_KMER);
-  P->threshold = ArgsDouble (DEFAULT_THRESHOLD, p, argc, "-t");
-  P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999);
-  P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999);
   P->bSize     = ArgsNum64  (DEFAULT_BSIZE,   p, argc, "-s", 10, 2999999999999);
   P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
   P->inverse   = ArgsState  (DEFAULT_IR,      p, argc, "-i");
@@ -439,20 +399,6 @@ int32_t main(int argc, char *argv[]){
   if(P->verbose){
     fprintf(stderr, "Done!                                     \n");
     fprintf(stderr, "==========================================\n");
-    }
-
-  if(P->verbose) fprintf(stderr, "Filtering ...\n");
-  FilterStreams(P);
-  if(P->verbose){
-    fprintf(stderr, "Done!                                     \n");
-    fprintf(stderr, "==========================================\n");
-    }
-
-  if(P->verbose) fprintf(stderr, "Segmenting ...\n");
-  SegmentStreams(P);
-  if(P->verbose){
-    fprintf(stderr, "Done!                                     \n");
-   fprintf(stderr, "==========================================\n");
     }
 
   if(P->verbose)
