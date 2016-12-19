@@ -16,9 +16,7 @@ void SegmentSequence(char *fName, Param *P, uint32_t tar){
 
   threshold    = (float) P->threshold; 
   Reader       = Fopen(fName, "r");
-
   sprintf(fNameOut, "%s.seg", P->tar->names[tar]);
-//  fNameOut     = ReplaceSubStr(fName, ".fil", ".seg");
   Writter      = Fopen(fNameOut, "w");
 
   fprintf(Writter, "#%"PRIu64"#%"PRIu64"\n", P->max, P->size[0][tar]); // WRITE MAX AT THE HEAD

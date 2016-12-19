@@ -96,7 +96,6 @@ int32_t main(int argc, char *argv[]){
     }
 
   P = (Param *) Calloc(1 , sizeof(Param));
-  P->ref       = ReadFNames (P, argv[argc-2]);  // REF
   P->tar       = ReadFNames (P, argv[argc-1]);  // TAR
   P->threshold = ArgsDouble (DEFAULT_THRESHOLD, p, argc, "-t");
   P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999999);
@@ -107,18 +106,20 @@ int32_t main(int argc, char *argv[]){
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n",
     VERSION, RELEASE);
-    PrintArgs(P);
-    fprintf(stderr, "==========================================\n");
     }
 
-  uint64_t max_entries = 0, min_hashes;
-  double max_precision = 0;
-  P->size = (uint64_t **) Calloc(P->tar->nFiles, sizeof(uint64_t *));
-  P->size[n] = (uint64_t *) Calloc(P->tar->nFiles, sizeof(uint64_t));
+  P->max     = 0;
+  P->size    = (uint64_t **) Calloc(P->tar->nFiles, sizeof(uint64_t *));
+  P->size[0] = (uint64_t *) Calloc(P->tar->nFiles, sizeof(uint64_t));
   for(k = 0 ; k < P->tar->nFiles ; ++k){
-    FILE *Reader = Fopen(P->tar->names[k], "r");
-    P->size[n][k] = NDNASyminFile(Reader);
+    char *name = (char *) Calloc(4096, sizeof(char));
+    sprintf(name, "%s.oxch", P->tar->names[k]);
+    FILE *Reader = Fopen(name, "r");
+    P->size[0][k] = NBytesInFile(Reader);
+    if(P->max < P->size[0][k])
+      P->max = P->size[0][k];
     fclose(Reader);
+    Free(name);
     }
   if(P->verbose)
     fprintf(stderr, "==========================================\n");
