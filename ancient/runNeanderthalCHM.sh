@@ -121,8 +121,9 @@ fi
 #==============================================================================
 # RUN FALCON
 if [[ "$RUN_CHESTER" -eq "1" ]]; then # 549755813888 = 64 GB
-  (time ./CHESTER-map -p -v -i -s 549755813888 -t 0.5 -k 30 xaa:xab:xac:xad:xae CHM1:CHM2:CHM3:CHM4:CHM5:CHM6:CHM7:CHM8:CHM9:CHM10:CHM11:CHM12:CHM13:CHM14:CHM15:CHM16:CHM17:CHM18:CHM19:CHM20:CHM21:CHM22:CHM23 ) &> REPORT_CHESTER_HUMAN_CHM_NEAN
-  ./CHESTER-visual -v CHM1.seg:CHM2.seg:CHM3.seg:CHM4.seg:CHM5.seg:CHM6.seg:CHM7.seg:CHM8.seg:CHM9.seg:CHM10.seg:CHM11.seg:CHM12.seg:CHM13.seg:CHM14.seg:CHM15.seg:CHM16.seg:CHM17.seg:CHM18.seg:CHM19.seg:CHM20.seg:CHM21.seg:CHM22.seg:CHM23.seg
+  (time ./CHESTER-map -p -v -i -s 549755813888 -k 30 xaa:xab:xac:xad:xae CHM1:CHM2:CHM3:CHM4:CHM5:CHM6:CHM7:CHM8:CHM9:CHM10:CHM11:CHM12:CHM13:CHM14:CHM15:CHM16:CHM17:CHM18:CHM19:CHM20:CHM21:CHM22:CHM23 ) &> REPORT_CHESTER_HUMAN_CHM_NEAN
+  ./CHESTER-filter -v -t 0.95 CHM1.oxch:CHM2.oxch:CHM3.oxch:CHM4.oxch:CHM5.oxch:CHM6.oxch:CHM7.oxch:CHM8.oxch:CHM9.oxch:CHM10.oxch:CHM11.oxch:CHM12.oxch:CHM13.oxch:CHM14.oxch:CHM15.oxch:CHM16.oxch:CHM17.oxch:CHM18.oxch:CHM19.oxch:CHM20.oxch:CHM21.oxch:CHM22.oxch:CHM23.oxch:CHM24.oxch:CHM25.oxch:CHM26.oxch:CHM27.oxch
+  ./CHESTER-visual -v -e 50000 CHM1.oxch.seg:CHM2.oxch.seg:CHM3.oxch.seg:CHM4.oxch.seg:CHM5.oxch.seg:CHM6.oxch.seg:CHM7.oxch.seg:CHM8.oxch.seg:CHM9.oxch.seg:CHM10.oxch.seg:CHM11.oxch.seg:CHM12.oxch.seg:CHM13.oxch.seg:CHM14.oxch.seg:CHM15.oxch.seg:CHM16.oxch.seg:CHM17.oxch.seg:CHM18.oxch.seg:CHM19.oxch.seg:CHM20.oxch.seg:CHM21.oxch.seg:CHM22.oxch.seg:CHM23.oxch.seg:CHM24.oxch.seg:CHM25.oxch.seg:CHM26.oxch.seg:CHM27.oxch.seg
 fi
 #==============================================================================
 ~                                                                                                                                                                                                                                                                                                                                                               
