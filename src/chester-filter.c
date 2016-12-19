@@ -25,7 +25,7 @@ void FilterStreams(Param *P){
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
     char *name = (char *) Calloc(4096, sizeof(char));
-    sprintf(name, "%s.oxch", P->tar->names[tar]);
+    sprintf(name, "%s", P->tar->names[tar]);
     FilterSequence(name, P, winWeights);
     Free(name);
     }
@@ -95,11 +95,11 @@ int32_t main(int argc, char *argv[]){
     }
 
   P = (Param *) Calloc(1 , sizeof(Param));
-  P->tar       = ReadFNamesOxch (P, argv[argc-1]);  // TAR
-  P->threshold = ArgsDouble     (DEFAULT_THRESHOLD, p, argc, "-t");
-  P->subsamp   = ArgsNumI64     (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999999);
-  P->window    = ArgsNumI64     (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999999);
-  P->verbose   = ArgsState      (DEFAULT_VERBOSE, p, argc, "-v");
+  P->tar       = ReadFNames (P, argv[argc-1]);  // TAR
+  P->threshold = ArgsDouble (DEFAULT_THRESHOLD, p, argc, "-t");
+  P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999999);
+  P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999999);
+  P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
 
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n",
@@ -111,7 +111,7 @@ int32_t main(int argc, char *argv[]){
   P->size[0] = (uint64_t *) Calloc(P->tar->nFiles, sizeof(uint64_t));
   for(k = 0 ; k < P->tar->nFiles ; ++k){
     char *name = (char *) Calloc(4096, sizeof(char));
-    sprintf(name, "%s.oxch", P->tar->names[k]);
+    sprintf(name, "%s", P->tar->names[k]);
     FILE *Reader = Fopen(name, "r");
     P->size[0][k] = NBytesInFile(Reader);
     if(P->max < P->size[0][k])

@@ -415,26 +415,6 @@ SFILES *ReadFNames(Param *P, char *arg){
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SFILES *ReadFNamesOxch(Param *P, char *arg){
-  SFILES   *SF = (SFILES *) Calloc(1, sizeof(SFILES));
-  uint32_t nFiles = 1, k = 0, argLen = strlen(arg);
-  for( ; k != argLen ; ++k)
-    if(arg[k] == ':')
-      ++nFiles;
-  SF->names = (char **) Malloc(nFiles * sizeof(char *));
-  sprintf(SF->names[0], "%s.oxch", strtok(arg, ":"));
-  TestReadFile(SF->names[0]);
-  for(k = 1 ; k < nFiles ; ++k){
-    //SF->names[k] = strtok(NULL, ":");
-    sprintf(SF->names[k], "%s.oxch", strtok(arg, ":"));
-    TestReadFile(SF->names[k]);
-    }
-  SF->nFiles = nFiles;
-  return SF;
-  }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 void CalcProgress(uint64_t size, uint64_t i){
   if(size > PROGRESS_MIN && i % (size / 100) == 0)
     fprintf(stderr, "Progress:%3d %%\r", (uint8_t) (i / (size / 100)));
