@@ -120,7 +120,8 @@ fi
 #==============================================================================
 # RUN CHESTER
 if [[ "$RUN_CHESTER" -eq "1" ]]; then # 223338299392=26 GB, 549755813888=64 GB
-  (time ./CHESTER-map -p -v -i -s 549755813888 -t 0.6 -k 30 xaa:xab:xac:xad:xae HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
-  ./CHESTER-visual -v HS1.seg:HS2.seg:HS3.seg:HS4.seg:HS5.seg:HS6.seg:HS7.seg:HS8.seg:HS9.seg:HS10.seg:HS11.seg:HS12.seg:HS13.seg:HS14.seg:HS15.seg:HS16.seg:HS17.seg:HS18.seg:HS19.seg:HS20.seg:HS21.seg:HS22.seg:HS23.seg:HS24.seg:HS25.seg:HS26.seg:HS27.seg
+  (time ./CHESTER-map -p -v -i -s 549755813888 -k 30 xaa:xab:xac:xad:xae HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
+  ./CHESTER-filter -v -t 0.95 HS1.oxch:HS2.oxch:HS3.oxch:HS4.oxch:HS5.oxch:HS6.oxch:HS7.oxch:HS8.oxch:HS9.oxch:HS10.oxch:HS11.oxch:HS12.oxch:HS13.oxch:HS14.oxch:HS15.oxch:HS16.oxch:HS17.oxch:HS18.oxch:HS19.oxch:HS20.oxch:HS21.oxch:HS22.oxch:HS23.oxch:HS24.oxch:HS25.oxch:HS26.oxch:HS27.oxch
+  ./CHESTER-visual -v -e 500000 HS1.oxch.seg:HS2.oxch.seg:HS3.oxch.seg:HS4.oxch.seg:HS5.oxch.seg:HS6.oxch.seg:HS7.oxch.seg:HS8.oxch.seg:HS9.oxch.seg:HS10.oxch.seg:HS11.oxch.seg:HS12.oxch.seg:HS13.oxch.seg:HS14.oxch.seg:HS15.oxch.seg:HS16.oxch.seg:HS17.oxch.seg:HS18.oxch.seg:HS19.oxch.seg:HS20.oxch.seg:HS21.oxch.seg:HS22.oxch.seg:HS23.oxch.seg:HS24.oxch.seg:HS25.oxch.seg:HS26.oxch.seg:HS27.oxch.seg
 fi
 #==============================================================================
