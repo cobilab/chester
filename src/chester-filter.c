@@ -86,7 +86,6 @@ int32_t main(int argc, char *argv[]){
     fprintf(stderr, "  -t <value>               threshold [0.0;1.0],      \n");
     fprintf(stderr, "  -w <value>               window size,              \n");
     fprintf(stderr, "  -u <value>               sub-sampling,             \n");
-    fprintf(stderr, "  -p                       show positions/words,     \n");
     fprintf(stderr, "                                                     \n");
     fprintf(stderr, "  [tFile1]:<tFile2>:<...>  target file(s).           \n");
     fprintf(stderr, "                                                     \n");
@@ -96,12 +95,11 @@ int32_t main(int argc, char *argv[]){
     }
 
   P = (Param *) Calloc(1 , sizeof(Param));
-  P->tar       = ReadFNames (P, argv[argc-1]);  // TAR
-  P->threshold = ArgsDouble (DEFAULT_THRESHOLD, p, argc, "-t");
-  P->subsamp   = ArgsNumI64 (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999999);
-  P->window    = ArgsNumI64 (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999999);
-  P->verbose   = ArgsState  (DEFAULT_VERBOSE, p, argc, "-v");
-  P->disk      = ArgsState  (DEFAULT_DISK,    p, argc, "-p");
+  P->tar       = ReadFNamesOxch (P, argv[argc-1]);  // TAR
+  P->threshold = ArgsDouble     (DEFAULT_THRESHOLD, p, argc, "-t");
+  P->subsamp   = ArgsNumI64     (DEFAULT_SAMPLE_RATIO, p, argc, "-u", -1, 999999999);
+  P->window    = ArgsNumI64     (DEFAULT_WINDOW,  p, argc, "-w", -1,  9999999999);
+  P->verbose   = ArgsState      (DEFAULT_VERBOSE, p, argc, "-v");
 
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n",

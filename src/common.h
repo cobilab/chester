@@ -39,6 +39,7 @@ void        TestReadFile     (char *);
 uint8_t     CmpCheckSum      (uint32_t, uint32_t);
 void        FAccessWPerm     (char    *);
 SFILES      *ReadFNames      (Param *, char *);
+SFILES      *ReadFNamesOxch  (Param *, char *);
 void        CalcProgress     (uint64_t , uint64_t);
 void        PrintArgs        (Param *);
 char        *concatenate     (char *   , char *);
