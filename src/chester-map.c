@@ -179,6 +179,9 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
             }
           }
         }
+      else if(base >= P->M->kmer){
+        fprintf(Bin, "1");
+        }
 
       if(++idx_buffer == BUFFER_SIZE){
         memcpy(sBuf-BGUARD, sBuf+idx_buffer-BGUARD, BGUARD);
