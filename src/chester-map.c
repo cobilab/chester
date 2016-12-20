@@ -179,7 +179,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
             }
           }
         }
-      else if(base >= P->M->kmer){
+      else{
         fprintf(Bin, "1");
         }
 
