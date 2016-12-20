@@ -51,11 +51,13 @@ void JoinStreams(Param *P){
     res = (uint8_t *) Calloc(WINDOW_SIZE+1, sizeof(uint8_t));
 
     P->chrSize[tar] = P->size[0][tar]; 
-
-    step = WINDOW_SIZE;
+    uint64_t min = P->chrSize[tar];
     do{
-      for(ref = 0 ; ref < P->ref->nFiles ; ++ref)
+      for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
         k = fread(buf[ref], 1, WINDOW_SIZE, Bins[ref]);
+        if(min > k)
+          min = k;
+        }
       for(n = 0 ; n < k ; ++n){
         res[n] = '0';
         for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
@@ -68,9 +70,8 @@ void JoinStreams(Param *P){
           }
         }
       fwrite(res, 1, k, OUT);
-      step += WINDOW_SIZE;
       }
-    while(step < P->chrSize[tar] && k > 0);
+    while(min > 0);
 
     for(ref = 0 ; ref < P->ref->nFiles ; ++ref){
       fclose(Bins[ref]);
