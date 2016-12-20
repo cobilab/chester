@@ -66,7 +66,8 @@ Param;
 #define HASH_SIZE              268435459      // first PRIME NUMBER after 2^28
 #define DEFAULT_BHASHES        7
 #define DEFAULT_BSIZE          1<<30
-#define EXTRA_CHAR_CODE        7
+//#define EXTRA_CHAR_CODE        7 # FOR N's
+#define EXTRA_CHAR_CODE        1
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
