@@ -18,6 +18,7 @@ if [[ "$GET_CHESTER" -eq "1" ]]; then
   cmake .
   make
   cp CHESTER-map ../../
+  cp CHESTER-filter ../../
   cp CHESTER-visual ../../
   cd ../../
 fi
