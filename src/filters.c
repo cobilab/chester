@@ -11,7 +11,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void WindowSizeAndDrop(Param *P, uint64_t size){
-  if(DEFAULT_WINDOW != -1) return;  
+  if(P->window != -1) return;  
   P->subsamp = size / DEFAULT_SAMPLE_RATIO;
   if(size < DEFAULT_SAMPLE_RATIO)
     P->subsamp = 1;
