@@ -20,7 +20,7 @@ void FilterStreams(Param *P){
   float *winWeights;
   uint32_t tar;
 
-  WindowSizeAndDrop(P, P->max);
+  //WindowSizeAndDrop(P, P->max);
   winWeights = InitWinWeights(P->window, W_HAMMING);
 
   for(tar = 0 ; tar < P->tar->nFiles ; ++tar){
@@ -104,12 +104,6 @@ int32_t main(int argc, char *argv[]){
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n",
     VERSION, RELEASE);
-    fprintf(stderr, "Threshold .................................. %lf\n", 
-    P->threshold);
-    fprintf(stderr, "Subsample .................................. %"PRIu64"\n", 
-    P->subsamp);
-    fprintf(stderr, "Window size ................................ %"PRIu64"\n", 
-    P->window);
     }
 
   P->max     = 0;
@@ -125,8 +119,16 @@ int32_t main(int argc, char *argv[]){
     fclose(Reader);
     Free(name);
     }
-  if(P->verbose)
+  WindowSizeAndDrop(P, P->max);
+  if(P->verbose){
+    fprintf(stderr, "Threshold .................................. %lf\n",
+    P->threshold);
+    fprintf(stderr, "Subsample .................................. %"PRIu64"\n",
+    P->subsamp);
+    fprintf(stderr, "Window size ................................ %"PRIu64"\n",
+    P->window);
     fprintf(stderr, "==========================================\n");
+    }
   
   if(P->verbose) fprintf(stderr, "Filtering ...\n");
   FilterStreams(P);
