@@ -104,6 +104,12 @@ int32_t main(int argc, char *argv[]){
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n",
     VERSION, RELEASE);
+    fprintf(stderr, "Threshold .................................. %lf\n", 
+    P->threshold);
+    fprintf(stderr, "Subsample .................................. %"PRIu64"\n", 
+    P->subsamp);
+    fprintf(stderr, "Window size ................................ %"PRIu64"\n", 
+    P->window);
     }
 
   P->max     = 0;
