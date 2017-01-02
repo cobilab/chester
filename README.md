@@ -68,7 +68,7 @@ In windows use cygwin (https://www.cygwin.com/) and make sure that it is include
 Run CHESTER-map:
 
 <pre>
-./CHESTER-map -v -k 30 -i -t 0.5 -s 6099999999 File1.fastq:File2.fastq:File3.fasta FileA.fasta:FileB.fasta
+./CHESTER-map -v -k 30 -i -s 6099999999 File1.fastq:File2.fastq:File3.fasta FileA.fasta:FileB.fasta
 </pre>
 
 ## PARAMETERS
@@ -90,9 +90,6 @@ The (probabilistic) Bloom filter is automatically set.
 
   -v                       verbose mode,             
   -a                       about CHESTER,            
-  -t &#60value&#62               threshold [0.0;1.0],      
-  -w &#60value&#62               window size,              
-  -u &#60value&#62               sub-sampling,             
   -s &#60value&#62               bloom size,               
   -i                       use inversions,           
   -p                       show positions/words,
@@ -106,14 +103,23 @@ while the target files may be FASTA or DNA-SEQ.
 Report bugs to &#60{pratas,ap,pjf}@ua.pt&#62. 
 </pre>
 
-Most of the values are set automatically. Nevertheless, higher threshold values are associated to more unique regions detected.
+Most of the values are set automatically. 
+
+For CHESTER-filter type:
+<pre>
+./CHESTER-filter
+</pre>
+while for CHESTER-visual type:
+<pre>
+./CHESTER-visual
+</pre>
 
 ## EXAMPLE ##
 
 The following illustrate a Human-Neanderthal example. For the purpose go to the base and run:
 <pre>
-cp ancient/runNeanderthal.sh .
-. RunNeanderthal.sh &
+cp ancient/runNeanderthalGRC37.sh .
+. RunNeanderthalGRC73.sh &
 </pre>
 
 It will download all the sequences and run CHESTER-map.
