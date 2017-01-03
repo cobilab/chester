@@ -25,7 +25,7 @@ fi
 #==============================================================================
 # GET GOOSE
 if [[ "$GET_GOOSE" -eq "1" ]]; then
-  rm -fr goose/ GetHumanParse.sh
+  rm -fr goose/ GetHumanCHMParse.sh
   git clone https://github.com/pratas/goose.git
   cp goose/scripts/GetHumanCHMParse.sh .
   cd goose/src/
@@ -120,11 +120,11 @@ if [[ "$SPLIT_FASTA" -eq "1" ]]; then
   rm -f NEAN;
 fi
 #==============================================================================
-# RUN FALCON
+# RUN CHESTER
 if [[ "$RUN_CHESTER" -eq "1" ]]; then # 549755813888 = 64 GB
-  (time ./CHESTER-map -p -v -i -s 549755813888 -k 30 xaa:xab:xac:xad:xae CHM1:CHM2:CHM3:CHM4:CHM5:CHM6:CHM7:CHM8:CHM9:CHM10:CHM11:CHM12:CHM13:CHM14:CHM15:CHM16:CHM17:CHM18:CHM19:CHM20:CHM21:CHM22:CHM23 ) &> REPORT_CHESTER_HUMAN_CHM_NEAN
-  ./CHESTER-filter -v -t 0.95 CHM1.oxch:CHM2.oxch:CHM3.oxch:CHM4.oxch:CHM5.oxch:CHM6.oxch:CHM7.oxch:CHM8.oxch:CHM9.oxch:CHM10.oxch:CHM11.oxch:CHM12.oxch:CHM13.oxch:CHM14.oxch:CHM15.oxch:CHM16.oxch:CHM17.oxch:CHM18.oxch:CHM19.oxch:CHM20.oxch:CHM21.oxch:CHM22.oxch:CHM23.oxch:CHM24.oxch:CHM25.oxch:CHM26.oxch:CHM27.oxch
-  ./CHESTER-visual -v -e 50000 CHM1.oxch.seg:CHM2.oxch.seg:CHM3.oxch.seg:CHM4.oxch.seg:CHM5.oxch.seg:CHM6.oxch.seg:CHM7.oxch.seg:CHM8.oxch.seg:CHM9.oxch.seg:CHM10.oxch.seg:CHM11.oxch.seg:CHM12.oxch.seg:CHM13.oxch.seg:CHM14.oxch.seg:CHM15.oxch.seg:CHM16.oxch.seg:CHM17.oxch.seg:CHM18.oxch.seg:CHM19.oxch.seg:CHM20.oxch.seg:CHM21.oxch.seg:CHM22.oxch.seg:CHM23.oxch.seg:CHM24.oxch.seg:CHM25.oxch.seg:CHM26.oxch.seg:CHM27.oxch.seg
+  (time ./CHESTER-map -p -v -i -s 549755813888 -k 30 xaa:xab:xac:xad:xae HS1:HS2:HS3:HS4:HS5:HS6:HS7:HS8:HS9:HS10:HS11:HS12:HS13:HS14:HS15:HS16:HS17:HS18:HS19:HS20:HS21:HS22:HS23:HS24:HS25:HS26:HS27 ) &> REPORT_CHESTER_HUMAN_NEAN
+  ./CHESTER-filter -v -u 100 -w 20000 -t 0.95 HS1.oxch:HS2.oxch:HS3.oxch:HS4.oxch:HS5.oxch:HS6.oxch:HS7.oxch:HS8.oxch:HS9.oxch:HS10.oxch:HS11.oxch:HS12.oxch:HS13.oxch:HS14.oxch:HS15.oxch:HS16.oxch:HS17.oxch:HS18.oxch:HS19.oxch:HS20.oxch:HS21.oxch:HS22.oxch:HS23.oxch:HS24.oxch:HS25.oxch:HS26.oxch:HS27.oxch
+  ./CHESTER-visual -v -e 500000 HS1.oxch.seg:HS2.oxch.seg:HS3.oxch.seg:HS4.oxch.seg:HS5.oxch.seg:HS6.oxch.seg:HS7.oxch.seg:HS8.oxch.seg:HS9.oxch.seg:HS10.oxch.seg:HS11.oxch.seg:HS12.oxch.seg:HS13.oxch.seg:HS14.oxch.seg:HS15.oxch.seg:HS16.oxch.seg:HS17.oxch.seg:HS18.oxch.seg:HS19.oxch.seg:HS20.oxch.seg:HS21.oxch.seg:HS22.oxch.seg:HS23.oxch.seg:HS24.oxch.seg:HS25.oxch.seg:HS26.oxch.seg:HS27.oxch.seg
 fi
 #==============================================================================
 ~                                                                                                                                                                                                                                                                                                                                                               
