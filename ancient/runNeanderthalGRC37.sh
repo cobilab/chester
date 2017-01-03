@@ -25,7 +25,7 @@ fi
 #==============================================================================
 # GET GOOSE
 if [[ "$GET_GOOSE" -eq "1" ]]; then
-  rm -fr goose/ GetHumanParse.sh
+  rm -fr goose/ GetHumanGRC37Parse.sh
   git clone https://github.com/pratas/goose.git
   cp goose/scripts/GetHumanGRC37Parse.sh .
   cd goose/src/
