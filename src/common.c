@@ -443,16 +443,6 @@ void PrintArgs(Param *P){
   fprintf(stderr, "  [+] Use inversions ............... %s\n", !P->inverse? 
   "no" : "yes");
   fprintf(stderr, "  [+] Bloom array size ............. %"PRIu64"\n", P->bSize);
-  fprintf(stderr, "Threshold .......................... %.4g\n", P->threshold);
-  fprintf(stderr, "Sub-sampling ....................... %"PRIi64"\n", 
-  P->subsamp);
-  fprintf(stderr, "Enlarge size ....................... %"PRIi64"\n", 
-  P->enlarge);
-  if(P->window == -1)
-    fprintf(stderr, "Window size ........................ Automatic\n");
-  else 
-    fprintf(stderr, "Window size ........................ %"PRIi64"\n", 
-    P->window);
   fprintf(stderr, "Reference files (%u):\n", P[0].ref->nFiles);
   for(n = 0 ; n < P[0].ref->nFiles ; ++n)
     fprintf(stderr, "  [+] Filename %-2u .................. %s\n", n+1,
