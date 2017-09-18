@@ -132,9 +132,9 @@ alt="CHESTER" width="600" height="300" border="0" /></p>
 
 On using this software/method please cite:
 
-D. Pratas, R. M. Silva, A. J. Pinho, P. J. S. G. Ferreira, Detection and visualisation of regions of human DNA not present in other primates. Proceedings of the 21st Portuguese Conference on Pattern Recognition, RecPad 2015, Faro, Portugal, October 2015.
+P. Pratas, M. Hosseini, R. M. Silva, A. J. Pinho, P. J. S. G. Ferreira, Visualization of Distinct DNA Regions of the Modern Human Relatively to a Neanderthal Genome." Iberian Conference on Pattern Recognition and Image Analysis. Springer, Cham, 2017.
 
-[Download paper] (https://github.com/pratas/chester/blob/master/paper.pdf)
+D. Pratas, R. M. Silva, A. J. Pinho, P. J. S. G. Ferreira, Detection and visualisation of regions of human DNA not present in other primates. Proceedings of the 21st Portuguese Conference on Pattern Recognition, RecPad 2015, Faro, Portugal, October 2015.
 
 ## ISSUES ##
 
