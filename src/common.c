@@ -10,12 +10,95 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+FILE *Popen(const char *path, const char *mode){
+  FILE *file = popen(path, mode);
+
+  if(file == NULL)
+    {
+    fprintf(stderr, "Error opening gziped file %s (mode %s). "
+    "Does the file exist?\n", path, mode);
+    exit(1);
+    }
+
+  return file;
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+uint64_t NBytesInFileGZip(FILE *F, char *fName){
+  uint64_t s = 0;
+  char c;
+
+  while(fgetc(F) != EOF)
+   ++s; 
+
+  pclose(F);
+  if((F = popen(fName, "r")) == NULL){
+    fprintf(stderr, "Error: unable to open file\n");
+    exit(1);
+    }
+  
+  return s;
+  }
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 uint64_t NBytesInFile(FILE *F){
   uint64_t s = 0;
+  char c;
+
+  // IT DOES NOT WORK WITH GZIP
   fseek(F, 0, SEEK_END);
   s = ftello(F);
   rewind(F);
+
   return s;
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+uint64_t NDNASyminFileGZip(FILE *F, char *fName){
+  uint8_t  buffer[BUFFER_SIZE], sym;
+  uint32_t k, idx, header = 0, type = 0, line = 0, dna = 0;
+  uint64_t nSymbols = 0;
+
+  sym = fgetc(F);
+  switch(sym){
+    case '>': type = 1; break;
+    case '@': type = 2; break;
+    default : type = 0;
+    }
+  pclose(F);
+  F = Popen(fName, "r");
+
+  while((k = fread(buffer, 1, BUFFER_SIZE, F)))
+    for(idx = 0 ; idx < k ; ++idx){
+      sym = buffer[idx];
+      switch(type){
+        case 0: break;
+        case 1:
+        switch(sym){
+          case '>':  header = 1;    continue;
+          case '\n': header = 0;    continue;
+          default:   if(header==1)  continue;
+          }
+        break;
+        case 2:
+          switch(line){
+            case 0: if(sym == '\n'){ line = 1; dna = 1; } break;
+            case 1: if(sym == '\n'){ line = 2; dna = 0; } break;
+            case 2: if(sym == '\n'){ line = 3; dna = 0; } break;
+            case 3: if(sym == '\n'){ line = 0; dna = 0; } break;
+            }
+        if(dna == 0 || sym == '\n') continue;
+        break;
+        }
+      ++nSymbols;
+      }
+
+  pclose(F);
+  return nSymbols;
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,6 +142,51 @@ uint64_t NDNASyminFile(FILE *file){
       }
   rewind(file);
   return nSymbols;
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+uint64_t EntriesInFileGZip(FILE *F, uint32_t kmer, char *fName){
+  uint8_t  buffer[BUFFER_SIZE], sym;
+  uint32_t k, idx, header = 0, type = 0, line = 0, dna = 0, n_lines = 0;
+  uint64_t nSymbols = 0;
+
+  sym = fgetc(F);
+  switch(sym){
+    case '>': type = 1; break;
+    case '@': type = 2; break;
+    default : type = 0;
+    }
+  pclose(F);
+  F = Popen(fName, "r");
+
+  while((k = fread(buffer, 1, BUFFER_SIZE, F)))
+    for(idx = 0 ; idx < k ; ++idx){
+      sym = buffer[idx];
+      switch(type){
+        case 0: n_lines = 1; break;
+        case 1:
+        switch(sym){
+          case '>':  header = 1; ++n_lines; continue;
+          case '\n': header = 0;            continue;
+          default:   if(header==1)          continue;
+          }
+        break;
+        case 2:
+          switch(line){
+            case 0: if(sym == '\n'){ line = 1; dna = 1; ++n_lines; } break;
+            case 1: if(sym == '\n'){ line = 2; dna = 0;            } break;
+            case 2: if(sym == '\n'){ line = 3; dna = 0;            } break;
+            case 3: if(sym == '\n'){ line = 0; dna = 0;            } break;
+            }
+        if(dna == 0 || sym == '\n') continue;
+        break;
+        }
+      ++nSymbols;
+      }
+  pclose(F);
+
+  return nSymbols-(n_lines*(kmer-1));
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

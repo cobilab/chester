@@ -6,6 +6,7 @@
 #include <float.h>
 #include <ctype.h>
 #include "mem.h"
+#include "msg.h"
 #include "defs.h"
 #include "common.h"
 #include "model.h"
@@ -95,7 +96,8 @@ void JoinStreams(Param *P){
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - T A R G E T - - - - - - - - - - - - - - -
 void Target(Param *P, uint8_t ref, uint32_t tar){
-  FILE     *Reader = Fopen(P->tar->names[tar], "r");
+  FILE     *Reader;
+  char     fName[4096];
   char     *name1 = (char *) Calloc(4096, sizeof(char));
   char     *namex = (char *) Calloc(4096, sizeof(char));
   sprintf(name1, "-r%u.ch",  ref+1);
@@ -103,7 +105,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
   char     *name2 = concatenate(P->tar->names[tar], name1);
   char     *namex2 = concatenate(P->tar->names[tar], namex);
   FILE     *Pos = NULL, *Bin = Fopen(namex2, "w");
-  uint64_t nSymbols = NBytesInFile(Reader), idx_symbols = 0, raw = 0, unknown = 0, 
+  uint64_t nSymbols, idx_symbols = 0, raw = 0, unknown = 0, 
            base = 0, hPos = 0, possibleK = 0;
   uint32_t n, k, idxPos, hIndex, header = 0;
   int32_t  idx_buffer = 0;
@@ -114,6 +116,16 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
             
   if(P->disk == 0)
     Pos = Fopen(name2, "w");
+
+  // OPEN FILE FOR POSSIBLE DECOMPRESSION WITH GZIP
+  Reader = Fopen(P->tar->names[tar], "r"); // CHECK IF IS READABLE
+  fclose(Reader);
+  sprintf(fName, "zcat -f %s", P->tar->names[tar]);
+  Reader = Popen(fName, "r");
+
+  #ifdef PROGRESS
+  nSymbols = NBytesInFileGZip(Reader, fName);
+  #endif
 
   wBuf  = (uint8_t *) Calloc(BUFFER_SIZE,          sizeof(uint8_t));
   rBuf  = (uint8_t *) Calloc(BUFFER_SIZE,          sizeof(uint8_t));
@@ -194,7 +206,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
   if(P->disk == 0)
     fclose(Pos);
   fclose(Bin);
-  fclose(Reader);
+  pclose(Reader);
   ResetIdx(P->M);
   Free(namex);
   Free(name1);
@@ -218,16 +230,24 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - R E F E R E N C E - - - - - - - - - - - - -
 void LoadReference(Param *P, uint32_t ref){
-  FILE     *Reader = Fopen(P->ref->names[ref], "r");
+  FILE     *Reader;
+  char     fName[4096];
   uint32_t k, idxPos;
   uint8_t  sym;
   uint64_t idx_symbols = 0, idx_buffer = 0, idx_read = 0;
-  #ifdef PROGRESS
-  uint64_t size = NBytesInFile(Reader);
-  #endif
   PARSER   *PA = CreateParser(); 
   CBUF     *symBuf = CreateCBuffer(BUFFER_SIZE, BGUARD);
   uint8_t  *readBuf = (uint8_t *) Calloc(BUFFER_SIZE + 1, sizeof(uint8_t));
+
+  // OPEN FILE FOR POSSIBLE DECOMPRESSION WITH GZIP
+  Reader = Fopen(P->ref->names[ref], "r"); // CHECK IF IS READABLE
+  fclose(Reader);
+  sprintf(fName, "zcat -f %s", P->ref->names[ref]);
+  Reader = Popen(fName, "r");
+
+  #ifdef PROGRESS
+  uint64_t size = NBytesInFileGZip(Reader, fName);
+  #endif
 
   if(P->verbose == 1)
     fprintf(stderr, "Building reference model (k=%u) ...\n", P->kmer);
@@ -256,7 +276,7 @@ void LoadReference(Param *P, uint32_t ref){
   RemoveCBuffer(symBuf);
   Free(readBuf);
   RemoveParser(PA);
-  fclose(Reader);
+  pclose(Reader);
 
   if(P->verbose == 1){
     fprintf(stderr, "Done!                          \n");  // SPACES ARE VALID  
@@ -273,46 +293,13 @@ int32_t main(int argc, char *argv[]){
   clock_t  start = clock();
 
   if(ArgsState(0, p, argc, "-a") || ArgsState(0, p, argc, "-V")){
-    fprintf(stderr,
-    "                                                                       \n"
-    "                          ===================                          \n"
-    "                          |   CHESTER %u.%u   |                        \n"
-    "                          ===================                          \n"
-    "                                                                       \n"
-    "               A probabilistic tool to map and visualize               \n"
-    "                     relative singularity regions.                     \n"
-    "                                                                       \n"
-    "              Copyright (C) 2015-2017 University of Aveiro.            \n"
-    "                                                                       \n"
-    "                  This is a Free software, under GPLv3.                \n"
-    "                                                                       \n"
-    "You may redistribute copies of it under the terms of the GNU - General \n"
-    "Public License v3 <http://www.gnu.org/licenses/gpl.html>. There is NOT \n"
-    "ANY WARRANTY, to the extent permitted by law. Developed and Written by \n"
-    "Diogo Pratas, Armando J. Pinho and Paulo J. S. G. Ferreira.\n\n", VERSION,
-    RELEASE);
+    PrintVersion();
     return EXIT_SUCCESS;
     }
 
   if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || ArgsState(DEFAULT_HELP, p, 
   argc, "?") == 1 || argc < 3){
-    fprintf(stderr, "Usage: CHESTER-map <OPTIONS>... [FILE]:<...> [FILE]:<...>\n");
-    fprintf(stderr, "CHESTER-map: a tool to map relative singularity regions  \n");
-    fprintf(stderr, "The (probabilistic) Bloom filter is automatically set.   \n");
-    fprintf(stderr, "                                                     \n");
-    fprintf(stderr, "  -v                       verbose mode,             \n");
-    fprintf(stderr, "  -a                       about CHESTER,            \n");
-    fprintf(stderr, "  -s <value>               bloom size,               \n");
-    fprintf(stderr, "  -i                       use inversions,           \n");
-    fprintf(stderr, "  -p                       show positions/words,     \n");
-    fprintf(stderr, "  -k <value>               k-mer size (up to 30),    \n");
-    fprintf(stderr, "                                                     \n");
-    fprintf(stderr, "  [rFile1]:<rFile2>:<...>  reference file(s),        \n");
-    fprintf(stderr, "  [tFile1]:<tFile2>:<...>  target file(s).           \n");
-    fprintf(stderr, "                                                     \n");
-    fprintf(stderr, "The reference files may be FASTA, FASTQ or DNA SEQ,  \n");
-    fprintf(stderr, "while the target files may be FASTA OR DNA SEQ.      \n");
-    fprintf(stderr, "Report bugs to <{pratas,ap,pjf}@ua.pt>.              \n");
+    PrintMenuMap();
     return EXIT_SUCCESS;
     }
 
@@ -338,11 +325,21 @@ int32_t main(int argc, char *argv[]){
   for(n = 0 ; n < P->ref->nFiles ; ++n){
     
     // ESTIMATE NUMBER OF HASHES FOR BEST PRECISION ===========================
+    FILE *Reader = Fopen(P->ref->names[n], "r"); // CHECK IF IS READABLE
+    fclose(Reader);
+    char fName[4096];
+    sprintf(fName, "zcat -f %s", P->ref->names[n]);
+    Reader = Popen(fName, "r"); // POSSIBLE GZIP OPEN
+    uint64_t n_entries = EntriesInFileGZip(Reader, P->kmer, fName);
+    if(max_entries < n_entries) 
+      max_entries = n_entries;
+
+/*
     FILE *Reader = Fopen(P->ref->names[n], "r");
     uint64_t n_entries = EntriesInFile(Reader, P->kmer);
     if(max_entries < n_entries) max_entries = n_entries;
     fclose(Reader);
-
+*/
     P->bHashes = (int32_t) (((double) P->bSize / n_entries) * M_LN2);
     double precision = pow(1-exp(-P->bHashes*((double) n_entries + 0.5)
     / (P->bSize-1)), P->bHashes);
@@ -375,9 +372,13 @@ int32_t main(int argc, char *argv[]){
     LoadReference(P, n);
     P->size[n] = (uint64_t *) Calloc(P->tar->nFiles, sizeof(uint64_t));
     for(k = 0 ; k < P->tar->nFiles ; ++k){
-      FILE *Reader = Fopen(P->tar->names[k], "r");
-      P->size[n][k] = NDNASyminFile(Reader);
+
+      FILE *Reader = Fopen(P->tar->names[k], "r"); // CHECK IF IS READABLE
       fclose(Reader);
+      char fName[4096];
+      sprintf(fName, "zcat -f %s", P->tar->names[k]);
+      Reader = Popen(fName, "r"); // POSSIBLE GZIP OPEN
+      P->size[n][k] = NDNASyminFileGZip(Reader, fName);
       Target(P, n, k);
       }
     DeleteModel(P->M);

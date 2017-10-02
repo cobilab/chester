@@ -40,7 +40,7 @@ Param;
 
 // CHESTER VALUES:
 #define VERSION                2
-#define RELEASE                1
+#define RELEASE                2
 
 // SYSTEM VALUES:
 #define PROGRESS               1

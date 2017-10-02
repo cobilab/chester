@@ -6,6 +6,7 @@
 #include <float.h>
 #include <ctype.h>
 #include "mem.h"
+#include "msg.h"
 #include "defs.h"
 #include "common.h"
 #include "paint.h"
@@ -76,39 +77,13 @@ int32_t main(int argc, char *argv[]){
   clock_t  start = clock();
 
   if(ArgsState(0, p, argc, "-a") || ArgsState(0, p, argc, "-V")){
-  fprintf(stderr,
-    "                                                                       \n"
-    "                          ===================                          \n"
-    "                          |   CHESTER %u.%u   |                        \n"
-    "                          ===================                          \n"
-    "                                                                       \n"
-    "               A probabilistic tool to map and visualize               \n"
-    "                     relative singularity regions.                     \n"
-    "                                                                       \n"
-    "              Copyright (C) 2015-2017 University of Aveiro.            \n"
-    "                                                                       \n"
-    "                  This is a Free software, under GPLv3.                \n"
-    "                                                                       \n"
-    "You may redistribute copies of it under the terms of the GNU - General \n"
-    "Public License v3 <http://www.gnu.org/licenses/gpl.html>. There is NOT \n"
-    "ANY WARRANTY, to the extent permitted by law. Developed and Written by \n"
-    "Diogo Pratas, Armando J. Pinho and Paulo J. S. G. Ferreira.\n\n", VERSION, 
-    RELEASE);
+    PrintVersion();
     return EXIT_SUCCESS;
     }
 
   if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || ArgsState(DEFAULT_HELP, p, 
   argc, "?") == 1 || argc < 3){
-    fprintf(stderr, "Usage: CHESTER-visual <OPTIONS>... [FILE]:<...>\n");
-    fprintf(stderr, "CHESTER-visual: visualize relative singularity regions.\n");
-    fprintf(stderr, "                                                     \n");
-    fprintf(stderr, "  -v                       verbose mode,             \n");
-    fprintf(stderr, "  -a                       about CHESTER,            \n");
-    fprintf(stderr, "  -e <value>               enlarge painted regions,  \n");
-    fprintf(stderr, "                                                     \n");
-    fprintf(stderr, "  [tFile1]:<tFile2>:<...>  target file(s).           \n");
-    fprintf(stderr, "                                                     \n");
-    fprintf(stderr, "Report bugs to <{pratas,ap,pjf}@ua.pt>.              \n");
+    PrintMenuVisual();
     return EXIT_SUCCESS;
     }
 
