@@ -62,7 +62,7 @@ int32_t main(int argc, char *argv[]){
 
   if(ArgsState(DEFAULT_HELP, p, argc, "-h") == 1 || ArgsState(DEFAULT_HELP, p, 
   argc, "?") == 1 || argc < 3){
-    PrintMenuVisual();
+    PrintMenuFilter();
     return EXIT_SUCCESS;
     }
 
@@ -93,11 +93,11 @@ int32_t main(int argc, char *argv[]){
     }
   WindowSizeAndDrop(P, P->max);
   if(P->verbose){
-    fprintf(stderr, "Threshold .................................. %lf\n",
+    fprintf(stderr, "Threshold ................................ %lf\n",
     P->threshold);
-    fprintf(stderr, "Subsample .................................. %"PRIu64"\n",
+    fprintf(stderr, "Subsample ................................ %"PRIu64"\n",
     P->subsamp);
-    fprintf(stderr, "Window size ................................ %"PRIu64"\n",
+    fprintf(stderr, "Window size .............................. %"PRIu64"\n",
     P->window);
     fprintf(stderr, "==========================================\n");
     }
