@@ -1,4 +1,4 @@
-# CHESTER #
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 <p align="center"><img src="imgs/logo.png" 
 alt="CHESTER" width="300" height="300" border="0" /></p>
 CHESTER is a probabilistic tool to map and visualize relative singularity regions.
