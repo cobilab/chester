@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/35fca54879f9447f83ee2b8dd0e8fc44)](https://app.codacy.com/app/pratas/chester?utm_source=github.com&utm_medium=referral&utm_content=pratas/chester&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/pratas/chester.svg?branch=master)](https://travis-ci.org/pratas/chester)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 <p align="center"><img src="imgs/logo.png" 
