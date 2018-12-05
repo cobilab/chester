@@ -334,23 +334,6 @@ uint8_t *ReverseStr(uint8_t *str, uint32_t end)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void SortString(char str[])
-  {
-  char     tmp;
-  int32_t  i, j, length = strlen(str);
-
-  for(i = 0 ; i != length-1 ; ++i)
-    for (j = i+1 ; j != length ; ++j)
-      if(str[i] > str[j])
-        {
-        tmp    = str[i];
-        str[i] = str[j];
-        str[j] = tmp;
-        }
-  }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 char *CloneString(char *str)
   {
   char *clone;

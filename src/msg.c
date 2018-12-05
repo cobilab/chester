@@ -78,6 +78,6 @@ void PrintVersion(void){
     "                     Diogo Pratas, Raquel M. Silva,                    \n"
     "              Armando J. Pinho and Paulo J. S. G. Ferreira.            \n"
     "                                                                       \n",
-    VERSION, RELEASE);
+    (uint32_t) VERSION, (uint32_t) RELEASE);
   }
 

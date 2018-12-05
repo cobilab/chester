@@ -7,7 +7,7 @@ The references can be non-aligned, such as those outputed directly from NGS plat
 
 ## INSTALLATION ##
 
-Cmake is needed for installation (http://www.cmake.org/). You can download it directly from http://www.cmake.org/cmake/resources/software.html or use an appropriate packet manager. In the following instructions we show the procedure to install, compile and run CHESTER:
+Cmake is needed for installation (<a href="http://www.cmake.org/">CMAKE</a>). You can download it directly from http://www.cmake.org/cmake/resources/software.html or use an appropriate packet manager. In the following instructions we show the procedure to install, compile and run CHESTER:
 
 ### STEP 1
 
@@ -143,8 +143,7 @@ For any issue let us know at [issues link](https://github.com/pratas/chester/iss
 
 ## LICENSE ##
 
-GPL v3.
-
+GPL v3.<br>
 For more information:
 <pre>http://www.gnu.org/licenses/gpl-3.0.html</pre>
 

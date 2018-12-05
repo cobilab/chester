@@ -95,24 +95,24 @@ void JoinStreams(Param *P){
 
 //////////////////////////////////////////////////////////////////////////////
 // - - - - - - - - - - - - - - - - - T A R G E T - - - - - - - - - - - - - - -
-void Target(Param *P, uint8_t ref, uint32_t tar){
+void Target(Param *P, uint32_t ref, uint32_t tar){
   FILE     *Reader;
   char     fName[4096];
   char     *name1 = (char *) Calloc(4096, sizeof(char));
   char     *namex = (char *) Calloc(4096, sizeof(char));
-  sprintf(name1, "-r%u.ch",  ref+1);
-  sprintf(namex, "-r%u.xch", ref+1);
+  sprintf(name1, "-r%u.ch",  (uint32_t) ref+1);
+  sprintf(namex, "-r%u.xch", (uint32_t) ref+1);
   char     *name2 = concatenate(P->tar->names[tar], name1);
   char     *namex2 = concatenate(P->tar->names[tar], namex);
   FILE     *Pos = NULL, *Bin = Fopen(namex2, "w");
   uint64_t nSymbols, idx_symbols = 0, raw = 0, unknown = 0, 
            base = 0, hPos = 0, possibleK = 0;
-  uint32_t n, k, idxPos, hIndex, header = 0;
+  uint32_t n, k, idxPos, hIndex;
   int32_t  idx_buffer = 0;
   uint8_t  *wBuf, *rBuf, *sBuf, sym, found = 0;
  
   if(P->verbose)
-    fprintf(stderr, "Searching target sequence %d ...\n", tar + 1);
+    fprintf(stderr, "Searching target sequence %u ...\n", tar + 1);
             
   if(P->disk == 0)
     Pos = Fopen(name2, "w");
@@ -152,7 +152,7 @@ void Target(Param *P, uint8_t ref, uint32_t tar){
         hPos = 0; // FLUSH INIT OF CONTEXT
         if(P->disk == 0)
           fprintf(Pos, "%"PRIu64"\tN\n", base-P->M->kmer+1);
-        fprintf(Bin, "%u", EXTRA_CHAR_CODE); // THIS IS A FALSE POSITIVE: "N"
+        fprintf(Bin, "%u", (uint8_t) EXTRA_CHAR_CODE); // THIS IS A FALSE POSITIVE: "N"
         continue;
         }
 
@@ -234,7 +234,7 @@ void LoadReference(Param *P, uint32_t ref){
   char     fName[4096];
   uint32_t k, idxPos;
   uint8_t  sym;
-  uint64_t idx_symbols = 0, idx_buffer = 0, idx_read = 0;
+  uint64_t idx_symbols = 0, idx_read = 0;
   PARSER   *PA = CreateParser(); 
   CBUF     *symBuf = CreateCBuffer(BUFFER_SIZE, BGUARD);
   uint8_t  *readBuf = (uint8_t *) Calloc(BUFFER_SIZE + 1, sizeof(uint8_t));
@@ -314,7 +314,7 @@ int32_t main(int argc, char *argv[]){
 
   if(P->verbose){
     fprintf(stderr, "==============[ CHESTER v%u.%u ]============\n",
-    VERSION, RELEASE);
+    (uint32_t) VERSION, (uint32_t) RELEASE);
     PrintArgs(P);
     fprintf(stderr, "==========================================\n");
     }
@@ -354,7 +354,7 @@ int32_t main(int argc, char *argv[]){
       fprintf(stderr, "Number of entries .................. %"PRIu64"\n", 
       n_entries);
       fprintf(stderr, "Number of optimized hashes ......... %u (%.10lf)\n",
-      P->bHashes, ((double) P->bSize / n_entries) * M_LN2);
+      (uint32_t) P->bHashes, ((double) P->bSize / n_entries) * M_LN2);
       fprintf(stderr, "Probability of false positive ...... %.10lf\n", 
       precision);
       fprintf(stderr, "------------------------------------------\n");
