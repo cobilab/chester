@@ -3,7 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 <p align="center"><img src="imgs/logo.png" 
 alt="CHESTER" width="220" height="220" border="0" /></p>
-CHESTER is a probabilistic tool to map and visualize relative singularity regions.
+CHESTER is a probabilistic tool to map and visualize evolutionary regions (relative singularity regions).
 The references can be non-aligned, such as those outputed directly from NGS plataforms (FASTQ), while the target sequences should be aligned (FASTA). CHESTER has a probabilistic way to detect the relative absense of large k-mer sizes (up to 30), namely using bloom filters. The bloom filters are set automatically.
 
 ## INSTALLATION ##
