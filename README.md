@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/pratas/chester.svg?branch=master)](https://travis-ci.org/pratas/chester)
+[![Build Status](https://travis-ci.org/cobilab/chester.svg?branch=master)](https://travis-ci.org/cobilab/chester)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e3316f82ec4c4f15b05a820ec11c141b)](https://www.codacy.com/app/pratas/chester?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pratas/chester&amp;utm_campaign=Badge_Grade)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 <p align="center"><img src="imgs/logo.png" 
